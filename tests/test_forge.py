@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 from pathlib import Path
 import re
@@ -9,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,7 +20,7 @@ if str(SRC) not in sys.path:
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from ptcg_strategy_forge.cli import doctor, run_suite  # noqa: E402
+from ptcg_strategy_forge.cli import _emit, doctor, run_suite  # noqa: E402
 from ptcg_strategy_forge.provenance import load_manifest, verify_snapshot  # noqa: E402
 from ptcg_strategy_forge.scenarios import (  # noqa: E402
     assert_public_report,
@@ -51,6 +53,16 @@ def all_keys(value: object) -> set[str]:
 
 
 class ForgeTests(unittest.TestCase):
+    def test_console_report_falls_back_to_ascii_on_legacy_code_page(self) -> None:
+        raw = io.BytesIO()
+        console = io.TextIOWrapper(raw, encoding="cp1252", errors="strict", newline="\n")
+        with mock.patch("ptcg_strategy_forge.cli.sys.stdout", console):
+            _emit({"status": "passed", "strategy": "魔法少女"}, None)
+            console.flush()
+        rendered = raw.getvalue().decode("cp1252")
+        self.assertEqual("魔法少女", json.loads(rendered)["strategy"])
+        self.assertIn("\\u", rendered)
+
     def test_doctor_passes_on_python_313_and_pinned_sdk(self) -> None:
         report = doctor()
         self.assertEqual("passed", report["status"])

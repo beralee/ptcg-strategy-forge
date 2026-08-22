@@ -1,0 +1,28 @@
+{
+  "document_type": "ptcg_strategy_forge_github_publication_v1",
+  "schema_version": 1,
+  "published_on": "2026-08-23",
+  "status": "published",
+  "repository": {
+    "full_name": "beralee/ptcg-strategy-forge",
+    "visibility": "public",
+    "url": "https://github.com/beralee/ptcg-strategy-forge",
+    "default_branch": "main",
+    "initial_commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964"
+  },
+  "release": {
+    "tag": "v0.1.0",
+    "url": "https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.0",
+    "asset_name": "strategy-forge-marnie-demo-1.0.0.ptcgai",
+    "asset_url": "https://github.com/beralee/ptcg-strategy-forge/releases/download/v0.1.0/strategy-forge-marnie-demo-1.0.0.ptcgai",
+    "asset_bytes": 31512,
+    "asset_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A"
+  },
+  "claims": {
+    "source_uploaded": true,
+    "release_asset_uploaded": true,
+    "asset_matches_local_deterministic_build": true,
+    "credential_persisted": false,
+    "production_authority": false
+  }
+}

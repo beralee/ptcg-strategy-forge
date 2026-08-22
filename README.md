@@ -2,6 +2,8 @@
 
 PTCG Strategy Forge 是一个独立的 Windows 策略开发者工具包。它把纯数据 `.ptcgai` 作者策略所需的 SDK、合同、命令、文档、测试场景、完整 demo 和发布客户端放在一个仓库中；开发者不需要另外检出 PtcgDAP 主工程。
 
+项目仓库：[github.com/beralee/ptcg-strategy-forge](https://github.com/beralee/ptcg-strategy-forge)；稳定发布：[PTCG Strategy Forge v0.1.1](https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.1)。
+
 当前稳定工作流是：
 
 ```text
@@ -84,7 +86,7 @@ agent(raw_observation) -> list[int]
 - 两次构建的 archive 字节完全一致；
 - 最终 demo 包已通过真实本地 HTTP release 提交。
 
-发布包：[`strategy-forge-marnie-demo-1.0.0.ptcgai`](demo/releases/strategy-forge-marnie-demo-1.0.0.ptcgai)
+发布包：[`strategy-forge-marnie-demo-1.0.0.ptcgai`](demo/releases/strategy-forge-marnie-demo-1.0.0.ptcgai)；也可从 [GitHub Release](https://github.com/beralee/ptcg-strategy-forge/releases/download/v0.1.1/strategy-forge-marnie-demo-1.0.0.ptcgai) 下载。
 
 ```text
 package_id     dev.beralee.marnie-forge-demo

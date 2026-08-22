@@ -44,7 +44,14 @@ def _sha(path: Path) -> str:
 def _emit(report: dict[str, object], report_path: Path | None) -> None:
     if report_path is not None:
         write_json(report_path, report)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    rendered = json.dumps(report, ensure_ascii=False, indent=2)
+    console_encoding = getattr(sys.stdout, "encoding", None)
+    if console_encoding:
+        try:
+            rendered.encode(console_encoding, errors="strict")
+        except (LookupError, UnicodeEncodeError):
+            rendered = json.dumps(report, ensure_ascii=True, indent=2)
+    print(rendered)
 
 
 def _customize_workspace(

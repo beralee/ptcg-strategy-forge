@@ -14,7 +14,7 @@
 | T08 | SDK 来源只能靠目录约定 | 增加 byte-level manifest，拒绝篡改、额外文件和 symlink | DONE | `vendor/ptcgdap-sdk-manifest.json` |
 | T09 | 缺少一套从零可执行的开发者文档 | 增加 Quickstart、策略、测试、优化、发布、安全、排障和架构文档 | DONE | `docs/` |
 | T10 | 缺少自动化回归入口 | 增加 unittest、PowerShell setup/runner 和 GitHub Actions | DONE | `tests/`、`.github/workflows/ci.yml` |
-| T11 | 尚未证明离开当前工作目录仍可运行 | 完成 GitHub 推送后的干净克隆 doctor/test/demo 验收 | PENDING | 待生成 `evidence/clean-clone-acceptance.json` |
-| T12 | 新项目和 demo 尚未上传用户 GitHub 空间 | 创建仓库、推送源码并发布带 SHA-256 的 demo asset | PENDING | 待补 GitHub URL/release URL |
+| T11 | 尚未证明离开当前工作目录仍可运行 | 从 GitHub 全新克隆，空环境安装后 doctor、11 项测试和完整 demo 全部通过 | DONE | `evidence/clean-clone-acceptance.json` |
+| T12 | 新项目和 demo 尚未上传用户 GitHub 空间 | 已创建公共仓库、推送源码并发布带 SHA-256 的 demo asset | DONE | `evidence/github-publication.json` |
 
 完成规则：只有证据文件和外部状态都可复核时才能把 `PENDING` 改为 `DONE`；不能仅因代码已写就关闭。

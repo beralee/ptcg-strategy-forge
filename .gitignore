@@ -18,5 +18,6 @@ evidence/*
 !evidence/demo-workflow-green.json
 !evidence/demo-publish-receipt.json
 !evidence/clean-clone-acceptance.json
+!evidence/github-publication.json
 !evidence/test-results.json
 !evidence/implementation-manifest.json

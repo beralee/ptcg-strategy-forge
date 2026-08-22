@@ -42,6 +42,8 @@ grants=[]
 credential_persisted=false
 ```
 
+公开源码与同一字节的 demo asset 已发布到 [GitHub v0.1.1 Release](https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.1)。公开附件的 SHA-256 为 `7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A`，与本地确定性双构建和干净克隆重建结果一致。
+
 ## 竞争服务客户端
 
 仓库还包含 `tools/ptcgdap/competition_service_client.py`，用于开发者申请、一次性凭据领取、已构建 `.ptcgbot` 上传、榜单/对局查询与公开录像下载。`.ptcgbot` 是 CABT Python competition agent，和本工具包主流程的纯数据 `.ptcgai` 不是同一种包；不要互换扩展名、合同或权限声明。

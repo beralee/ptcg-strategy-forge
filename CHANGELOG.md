@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.1 - 2026-08-23
+
+- 修复英文 Windows `cp1252` 控制台无法输出中文 JSON 报告的问题。
+- 增加 legacy code-page 回归测试，并在相同严格编码条件下完成完整 demo 验证。
+
 ## 0.1.0 - 2026-08-23
 
 - 创建独立的 PTCG Strategy Forge 项目和统一 `forge.py` 命令入口。

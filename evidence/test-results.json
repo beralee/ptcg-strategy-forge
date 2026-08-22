@@ -31,9 +31,9 @@
     {
       "id": "unittest",
       "status": "passed",
-      "case_count": 11,
-      "duration_seconds": 65.269,
-      "evidence": "includes new -> build -> 10-scenario suite, release validation, provenance closure, path traversal, privacy, documentation, receipt, and TODO checks"
+      "case_count": 12,
+      "duration_seconds": 64.954,
+      "evidence": "includes new -> build -> 10-scenario suite, release validation, provenance closure, path traversal, privacy, legacy console encoding, documentation, receipt, and TODO checks"
     },
     {
       "id": "demo-red-green",
@@ -54,13 +54,36 @@
       "id": "credential-pattern-scan",
       "status": "passed",
       "evidence": "no GitHub/OpenAI token, private-key PEM, literal authorization value, or literal password value in candidate source files"
+    },
+    {
+      "id": "legacy-console-output",
+      "status": "passed",
+      "encoding": "cp1252:strict",
+      "demo_scenarios": "10/10",
+      "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+      "evidence": "full demo completed while non-ASCII console JSON used an ASCII escape fallback"
+    },
+    {
+      "id": "clean-clone-acceptance",
+      "status": "passed",
+      "source_commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964",
+      "unittest": "11/11",
+      "demo_scenarios": "10/10",
+      "evidence": "evidence/clean-clone-acceptance.json"
+    },
+    {
+      "id": "github-publication",
+      "status": "passed",
+      "repository": "https://github.com/beralee/ptcg-strategy-forge",
+      "release": "https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.0",
+      "evidence": "evidence/github-publication.json"
     }
   ],
   "claims": {
     "development_toolkit_ready": true,
     "production_ready_strategy": false,
     "official_cabt_engine_parity": false,
-    "clean_clone_verified": false,
-    "github_uploaded": false
+    "clean_clone_verified": true,
+    "github_uploaded": true
   }
 }

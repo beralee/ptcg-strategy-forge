@@ -1,0 +1,47 @@
+{
+  "document_type": "ptcg_strategy_forge_clean_clone_acceptance_v1",
+  "schema_version": 1,
+  "tested_on": "2026-08-23",
+  "status": "passed",
+  "source": {
+    "repository": "https://github.com/beralee/ptcg-strategy-forge.git",
+    "commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964",
+    "tag": "v0.1.0",
+    "clone_kind": "new_directory_from_remote"
+  },
+  "environment": {
+    "os": "Windows",
+    "python": "3.13.7",
+    "dependency_install": "new virtual environment from fully pinned requirements.txt"
+  },
+  "checks": [
+    {
+      "id": "setup-and-doctor",
+      "status": "passed",
+      "sdk_file_count": 276,
+      "sdk_failures": 0
+    },
+    {
+      "id": "unittest",
+      "status": "passed",
+      "case_count": 11,
+      "duration_seconds": 65.273
+    },
+    {
+      "id": "full-demo",
+      "status": "passed",
+      "baseline_red": true,
+      "scenario_passed": 10,
+      "scenario_total": 10,
+      "deterministic_double_build": true,
+      "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+      "archive_bytes": 31512
+    }
+  ],
+  "claims": {
+    "clean_clone_verified": true,
+    "development_toolkit_ready": true,
+    "production_ready_strategy": false,
+    "official_cabt_engine_parity": false
+  }
+}

@@ -66,17 +66,24 @@
     {
       "id": "clean-clone-acceptance",
       "status": "passed",
-      "source_commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964",
-      "unittest": "11/11",
+      "source_commit": "403ad4ac30077e944f7f301d5b5c8b1dc002abc8",
+      "unittest": "12/12",
       "demo_scenarios": "10/10",
+      "console_encoding": "cp1252:strict",
       "evidence": "evidence/clean-clone-acceptance.json"
     },
     {
       "id": "github-publication",
       "status": "passed",
       "repository": "https://github.com/beralee/ptcg-strategy-forge",
-      "release": "https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.0",
+      "release": "https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.1",
       "evidence": "evidence/github-publication.json"
+    },
+    {
+      "id": "github-actions",
+      "status": "passed",
+      "commit": "403ad4ac30077e944f7f301d5b5c8b1dc002abc8",
+      "run": "https://github.com/beralee/ptcg-strategy-forge/actions/runs/32586468268"
     }
   ],
   "claims": {

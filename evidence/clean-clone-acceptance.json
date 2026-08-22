@@ -5,14 +5,15 @@
   "status": "passed",
   "source": {
     "repository": "https://github.com/beralee/ptcg-strategy-forge.git",
-    "commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964",
-    "tag": "v0.1.0",
+    "commit": "403ad4ac30077e944f7f301d5b5c8b1dc002abc8",
+    "tag": "v0.1.1",
     "clone_kind": "new_directory_from_remote"
   },
   "environment": {
     "os": "Windows",
     "python": "3.13.7",
-    "dependency_install": "new virtual environment from fully pinned requirements.txt"
+    "dependency_install": "new virtual environment from fully pinned requirements.txt",
+    "console_encoding": "cp1252:strict"
   },
   "checks": [
     {
@@ -24,8 +25,8 @@
     {
       "id": "unittest",
       "status": "passed",
-      "case_count": 11,
-      "duration_seconds": 65.273
+      "case_count": 12,
+      "duration_seconds": 65.095
     },
     {
       "id": "full-demo",

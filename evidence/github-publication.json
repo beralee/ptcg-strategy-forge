@@ -8,20 +8,29 @@
     "visibility": "public",
     "url": "https://github.com/beralee/ptcg-strategy-forge",
     "default_branch": "main",
-    "initial_commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964"
+    "initial_commit": "4a62c738dda3ab73c4c6b260958b7a44af7e7964",
+    "latest_validated_commit": "403ad4ac30077e944f7f301d5b5c8b1dc002abc8"
   },
   "release": {
-    "tag": "v0.1.0",
-    "url": "https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.0",
+    "tag": "v0.1.1",
+    "url": "https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.1",
     "asset_name": "strategy-forge-marnie-demo-1.0.0.ptcgai",
-    "asset_url": "https://github.com/beralee/ptcg-strategy-forge/releases/download/v0.1.0/strategy-forge-marnie-demo-1.0.0.ptcgai",
+    "asset_url": "https://github.com/beralee/ptcg-strategy-forge/releases/download/v0.1.1/strategy-forge-marnie-demo-1.0.0.ptcgai",
     "asset_bytes": 31512,
     "asset_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A"
+  },
+  "continuous_integration": {
+    "commit": "403ad4ac30077e944f7f301d5b5c8b1dc002abc8",
+    "branch": "main",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/beralee/ptcg-strategy-forge/actions/runs/32586468268"
   },
   "claims": {
     "source_uploaded": true,
     "release_asset_uploaded": true,
     "asset_matches_local_deterministic_build": true,
+    "github_actions_passed": true,
     "credential_persisted": false,
     "production_authority": false
   }

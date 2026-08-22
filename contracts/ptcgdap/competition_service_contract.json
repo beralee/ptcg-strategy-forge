@@ -1,0 +1,122 @@
+{
+  "document_type": "ptcgdap_competition_service_contract_v1",
+  "schema_version": 1,
+  "authentication": {
+    "application": "one_time_bearer_sha256_v1",
+    "application_credential_exchange": "one_time_rotation_bearer_sha256_v1",
+    "developer": "one_time_bearer_sha256_v1",
+    "administrator": "environment_bearer_v1",
+    "persist_plaintext_credentials": false,
+    "production_requires_tls": true
+  },
+  "developer_lifecycle": {
+    "application_states": ["pending", "approved", "rejected"],
+    "credential_states": ["not_available", "claimable", "claimed"],
+    "developer_states": ["active", "suspended"],
+    "approval_required_before_upload": true,
+    "self_service_credential_claim_once": true,
+    "self_service_claim_rotates_prior_developer_bearer": true
+  },
+  "browser_access": {
+    "origin_policy": "runtime_exact_allowlist_v1",
+    "production_origins": ["https://ptcg.skillserver.cn"],
+    "allow_credentials_header": false,
+    "allowed_request_headers": ["authorization", "content-type"],
+    "exposed_response_headers": ["content-disposition"],
+    "admin_routes_exposed": false,
+    "internal_routes_exposed": false,
+    "unknown_origin_fails_closed": true
+  },
+  "submission": {
+    "document_type": "ptcgdap_competition_strategy_v1",
+    "archive_media_type": "application/vnd.ptcgdap.competition-strategy",
+    "runtime_kind": "cabt_python_agent_v1",
+    "required_files": ["manifest.json", "main.py", "deck.csv"],
+    "max_archive_bytes": 8388608,
+    "max_uncompressed_bytes": 16777216,
+    "max_main_bytes": 2097152,
+    "max_manifest_bytes": 65536,
+    "max_deck_bytes": 65536,
+    "max_releases": 10000,
+    "max_total_archive_bytes": 10737418240,
+    "arbitrary_code_runs_in_web_process": false,
+    "production_worker_requires_container_isolation": true,
+    "production_requires_separate_agent_sandboxes": true,
+    "agent_rpc_contract_sha256": "EC42050A4D6F2DD88B95369FE18CC77CA357CA45ABCEAEFFE6C9FC661BCE6163",
+    "production_sandbox_profile_sha256": "4A1759E9CBABC91E196AA30F7A4632CAD8A300DFEF130E352628489B18DFD977",
+    "trusted_engine_broker_loads_author_code": false,
+    "local_rpc_process_mode_is_production_isolation": false,
+    "policy_seed": "sha256_match_seed_and_exact_release_id_v1",
+    "worker_revalidates_exact_archive_sha256": true,
+    "worker_network_access": false
+  },
+  "competition": {
+    "profile_states": ["draft", "active", "closed"],
+    "match_states": ["queued", "leased", "completed", "failed"],
+    "seat_balancing": "paired_both_seats_v1",
+    "score_formula": "kaggle_reward_mean_v1",
+    "valid_rewards": [-1, 0, 1],
+    "leaderboard_groups": ["strategy", "deck", "author"],
+    "dirty_matches_ranked": false,
+    "lease_expires_at_boundary": true,
+    "score_arithmetic": "integer_micros_round_half_away_from_zero_v1",
+    "unknown_profile_fields_fail_closed": true,
+    "episode_step_limit_profile_pinned": true,
+    "wall_clock_timeout_profile_pinned": true
+  },
+  "replay": {
+    "document_type": "competition_public_replay_v1",
+    "raw_engine_replay_persisted": false,
+    "hidden_zone_identities_allowed": false,
+    "search_capability_allowed": false,
+    "downloadable": true,
+    "hash_chain": "sha256_canonical_json_v1",
+    "event_sequence": "match_started_decision_resolved_match_finished_v1",
+    "projector": "cabt_public_allowlist_v1",
+    "source_trajectory_hash_retained": true,
+    "terminal_result_binding_required": true,
+    "max_public_replay_bytes": 67108864,
+    "max_total_public_replay_bytes": 107374182400,
+    "max_frames": 100000
+  },
+  "listing": {
+    "default_limit": 50,
+    "maximum_limit": 100,
+    "max_response_bytes": 2097152,
+    "pagination": "stable_keyset_cursor_v1"
+  },
+  "storage": {
+    "content_addressed_object_creation": "atomic_create_if_absent_v1",
+    "database_bound_to_service_contract_sha256": true
+  },
+  "routes": {
+    "developer_apply": {"method": "POST", "path": "/v1/developer-applications"},
+    "developer_status": {"method": "GET", "path_template": "/v1/developer-applications/{application_id}"},
+    "developer_credential_exchange": {"method": "POST", "path_template": "/v1/developer-applications/{application_id}/credential-exchange"},
+    "admin_applications": {"method": "GET", "path": "/v1/admin/developer-applications"},
+    "admin_review": {"method": "POST", "path_template": "/v1/admin/developer-applications/{application_id}/review"},
+    "admin_developer_suspend": {"method": "POST", "path_template": "/v1/admin/competition-developers/{developer_id}/suspend"},
+    "developer_detail": {"method": "GET", "path_template": "/v1/competition-developers/{developer_id}"},
+    "release_upload": {"method": "POST", "path": "/v1/competition-releases"},
+    "release_list": {"method": "GET", "path": "/v1/competition-releases"},
+    "profile_create": {"method": "POST", "path": "/v1/admin/competition-profiles"},
+    "profile_list": {"method": "GET", "path": "/v1/competition-profiles"},
+    "profile_activate": {"method": "POST", "path_template": "/v1/admin/competition-profiles/{profile_id}/activate"},
+    "match_list": {"method": "GET", "path": "/v1/competition-matches"},
+    "match_detail": {"method": "GET", "path_template": "/v1/competition-matches/{match_id}"},
+    "replay_download": {"method": "GET", "path_template": "/v1/competition-matches/{match_id}/replay"},
+    "leaderboard": {"method": "GET", "path": "/v1/competition-leaderboards"},
+    "matchups": {"method": "GET", "path": "/v1/competition-matchups"},
+    "worker_claim": {"method": "POST", "path": "/v1/internal/competition-matches/claim"},
+    "worker_complete": {"method": "POST", "path_template": "/v1/internal/competition-matches/{match_id}/complete"},
+    "worker_release_download": {"method": "GET", "path_template": "/v1/internal/competition-releases/{release_id}/package"}
+  },
+  "authority": {
+    "player_runtime_authority": false,
+    "current_window_authority": false,
+    "engine_ticket_authority": false,
+    "kaggle_official_authority": false,
+    "platform_competition_authority": true,
+    "grants": ["developer_registry", "submission_registry", "match_orchestration", "platform_scoring", "public_replay_distribution"]
+  }
+}

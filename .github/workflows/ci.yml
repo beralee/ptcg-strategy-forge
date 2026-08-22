@@ -1,0 +1,37 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-python-313:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Verify SDK and contracts
+        run: python forge.py doctor --report evidence/ci-doctor.json
+      - name: Run unit and security tests
+        run: python -m unittest discover -s tests -v
+      - name: Run full RED-to-GREEN demo
+        run: python forge.py demo --output "${{ runner.temp }}/forge-demo" --report evidence/ci-demo.json
+      - name: Upload CI evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ptcg-strategy-forge-evidence
+          path: |
+            evidence/ci-doctor.json
+            evidence/ci-demo.json
+            ${{ runner.temp }}/forge-demo/demo-report.json
+            ${{ runner.temp }}/forge-demo/forge-demo-a.ptcgai

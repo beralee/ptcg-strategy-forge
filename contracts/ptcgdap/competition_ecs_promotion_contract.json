@@ -1,0 +1,87 @@
+{
+  "document_type": "ptcgdap_competition_ecs_promotion_contract_v1",
+  "schema_version": 1,
+  "authority": {
+    "local_static_preflight_is_production_ready": false,
+    "target_observation_required": true,
+    "unknown_fields_fail_closed": true,
+    "all_gate_receipts_rehashed": true,
+    "local_process_evidence_may_close_kernel_isolation": false
+  },
+  "required_identities": {
+    "competition_service_contract_sha256": "B9BE4BA52D0E33F1A81F856B8E204A58815F372825FB4263F1649B513CAB35CF",
+    "agent_rpc_contract_sha256": "EC42050A4D6F2DD88B95369FE18CC77CA357CA45ABCEAEFFE6C9FC661BCE6163",
+    "sandbox_profile_sha256": "4A1759E9CBABC91E196AA30F7A4632CAD8A300DFEF130E352628489B18DFD977",
+    "engine_build_sha256": "C932B8667506BAF6C5F8E573962647EF133547E79D75ACF6DC741E9AA69CBB6C",
+    "observation_contract_sha256": "2CD02F54538985426EFDB057F3A6BDA4AD154DD171BCC03667D42D102982D294"
+  },
+  "target": {
+    "provider": "ecs",
+    "supported_runtime_kinds": [
+      "windows_hyperv_v1",
+      "linux_compatible_engine_v1",
+      "compatible_worker_host_v1"
+    ],
+    "public_url_scheme": "https",
+    "dns_hostname_required": true,
+    "exact_public_ports": [443]
+  },
+  "control_plane": {
+    "compose_path": "deploy/ptcgdap-platform/docker-compose.yml",
+    "nginx_path": "deploy/ptcgdap-platform/nginx.conf",
+    "api_dockerfile_path": "services/ptcgdap_replay/Dockerfile.production",
+    "environment_example_path": "deploy/ptcgdap-platform/.env.example",
+    "platform_service": "platform",
+    "edge_service": "edge",
+    "platform_image_variable": "PTCGDAP_PLATFORM_IMAGE",
+    "edge_image_variable": "PTCGDAP_EDGE_IMAGE",
+    "local_build_forbidden": true,
+    "development_catalog_seed_forbidden": true,
+    "internal_routes_public_status": 404,
+    "read_only_root_required": true,
+    "all_capabilities_dropped": true,
+    "no_new_privileges_required": true,
+    "resource_limits_required": true,
+    "host_container_socket_forbidden": true
+  },
+  "secrets": {
+    "provider": "managed_secret_store_v1",
+    "environment_names": [
+      "PTCGDAP_REPLAY_UPLOAD_TOKEN",
+      "PTCGDAP_PLATFORM_WRITE_TOKEN",
+      "PTCGDAP_COMPETITION_ADMIN_TOKEN",
+      "PTCGDAP_COMPETITION_WORKER_TOKEN"
+    ],
+    "minimum_characters": 32,
+    "maximum_characters": 256,
+    "all_values_distinct": true,
+    "plaintext_in_report": false
+  },
+  "required_gates": [
+    "runtime_abi_loads_pinned_engine",
+    "image_digest_verified",
+    "network_denial_observed",
+    "cross_seat_mount_denial_observed",
+    "service_credential_denial_observed",
+    "host_socket_denial_observed",
+    "resource_kill_observed",
+    "cleanup_observed",
+    "tls_domain_verified",
+    "public_internal_route_denied",
+    "private_worker_ingress_verified",
+    "managed_secret_rotation_observed",
+    "persistent_storage_restart_verified",
+    "worker_crash_lease_recovery_observed",
+    "backup_restore_api_verified",
+    "alert_delivery_verified",
+    "paired_real_cabt_smoke_clean"
+  ],
+  "report": {
+    "document_type": "ptcgdap_competition_ecs_promotion_report_v1",
+    "gate_receipt_document_type": "ptcgdap_competition_ecs_gate_receipt_v1",
+    "relative_receipt_paths_only": true,
+    "receipt_hash": "sha256_exact_bytes_v1",
+    "receipt_binds_promotion_scope_sha256": true,
+    "production_ready_requires_every_gate_passed": true
+  }
+}

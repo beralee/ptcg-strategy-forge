@@ -1,0 +1,74 @@
+{
+  "document_type": "ptcgdap_competition_sandbox_profile_v1",
+  "schema_version": 1,
+  "topology": {
+    "kind": "fresh_engine_broker_plus_two_agent_sandboxes_v1",
+    "fresh_per_match": true,
+    "agent_count": 2,
+    "one_private_channel_per_agent": true,
+    "agent_channels_shared": false
+  },
+  "agent": {
+    "image_digest_required": true,
+    "run_as_non_root": true,
+    "network_mode": "none",
+    "root_filesystem_read_only": true,
+    "no_new_privileges": true,
+    "capabilities": [],
+    "read_only_mounts": ["own_package", "agent_runtime", "search_sdk"],
+    "writable_mounts": ["own_private_channel", "bounded_tmpfs"],
+    "forbidden_mounts": ["opponent_package", "opponent_channel", "broker_scratch", "database", "service_data", "host_container_socket", "host_root"],
+    "allowed_environment_names": ["PYTHONHASHSEED", "PYTHONIOENCODING", "PYTHONNOUSERSITE", "TEMP", "TMP"],
+    "service_credentials_visible": false,
+    "resource_limits": {
+      "memory_mib": 1024,
+      "cpu_millis": 1000,
+      "pids": 64,
+      "tmpfs_mib": 128,
+      "open_files": 256
+    }
+  },
+  "broker": {
+    "image_digest_required": true,
+    "run_as_non_root": true,
+    "network_mode": "none",
+    "root_filesystem_read_only": true,
+    "no_new_privileges": true,
+    "capabilities": [],
+    "read_only_mounts": ["broker_runtime", "engine_runtime", "card_catalog"],
+    "writable_mounts": ["seat0_private_channel", "seat1_private_channel", "bounded_match_scratch", "bounded_tmpfs"],
+    "forbidden_mounts": ["seat0_package", "seat1_package", "database", "service_data", "host_container_socket", "host_root"],
+    "allowed_environment_names": ["PYTHONHASHSEED", "PYTHONIOENCODING", "PYTHONNOUSERSITE", "PTCGABC_SEEDED_ENGINE_DLL", "TEMP", "TMP"],
+    "service_credentials_visible": false,
+    "loads_author_code": false,
+    "resource_limits": {
+      "memory_mib": 4096,
+      "cpu_millis": 2000,
+      "pids": 128,
+      "tmpfs_mib": 512,
+      "open_files": 512
+    }
+  },
+  "orchestrator": {
+    "loads_author_code": false,
+    "passes_service_credentials_to_children": false,
+    "validates_exact_release_binding": true,
+    "serial_match_execution": true
+  },
+  "cleanup": {
+    "request_response_removed_after_each_decision": true,
+    "all_match_scratch_removed_after_completion_or_failure": true,
+    "raw_engine_replay_persisted": false
+  },
+  "promotion_evidence": {
+    "runtime_abi_loads_pinned_engine": true,
+    "image_digest_verified": true,
+    "network_denial_observed": true,
+    "cross_seat_mount_denial_observed": true,
+    "service_credential_denial_observed": true,
+    "host_socket_denial_observed": true,
+    "resource_kill_observed": true,
+    "cleanup_observed": true,
+    "paired_real_cabt_smoke_clean": true
+  }
+}

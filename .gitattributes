@@ -1,0 +1,19 @@
+* text=auto
+
+*.md text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.ps1 text eol=crlf
+
+# These paths participate in byte-level manifests or deterministic archives.
+# Disable checkout conversion so hashes are stable under any core.autocrlf value.
+scripts/ai/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
+contracts/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
+data/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
+data/bundled_user/** -text whitespace=-blank-at-eof,cr-at-eol
+tools/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
+vendor/ptcgdap-sdk-manifest.json -text whitespace=-blank-at-eof,cr-at-eol
+demo/** -text whitespace=-blank-at-eof,cr-at-eol
+*.ptcgai -text
+*.bin -text

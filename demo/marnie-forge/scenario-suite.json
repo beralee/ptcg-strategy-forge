@@ -1,0 +1,112 @@
+{
+  "document_type": "ptcg_strategy_forge_scenario_suite_v1",
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "positive",
+      "path": "scenarios/01-positive.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          1
+        ],
+        "matched_rule_id": "forge.morgrem.evolve",
+        "selected_source": "adapter_proposal"
+      }
+    },
+    {
+      "id": "no-key-card",
+      "path": "scenarios/02-no-key-card.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "selected_source": "deterministic_fallback"
+      }
+    },
+    {
+      "id": "wrong-target",
+      "path": "scenarios/03-wrong-target.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "selected_source": "deterministic_fallback"
+      }
+    },
+    {
+      "id": "reordered",
+      "path": "scenarios/04-reordered.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "matched_rule_id": "forge.morgrem.evolve",
+        "selected_source": "adapter_proposal"
+      }
+    },
+    {
+      "id": "mandatory-block",
+      "path": "scenarios/05-mandatory-block.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "selected_source": "mandatory"
+      }
+    },
+    {
+      "id": "terminal-block",
+      "path": "scenarios/06-terminal-block.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "selected_source": "terminal"
+      }
+    },
+    {
+      "id": "hard-tier-block",
+      "path": "scenarios/07-hard-tier-block.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "selected_source": "deterministic_fallback"
+      }
+    },
+    {
+      "id": "veto-block",
+      "path": "scenarios/08-veto-block.json",
+      "expect": {
+        "status": "passed",
+        "selected_indexes": [
+          0
+        ],
+        "selected_source": "deterministic_fallback"
+      }
+    },
+    {
+      "id": "unknown-uid",
+      "path": "scenarios/09-unknown-uid.json",
+      "expect": {
+        "status": "error",
+        "error_code": "invalid_local_uid_public_context"
+      }
+    },
+    {
+      "id": "hidden-field",
+      "path": "scenarios/10-hidden-field.json",
+      "expect": {
+        "status": "error",
+        "error_code": "developer_observation_rejected"
+      }
+    }
+  ]
+}

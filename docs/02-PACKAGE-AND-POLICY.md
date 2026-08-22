@@ -1,0 +1,72 @@
+# 策略包与裁决模型
+
+## 数据包结构
+
+`.ptcgai` 是闭合、确定性的 ZIP 数据包，只允许固定路径。构建器生成 `files.sha256.json` 和 test-fixture `signature.json`；作者不管理私钥。
+
+运行身份是：
+
+```text
+package_id + package_version + archive_sha256
+```
+
+改变任何可分发行为都应提升版本。显示名不能参与卡牌映射或策略匹配。
+
+## 身份域
+
+当前 demo 使用 Windows 本地域：
+
+```text
+godot_local_card_uid_v1 = set_code + "_" + card_index
+```
+
+例如 `CSV10C_146`。它不是官方 CABT Card ID、卡名、翻译名、图片名或 Godot object ID。`deck.csv` 必须正好 60 张，并与 `deck_manifest.json` 的源 hash 一致。
+
+## 受限策略 IR
+
+推荐执行链：
+
+```text
+legality_guard
+→ mandatory_terminal_guard
+→ macro_proposal
+→ hard_tier_filter
+→ base_veto
+→ deterministic_fallback
+→ emit_decision
+```
+
+Base owner 负责合法性、强制/终局、hard tier、veto、fallback 和输出。adapter 只能提出公开目标、macro 或同层 tie-break。
+
+## adapter 规则
+
+规则只能匹配当前公开上下文，例如：
+
+```json
+{
+  "rule_id": "forge.morgrem.evolve",
+  "operator": "macro_proposal",
+  "reason_code": "public_macro_proposal",
+  "goal_stage": "deploy",
+  "priority": 0,
+  "predicate": {
+    "select_type_raw": null,
+    "select_context_raw": null,
+    "option_type_raw": 3,
+    "option_card_id": "CSV10C_146",
+    "option_player_index": null,
+    "acting_hand_card_id": "CSV10C_147",
+    "acting_active_card_id": null
+  }
+}
+```
+
+`null` 表示不参与匹配。priority 越小越靠前；相同 priority 按规则顺序和当前 option index 稳定排序。规则命中并不保证被选择，Base 可以阻止。
+
+## 当前窗口约束
+
+- 只返回当前 option indexes；
+- selection 接受后旧窗口立即失效；
+- 持久计划只能保存语义目标或稳定身份，不能保存旧 index、旧分数或旧约束；
+- 未知字段/枚举必须 fail closed 或进入已审计 fallback；
+- adapter 无 engine、ticket、callback 或网络权限。

@@ -1,0 +1,15 @@
+PTCG Strategy Forge
+Copyright 2026 beralee
+
+This product includes a reviewed snapshot of PtcgDAP author-strategy tooling,
+contracts, and development data from:
+
+    https://github.com/beralee/PtcgDeckAgent
+
+The snapshot source commit and every distributed file hash are recorded in
+vendor/ptcgdap-sdk-manifest.json. The included components are distributed
+under the Apache License, Version 2.0, found in LICENSE.
+
+Pokémon and related names are trademarks of their respective owners. This
+developer toolkit does not claim endorsement by The Pokémon Company, Kaggle,
+HEROZ, or Matsuo Institute.

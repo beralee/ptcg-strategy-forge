@@ -1,0 +1,46 @@
+{
+  "document_type": "ptcgdap_alipay_static_site_target_v1",
+  "schema_version": 1,
+  "provider": "alipay_mini_program_cloud",
+  "application_id": "2021003158617062",
+  "environment_id": "ptcgdojo",
+  "site_id": "site-6yypvekamipn",
+  "custom_domain": "ptcg.skillserver.cn",
+  "https_enabled": true,
+  "static_root": "/",
+  "index_document": "dist/index.html",
+  "error_document": null,
+  "cache_policy": {
+    "/dist/web": "365d",
+    "html_json": "1m"
+  },
+  "quick_deploy_zip_bytes": {
+    "minimum": 102400,
+    "maximum": 1610612736
+  },
+  "bundle_contract": {
+    "required_prefix": "dist/",
+    "required_entrypoints": [
+      "dist/index.html",
+      "dist/competition.html",
+      "dist/developers.html",
+      "dist/config/competition-runtime.json",
+      "dist/release-manifest.json"
+    ],
+    "forbid_secret_files": true,
+    "deterministic_zip": true
+  },
+  "automation_boundary": {
+    "private_console_api_allowed": false,
+    "browser_cookie_auth_allowed": false,
+    "official_headless_release_api_verified": false,
+    "provider_upload_implemented": false,
+    "local_build_bundle_verify_implemented": true,
+    "deployment_performed_in_current_work_package": false
+  },
+  "rollback": {
+    "unit": "immutable_verified_zip",
+    "requires_previous_bundle": true,
+    "provider_side_republish_requires_supported_auth": true
+  }
+}

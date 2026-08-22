@@ -1,0 +1,66 @@
+{
+  "document_type": "ptcg_strategy_forge_test_evidence_v1",
+  "schema_version": 1,
+  "tested_on": "2026-08-23",
+  "status": "passed",
+  "environment": {
+    "os": "Windows",
+    "python": "3.13.7"
+  },
+  "checks": [
+    {
+      "id": "setup-from-empty-venv",
+      "status": "passed",
+      "evidence": "setup.ps1 created .venv, installed the fully pinned requirements, and passed doctor"
+    },
+    {
+      "id": "sdk-and-contract-doctor",
+      "status": "passed",
+      "evidence": "276 SDK files verified; zero hash, extra-file, symlink, or contract-drift failures"
+    },
+    {
+      "id": "python-compile",
+      "status": "passed",
+      "evidence": "forge.py, src, tools, and scripts compiled with Python 3.13"
+    },
+    {
+      "id": "json-parse",
+      "status": "passed",
+      "evidence": "all distributed JSON outside ignored local service state parsed with depth 100"
+    },
+    {
+      "id": "unittest",
+      "status": "passed",
+      "case_count": 11,
+      "duration_seconds": 65.269,
+      "evidence": "includes new -> build -> 10-scenario suite, release validation, provenance closure, path traversal, privacy, documentation, receipt, and TODO checks"
+    },
+    {
+      "id": "demo-red-green",
+      "status": "passed",
+      "baseline_red": true,
+      "final_scenarios": "10/10",
+      "deterministic_double_build": true,
+      "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A"
+    },
+    {
+      "id": "local-http-release-submission",
+      "status": "passed",
+      "release_state": "submitted",
+      "credential_persisted": false,
+      "production_authority": false
+    },
+    {
+      "id": "credential-pattern-scan",
+      "status": "passed",
+      "evidence": "no GitHub/OpenAI token, private-key PEM, literal authorization value, or literal password value in candidate source files"
+    }
+  ],
+  "claims": {
+    "development_toolkit_ready": true,
+    "production_ready_strategy": false,
+    "official_cabt_engine_parity": false,
+    "clean_clone_verified": false,
+    "github_uploaded": false
+  }
+}

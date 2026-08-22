@@ -1,0 +1,37 @@
+{
+  "author": {
+    "author_id": "beralee.strategy-forge",
+    "display_name": "Strategy Forge Demo"
+  },
+  "compatibility": {
+    "base_executor_sha256": "69D05747A9F91C19765D448B676C86E1D9DFA1BBAB108ED1374B854B34E48389",
+    "cabt_contract_sha256": "2CD02F54538985426EFDB057F3A6BDA4AD154DD171BCC03667D42D102982D294",
+    "card_catalog_sha256": "AB8CF10465F492A98DA8247A84572AECEE281D0726F7BB7B8E5DBC03A6AC70D4",
+    "minimum_game_api": "ptcgdap-author-host-v1",
+    "required_capabilities": []
+  },
+  "deck": {
+    "deck_path": "deck/deck.csv",
+    "display_name": "18.0 玛俐的长毛巨魔",
+    "manifest_path": "deck/deck_manifest.json"
+  },
+  "document_type": "strategy_package_v1",
+  "package_id": "dev.beralee.marnie-forge-demo",
+  "package_version": "1.0.0",
+  "policy": {
+    "adapter_path": "policy/adapter.json",
+    "config_path": "policy/config.json",
+    "entry_kind": "restricted_policy_ir_v1",
+    "ir_path": "policy/policy_ir.json",
+    "weights_path": "policy/weights.bin"
+  },
+  "presentation": {
+    "banner_path": null,
+    "icon_path": null
+  },
+  "schema_version": 1,
+  "strategy": {
+    "display_name": "Strategy Forge 玛俐示例策略",
+    "summary": "使用 PTCG Strategy Forge 按公开当前窗口完成测试驱动开发、调试、优化与发布的纯数据示例。"
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "document_type": "ptcgdap_alipay_cloudrun_target_v1",
+  "schema_version": 1,
+  "target": {
+    "provider": "alipay_miniprogram_cloudrun",
+    "app_id": "2021004136623602",
+    "environment": "prod",
+    "service_id": "e96daeb2-326a-4750-84cc-60e49aa1b212",
+    "service_name": "ptcgdojo"
+  },
+  "runtime": {
+    "kind": "linux_amd64_container_v1",
+    "container_port": 8765,
+    "health_path": "/healthz",
+    "base_image": "python:3.13-slim-bookworm@sha256:00faa2debb87529f9f0764e9491d8ba400a3678976616c3bd7cb193745ac20d1",
+    "dockerfile": "deploy/alipay-cloudrun/Dockerfile"
+  },
+  "automation": {
+    "kind": "alipay_cloudrun_custom_pipeline_v1",
+    "pipeline_manifest": "deploy/alipay-cloudrun/pipeline-config.json",
+    "headless_trigger": "git_push",
+    "requires_one_time_browser_binding": true,
+    "official_release_api_verified": false,
+    "private_console_api_allowed": false
+  },
+  "persistence": {
+    "mode": "ephemeral_single_instance_smoke_v1",
+    "data_root": "/data",
+    "restart_survival": false,
+    "horizontal_scale_safe": false,
+    "required_production_upgrade": "managed_database_and_object_storage_v1"
+  },
+  "competition": {
+    "worker_mode": "external_windows_worker_required_v1",
+    "engine_in_control_plane_image": false,
+    "untrusted_agent_execution_in_control_plane": false,
+    "public_worker_routes_allowed": false
+  },
+  "secrets": {
+    "storage": "alipay_cloudrun_environment_or_managed_secret_v1",
+    "environment_names": [
+      "PTCGDAP_REPLAY_UPLOAD_TOKEN",
+      "PTCGDAP_PLATFORM_WRITE_TOKEN",
+      "PTCGDAP_COMPETITION_ADMIN_TOKEN",
+      "PTCGDAP_COMPETITION_WORKER_TOKEN"
+    ],
+    "values_in_repository": false
+  },
+  "authority": {
+    "deployment_stage": "closed_staging_smoke",
+    "production_ready": false,
+    "external_author_access_allowed": false,
+    "production_data_allowed": false,
+    "platform_score_authority": "ptcgdap_profile_only",
+    "kaggle_official_claim": false
+  }
+}

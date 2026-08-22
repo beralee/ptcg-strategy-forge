@@ -1,0 +1,119 @@
+{
+  "adapter_id": "dev.beralee.marnie-forge-demo",
+  "adapter_version": 1,
+  "rules": [
+    {
+      "goal_stage": "acquire",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": null,
+        "acting_hand_card_id": "CSV7C_177",
+        "option_card_id": null,
+        "option_player_index": null,
+        "option_type_raw": 7,
+        "select_context_raw": 0,
+        "select_type_raw": 0
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "marnie.poffin.play"
+    },
+    {
+      "goal_stage": "acquire",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": null,
+        "acting_hand_card_id": "CSV10C_216",
+        "option_card_id": null,
+        "option_player_index": null,
+        "option_type_raw": 7,
+        "select_context_raw": 0,
+        "select_type_raw": 0
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "marnie.spikemuth.play"
+    },
+    {
+      "goal_stage": "deploy",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": null,
+        "acting_hand_card_id": "CSV10C_216",
+        "option_card_id": "CSV10C_146",
+        "option_player_index": null,
+        "option_type_raw": 3,
+        "select_context_raw": null,
+        "select_type_raw": null
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "forge.morgrem.evolve"
+    },
+    {
+      "goal_stage": "deploy",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": null,
+        "acting_hand_card_id": "CSV10C_148",
+        "option_card_id": "CSV10C_147",
+        "option_player_index": null,
+        "option_type_raw": 3,
+        "select_context_raw": null,
+        "select_type_raw": null
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "marnie.grimmsnarl.evolve"
+    },
+    {
+      "goal_stage": "fund",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": "CSV10C_148",
+        "acting_hand_card_id": null,
+        "option_card_id": "CSVE1C_DAR",
+        "option_player_index": null,
+        "option_type_raw": 3,
+        "select_context_raw": 22,
+        "select_type_raw": 1
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "marnie.punk-up.energy"
+    },
+    {
+      "goal_stage": "execute",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": "CSV10C_148",
+        "acting_hand_card_id": null,
+        "option_card_id": null,
+        "option_player_index": null,
+        "option_type_raw": 13,
+        "select_context_raw": 0,
+        "select_type_raw": 0
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "marnie.shadow-bullet.attack"
+    },
+    {
+      "goal_stage": "recover",
+      "operator": "macro_proposal",
+      "predicate": {
+        "acting_active_card_id": null,
+        "acting_hand_card_id": "CSV8C_183",
+        "option_card_id": null,
+        "option_player_index": null,
+        "option_type_raw": 7,
+        "select_context_raw": 0,
+        "select_type_raw": 0
+      },
+      "priority": 0,
+      "reason_code": "public_macro_proposal",
+      "rule_id": "marnie.night-stretcher.play"
+    }
+  ],
+  "schema_version": 1
+}

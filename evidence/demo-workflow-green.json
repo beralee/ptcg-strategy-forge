@@ -1,0 +1,328 @@
+{
+  "document_type": "ptcg_strategy_forge_demo_report_v1",
+  "schema_version": 1,
+  "status": "passed",
+  "optimization": {
+    "baseline_red": true,
+    "baseline_selected_indexes": [
+      0
+    ],
+    "final_scenario_passed": 10,
+    "final_scenario_total": 10
+  },
+  "build": {
+    "package_id": "dev.beralee.marnie-forge-demo",
+    "package_version": "1.0.0",
+    "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+    "archive_bytes": 31512,
+    "second_archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+    "deterministic": true
+  },
+  "validation": {
+    "document_type": "author_strategy_developer_package_report_v1",
+    "schema_version": 1,
+    "status": "valid",
+    "error_code": "",
+    "package_id": "dev.beralee.marnie-forge-demo",
+    "package_version": "1.0.0",
+    "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+    "archive_bytes": 31512,
+    "author_display_name": "Strategy Forge Demo",
+    "strategy_display_name": "Strategy Forge 玛俐示例策略",
+    "deck_display_name": "18.0 玛俐的长毛巨魔",
+    "card_id_domain": "godot_local_card_uid_v1",
+    "deck_card_count": 60,
+    "deck_unique_printing_count": 28,
+    "signature_status": "test_fixture_trusted",
+    "signature_scope": "test_fixture_only",
+    "execution_trusted": false,
+    "development_shadow_ready": true,
+    "production_ready": false,
+    "cabt_exportable": false,
+    "policy_preflight": {
+      "accepted": true,
+      "owning_layer": "PtcgDAPAuthorMatchHost.create",
+      "stage": "compile_policy",
+      "error_code": "",
+      "invalid_local_card_uids": []
+    }
+  },
+  "scenarios": {
+    "document_type": "ptcg_strategy_forge_scenario_report_v1",
+    "schema_version": 1,
+    "status": "passed",
+    "package_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+    "case_count": 10,
+    "passed_count": 10,
+    "cases": [
+      {
+        "id": "positive",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            1
+          ],
+          "matched_rule_id": "forge.morgrem.evolve",
+          "selected_source": "adapter_proposal"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            1
+          ],
+          "matched_rule_ids": [
+            "forge.morgrem.evolve"
+          ],
+          "selected_source": "adapter_proposal",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "no-key-card",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "selected_source": "deterministic_fallback"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [],
+          "selected_source": "deterministic_fallback",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "wrong-target",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "selected_source": "deterministic_fallback"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [],
+          "selected_source": "deterministic_fallback",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "reordered",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_id": "forge.morgrem.evolve",
+          "selected_source": "adapter_proposal"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [
+            "forge.morgrem.evolve"
+          ],
+          "selected_source": "adapter_proposal",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "mandatory-block",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "selected_source": "mandatory"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [
+            "forge.morgrem.evolve"
+          ],
+          "selected_source": "mandatory",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "terminal-block",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "selected_source": "terminal"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [
+            "forge.morgrem.evolve"
+          ],
+          "selected_source": "terminal",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "hard-tier-block",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "selected_source": "deterministic_fallback"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [
+            "forge.morgrem.evolve"
+          ],
+          "selected_source": "deterministic_fallback",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "veto-block",
+        "accepted": true,
+        "expected": {
+          "status": "passed",
+          "selected_indexes": [
+            0
+          ],
+          "selected_source": "deterministic_fallback"
+        },
+        "observed": {
+          "status": "passed",
+          "error_code": "",
+          "selected_indexes": [
+            0
+          ],
+          "matched_rule_ids": [
+            "forge.morgrem.evolve"
+          ],
+          "selected_source": "deterministic_fallback",
+          "claims": {
+            "public_only": true,
+            "current_window_indexes_only": true,
+            "authoritative": false,
+            "engine_execution": false,
+            "production_authority": false,
+            "classic_fallback_used": false
+          }
+        }
+      },
+      {
+        "id": "unknown-uid",
+        "accepted": true,
+        "expected": {
+          "status": "error",
+          "error_code": "invalid_local_uid_public_context"
+        },
+        "observed": {
+          "status": "error",
+          "error_code": "invalid_local_uid_public_context"
+        }
+      },
+      {
+        "id": "hidden-field",
+        "accepted": true,
+        "expected": {
+          "status": "error",
+          "error_code": "developer_observation_rejected"
+        },
+        "observed": {
+          "status": "error",
+          "error_code": "developer_observation_rejected"
+        }
+      }
+    ]
+  },
+  "claims": {
+    "development_only": true,
+    "production_ready": false,
+    "engine_authority": false,
+    "cabt_engine_parity": false
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "document_type": "ptcg_strategy_forge_competitive_v2_architecture_upgrade_evidence_v2",
+  "schema_version": 2,
+  "status": "whole_turn_route_architecture_validated_strength_validation_paused",
+  "official_agent_boundary": "agent(raw_observation) -> list[int]",
+  "official_boundary_changed": false,
+  "contracts": {
+    "schema_canonical_sha256": "C3835C23C62C13F0191A281302F408288F982FE70F0387B0A9D466538CF81879",
+    "profile_canonical_sha256": "737CF28BF83D9CF270266B163DDFCDE03B6645D0BDE7012B54906BEE6CE723FF",
+    "vectors_canonical_sha256": "AEA98005727EEF0016687AB18A26E72608EDEE10697373B2E26C17ACBCF799FA",
+    "bundle_canonical_sha256": "1D7864C1828CEE1965E8C1A766155A716C2FC35C7AB2206BEDE4386F42793BD7"
+  },
+  "implemented_architecture": {
+    "sealed_compiled_fast_path": true,
+    "typed_interaction_recipes": true,
+    "public_turn_ledger": true,
+    "public_bench_capacity": true,
+    "legacy_turn_routes": true,
+    "soft_turn_bonus_contracts": true,
+    "whole_turn_route_candidates": true,
+    "typed_route_resource_budget": true,
+    "lexicographic_route_value": true,
+    "opponent_response_risk": true,
+    "base_owned_route_authority": true,
+    "current_window_reobservation": true,
+    "python_godot_cabt_tree_hash_alignment": true
+  },
+  "route_comparison_order": [
+    "attack_windows.asc",
+    "prize_progress.desc",
+    "continuity.desc",
+    "resource_cost.asc",
+    "response_risk.asc",
+    "uncertainty.asc",
+    "route_id.asc"
+  ],
+  "focused_evidence": {
+    "resource_availability_metamorphic_flip": true,
+    "prize_clock_response_risk_metamorphic_flip": true,
+    "semantic_option_reorder": true,
+    "mandatory_authority": true,
+    "terminal_authority": true,
+    "hard_tier_authority": true,
+    "veto_authority": true,
+    "selected_indexes_and_audit_hash_cross_runtime": true,
+    "godot_competitive_runtime": {"passed": 17, "total": 17},
+    "forge_competitive_runtime": {"passed": 14, "total": 14},
+    "forge_full_regression": {"passed": 30, "total": 30},
+    "host_python_competitive_and_contract": {"passed": 21, "total": 21},
+    "round41_competitive_package_route": {"passed": 1, "total": 1},
+    "reviewed_multi_package_suite_latest": {
+      "passed": 4,
+      "total": 5,
+      "known_unrelated_failure": "generic setup option generation is nondeterministic across non-competitive packages; the failing package changed from Gardevoir to Marnie on isolated rerun"
+    }
+  },
+  "performance": {
+    "same_replay_before_elapsed_msec": 236647,
+    "same_replay_after_elapsed_msec": 10958,
+    "speedup": 21.6,
+    "decision_mean_before_msec": 819.485,
+    "decision_mean_after_msec": 26.211,
+    "decision_p95_before_msec": 1121.872,
+    "decision_p95_after_msec": 35.668,
+    "route_candidate_p95_gate_msec": 50,
+    "route_candidate_compiled_samples": 250,
+    "route_candidate_compiled_p95_msec": 4.070,
+    "route_candidate_p95_gate_measured": true,
+    "route_candidate_p95_gate_met": true
+  },
+  "raging_bolt_frozen_baseline": {
+    "package_id": "dev.beralee.v18.raging-bolt-ogerpon",
+    "package_version": "1.0.0",
+    "strategy_id": "beralee.raging-bolt-ogerpon.18.0.competitive-v2-round41",
+    "archive_sha256": "5DEEC95080A537B9BF10B4744050A2C53690486B057E556FBC11E3F55BEDA57A",
+    "fresh_100": {"seed_base": 99000, "package_wins": 42, "classic_wins": 58, "win_rate_percent": 42.0}
+  },
+  "rejected_point_tuning": [
+    {"round": 43, "seed_base": 103000, "games": 100, "package_wins": 41, "classic_wins": 59, "win_rate_percent": 41.0},
+    {"round": 44, "seed_base": 107000, "games": 100, "package_wins": 40, "classic_wins": 60, "win_rate_percent": 40.0}
+  ],
+  "pending_gates": [
+    "raging_bolt_strength_validation_paused_by_user"
+  ],
+  "claims": {
+    "public_window_simulation": true,
+    "godot_runtime_focused_witness": true,
+    "fresh_strength_benchmark_after_route_upgrade": false,
+    "classic_strategy_non_inferiority": false,
+    "official_cabt_engine_parity": false,
+    "production_approved": false
+  }
+}

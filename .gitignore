@@ -21,3 +21,6 @@ evidence/*
 !evidence/github-publication.json
 !evidence/test-results.json
 !evidence/implementation-manifest.json
+!evidence/developer-workspace-check.json
+!evidence/five-v18-package-delivery.json
+!evidence/competitive-v2-architecture-upgrade.json

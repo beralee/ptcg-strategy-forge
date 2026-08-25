@@ -30,6 +30,7 @@ from scripts.ai.ptcgdap.author_strategy_package import (  # noqa: E402
 )
 from scripts.ai.ptcgdap.cabt_envelope import parse_raw_cabt_envelope  # noqa: E402
 from scripts.ai.ptcgdap.cabt_selection import CabtSelectionWindow  # noqa: E402
+from scripts.ai.ptcgdap.competitive_policy_v2 import CompetitivePolicyV2Compiler  # noqa: E402
 from scripts.ai.ptcgdap.public_deck_adapter import (  # noqa: E402
     LOCAL_CARD_ID_DOMAIN,
     OFFICIAL_CARD_ID_DOMAIN,
@@ -252,6 +253,17 @@ def _policy_preflight(package: Any, handle: Any) -> dict[str, object]:
                         if type(uid) is str and (not is_valid_local_card_uid(uid) or uid not in allowed):
                             invalid.add(uid)
             diagnostic["invalid_local_card_uids"] = sorted(invalid, key=str.encode)
+            if type(adapter) is dict and adapter.get("schema_version") == 2:
+                diagnostic["owning_layer"] = "CompetitivePolicyV2Compiler.compile_local_uid"
+                outcome = CompetitivePolicyV2Compiler.compile_local_uid(
+                    adapter,
+                    allowed_card_uids=allowed,
+                )
+                if not outcome.accepted or outcome.policy is None:
+                    diagnostic["error_code"] = outcome.error_code or "package_policy_unsupported"
+                    _raise("package_policy_unsupported", diagnostic)
+                diagnostic["accepted"] = True
+                return diagnostic
         PtcgDAPAuthorMatchHost.create(handle, f"dev.validate.{package.archive_sha256[:12].lower()}")
     except AuthorStrategyMatchError as exc:
         diagnostic["error_code"] = exc.code
@@ -270,6 +282,7 @@ def _package_report(package_path: Path, *, status: str) -> dict[str, object]:
         policy_preflight = _policy_preflight(package, handle)
         pins = handle.to_public_dict()
         metadata = package.to_dict()
+        adapter_document = load_json_bytes_strict(package.payload_bytes("policy/adapter.json"))
     except DeveloperToolError:
         raise
     except AuthorStrategyPackageError as exc:
@@ -299,6 +312,12 @@ def _package_report(package_path: Path, *, status: str) -> dict[str, object]:
         "development_shadow_ready": pins["development_shadow_ready"],
         "production_ready": False,
         "cabt_exportable": pins["cabt_exportable"],
+        "adapter_schema_version": adapter_document.get("schema_version"),
+        "policy_runtime_kind": (
+            "competitive_policy_v2"
+            if adapter_document.get("schema_version") == 2
+            else "restricted_adapter_v1"
+        ),
         "policy_preflight": policy_preflight,
     }
 

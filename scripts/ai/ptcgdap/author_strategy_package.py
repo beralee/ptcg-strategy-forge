@@ -19,6 +19,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
 from jsonschema import Draft202012Validator
 
 from .author_strategy_release import AuthorStrategyReleaseGate
+from .competitive_policy_v2 import CompetitivePolicyV2Compiler
 from .source_lock import canonical_json_v1_bytes, load_json_bytes_strict, load_json_strict
 
 
@@ -35,6 +36,20 @@ EXPECTED_ARTIFACT_CANONICAL_SHA256 = {
     "schema": "B3469DA24400407775FB6069CB5D9EE2147633770542322208B9FE102E0E20BE",
     "profile": "1137187EF1C073E081B541602A7498B7235A3606309C35212BC6559F0EF30B79",
     "vectors": "49F4493D89E74B4ED6F54957BAFDC0E3C1161C5BA695203AE3CEE17DEE50EE33",
+}
+COMPETITIVE_POLICY_V2_PROFILE_ID = "ptcgdap-competitive-policy-v2"
+COMPETITIVE_POLICY_V2_BUNDLE_ID = "ptcgdap-competitive-policy-v2-as2-wp1"
+COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256 = "1D7864C1828CEE1965E8C1A766155A716C2FC35C7AB2206BEDE4386F42793BD7"
+COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES = {
+    "schema": "competitive_policy_v2.schema.json",
+    "profile": "competitive_policy_v2_profile.json",
+    "vectors": "competitive_policy_v2_conformance_vectors.json",
+    "bundle": "competitive_policy_v2_bundle.json",
+}
+COMPETITIVE_POLICY_V2_EXPECTED_ARTIFACT_CANONICAL_SHA256 = {
+    "schema": "C3835C23C62C13F0191A281302F408288F982FE70F0387B0A9D466538CF81879",
+    "profile": "737CF28BF83D9CF270266B163DDFCDE03B6645D0BDE7012B54906BEE6CE723FF",
+    "vectors": "AEA98005727EEF0016687AB18A26E72608EDEE10697373B2E26C17ACBCF799FA",
 }
 CONTRACT_FILENAMES = {
     "schema": "author_strategy_package.schema.json",
@@ -288,6 +303,16 @@ def _public_adapter_valid(document: dict[str, Any], deck: dict[str, Any]) -> boo
     )
     if local_domain and len(local_uids) != deck.get("unique_card_count"):
         return False
+    if document.get("schema_version") == 2:
+        if not local_domain:
+            return False
+        compiled = CompetitivePolicyV2Compiler.compile_local_uid(
+            document,
+            allowed_card_uids=local_uids,
+        )
+        return compiled.accepted and compiled.policy is not None
+    if document.get("schema_version") != 1:
+        return False
     seen = set()
     for rule in document["rules"]:
         if type(rule) is not dict or set(rule) != {
@@ -415,6 +440,10 @@ class AuthorStrategyPackageLoader:
         self._contract_root = DEFAULT_CONTRACT_ROOT if contract_root is None else Path(contract_root)
         self._documents = self._load_contracts()
         self._schema_validator = Draft202012Validator(self._documents["schema"])
+        self._competitive_policy_v2_documents = self._load_competitive_policy_v2_contracts()
+        self._competitive_policy_v2_validator = Draft202012Validator(
+            self._competitive_policy_v2_documents["schema"]
+        )
         self._windows_local_deck_documents = self._load_windows_local_deck_contracts()
         self._windows_local_deck_validator = Draft202012Validator(self._windows_local_deck_documents["schema"])
         self._profile = self._documents["profile"]
@@ -479,6 +508,58 @@ class AuthorStrategyPackageLoader:
             _raise("package_integrity_invalid")
         return documents
 
+    def _load_competitive_policy_v2_contracts(self) -> dict[str, dict[str, Any]]:
+        try:
+            documents = {
+                artifact_id: load_json_strict(self._contract_root / filename)
+                for artifact_id, filename in COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES.items()
+            }
+            bundle_hash = _sha(canonical_json_v1_bytes(documents["bundle"]))
+        except (OSError, UnicodeDecodeError, ValueError, TypeError):
+            _raise("package_integrity_invalid")
+        bundle = documents["bundle"]
+        if (
+            bundle_hash != COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256
+            or bundle.get("schema_version") != 2
+            or bundle.get("bundle_id") != COMPETITIVE_POLICY_V2_BUNDLE_ID
+            or bundle.get("profile_id") != COMPETITIVE_POLICY_V2_PROFILE_ID
+            or bundle.get("parent_author_package_bundle_canonical_sha256")
+            != EXPECTED_BUNDLE_CANONICAL_SHA256
+            or type(bundle.get("artifacts")) is not list
+            or len(bundle["artifacts"]) != 3
+        ):
+            _raise("package_integrity_invalid")
+        seen = set()
+        for entry in bundle["artifacts"]:
+            if type(entry) is not dict or set(entry) != {"id", "path", "canonical_sha256"}:
+                _raise("package_integrity_invalid")
+            artifact_id = entry["id"]
+            if (
+                artifact_id not in COMPETITIVE_POLICY_V2_EXPECTED_ARTIFACT_CANONICAL_SHA256
+                or artifact_id in seen
+            ):
+                _raise("package_integrity_invalid")
+            expected_path = f"contracts/ptcgdap/{COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES[artifact_id]}"
+            expected_hash = COMPETITIVE_POLICY_V2_EXPECTED_ARTIFACT_CANONICAL_SHA256[artifact_id]
+            if (
+                entry["path"] != expected_path
+                or entry["canonical_sha256"] != expected_hash
+                or _sha(canonical_json_v1_bytes(documents[artifact_id])) != expected_hash
+            ):
+                _raise("package_integrity_invalid")
+            seen.add(artifact_id)
+        if seen != set(COMPETITIVE_POLICY_V2_EXPECTED_ARTIFACT_CANONICAL_SHA256):
+            _raise("package_integrity_invalid")
+        profile = documents["profile"]
+        if (
+            profile.get("schema_version") != 2
+            or profile.get("profile_id") != COMPETITIVE_POLICY_V2_PROFILE_ID
+            or profile.get("official_policy_boundary") != "agent(raw_observation)->list[int]"
+            or profile.get("compatibility", {}).get("v1_behavior_unchanged") is not True
+        ):
+            _raise("package_integrity_invalid")
+        return documents
+
     def _load_windows_local_deck_contracts(self) -> dict[str, dict[str, Any]]:
         try:
             documents = {
@@ -532,6 +613,7 @@ class AuthorStrategyPackageLoader:
             "profile_id": PROFILE_ID,
             "bundle_id": BUNDLE_ID,
             "bundle_canonical_sha256": EXPECTED_BUNDLE_CANONICAL_SHA256,
+            "competitive_policy_v2_bundle_canonical_sha256": COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256,
             "windows_local_deck_bundle_canonical_sha256": WINDOWS_LOCAL_DECK_EXPECTED_BUNDLE_CANONICAL_SHA256,
             "windows_local_deck_card_id_domain": WINDOWS_LOCAL_DECK_DOMAIN,
             "test_fixture_key_execution_trusted": False,
@@ -811,7 +893,22 @@ class AuthorStrategyPackageLoader:
         else:
             deck = _strict_json(members["deck/deck_manifest.json"], self._schema_validator, "package_deck_unmapped")
         policy_ir = _strict_json(members["policy/policy_ir.json"], self._schema_validator, "package_policy_unsupported")
-        adapter = _strict_json(members["policy/adapter.json"], self._schema_validator, "package_policy_unsupported")
+        try:
+            raw_adapter = load_json_bytes_strict(members["policy/adapter.json"])
+        except (UnicodeDecodeError, ValueError, TypeError):
+            _raise("package_policy_unsupported")
+        if type(raw_adapter) is not dict:
+            _raise("package_policy_unsupported")
+        adapter_validator = (
+            self._competitive_policy_v2_validator
+            if raw_adapter.get("schema_version") == 2
+            else self._schema_validator
+        )
+        adapter = _strict_json(
+            members["policy/adapter.json"],
+            adapter_validator,
+            "package_policy_unsupported",
+        )
         config = _strict_json(members["policy/config.json"], self._schema_validator, "package_policy_unsupported")
         if _contains_forbidden_policy_key(policy_ir) or _contains_forbidden_policy_key(adapter) or _contains_forbidden_policy_key(config):
             _raise("package_policy_unsupported")

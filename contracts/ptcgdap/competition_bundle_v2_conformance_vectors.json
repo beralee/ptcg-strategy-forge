@@ -1,0 +1,12 @@
+{
+  "document_type": "ptcgdap_competition_bundle_v2_conformance_vectors",
+  "schema_version": 2,
+  "vectors": [
+    {"vector_id": "valid_generated_manifest", "mutation": null, "expected": "accepted"},
+    {"vector_id": "unknown_root_key", "mutation": {"pointer": "/unexpected", "value": true}, "expected": "competition_manifest_invalid"},
+    {"vector_id": "unknown_nested_key", "mutation": {"pointer": "/identity/unexpected", "value": true}, "expected": "competition_identity_invalid"},
+    {"vector_id": "wrong_field_type", "mutation": {"pointer": "/identity/display_name", "value": 7}, "expected": "competition_metadata_invalid"},
+    {"vector_id": "schema_version_drift", "mutation": {"pointer": "/schema_version", "value": 3}, "expected": "competition_bundle_dispatch_invalid"},
+    {"vector_id": "runtime_abi_drift", "mutation": {"pointer": "/runtime/python_abi", "value": "cp312-win_amd64"}, "expected": "competition_runtime_manifest_invalid"}
+  ]
+}

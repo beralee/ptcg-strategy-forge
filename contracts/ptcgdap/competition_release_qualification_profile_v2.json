@@ -1,0 +1,55 @@
+{
+  "document_type": "ptcgdap_competition_release_qualification_profile_v2",
+  "schema_version": 2,
+  "profile_id": "developer-local-v2",
+  "authority": {
+    "qualification_is_execution_authority": false,
+    "worker_self_attestation_is_trust_root": false,
+    "operator_approval_required_after_pass": true,
+    "unknown_fields_fail_closed": true,
+    "official_engine_parity_claim": false,
+    "production_multi_tenant_isolation_claim": false
+  },
+  "required_identities": {
+    "agent_rpc_contract_sha256": "9187EB9C2A9FC58DD697C88248FDC8157D422A7D32932CE4A973A8594166DF08",
+    "observation_contract_sha256": "2CD02F54538985426EFDB057F3A6BDA4AD154DD171BCC03667D42D102982D294",
+    "a1_scope_sha256": "55D3F6B8DCD6BD3386277E90D062A705DCE9321EBBACB753B1B59F4A13B9086C",
+    "time_profile_sha256": "4EF4A46A9A4CB7F80712F3F7B17C5487975E72E452039FB1397E992B666973D3",
+    "search_capability": "none"
+  },
+  "required_gates": [
+    "canonical_bundle_rebuild",
+    "content_closure",
+    "deck_exact_60",
+    "deck_catalog_format_legality",
+    "isolated_import",
+    "deck_bootstrap_domain",
+    "selection_current_window_domain",
+    "semantic_option_reorder",
+    "deterministic_repeat",
+    "paired_clean_room_smoke",
+    "invalid_output_containment",
+    "agent_timeout_containment",
+    "resource_limit_enforced",
+    "network_denial",
+    "subprocess_denial",
+    "private_sentinel_denial",
+    "cross_seat_denial",
+    "service_credential_denial",
+    "scratch_cleanup_zero",
+    "release_identity_binding"
+  ],
+  "limits": {
+    "minimum_deterministic_repetitions": 3,
+    "minimum_selection_windows": 2,
+    "minimum_bootstrap_callbacks": 1,
+    "scratch_residual_bytes": 0
+  },
+  "receipt": {
+    "document_type": "ptcgdap_competition_release_qualification_receipt_v2",
+    "evidence_storage": "immutable_content_addressed_v1",
+    "failed_gate_rejects_release": true,
+    "operator_may_override_failed_gate": false,
+    "rights_receipt_embedded": true
+  }
+}

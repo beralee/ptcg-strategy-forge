@@ -1,0 +1,94 @@
+{
+  "document_type": "ptcg_strategy_forge_five_v18_package_delivery_v1",
+  "schema_version": 1,
+  "status": "passed",
+  "reviewed_source": {
+    "repository": "PtcgDAP local reviewed checkout",
+    "deck_source_kind": "exact_windows_local_deck_and_card_json_bytes",
+    "card_id_domain": "godot_local_card_uid_v1",
+    "runtime_dependency": false
+  },
+  "packages": [
+    {
+      "package_id": "dev.beralee.v18.marnie-grimmsnarl",
+      "package_version": "1.0.0",
+      "source_deck_id": 800018501,
+      "unique_printing_count": 28,
+      "adapter_rule_count": 12,
+      "archive_bytes": 26308,
+      "archive_sha256": "60D0DBFED01230D524A3FFB173C152B0A1F4FDF2E6926614DBABB9ED57ED6316",
+      "scenario_result": "10/10"
+    },
+    {
+      "package_id": "dev.beralee.v18.no-balloon-gardevoir",
+      "package_version": "1.0.0",
+      "source_deck_id": 800017097,
+      "unique_printing_count": 24,
+      "adapter_rule_count": 12,
+      "archive_bytes": 24578,
+      "archive_sha256": "FC2245D12044CE0ED92E877ACDA006A2DBD6F406FAE2573363D1C2EB7A69FB90",
+      "scenario_result": "10/10"
+    },
+    {
+      "package_id": "dev.beralee.v18.pure-dragapult",
+      "package_version": "1.0.0",
+      "source_deck_id": 800018499,
+      "unique_printing_count": 24,
+      "adapter_rule_count": 11,
+      "archive_bytes": 24051,
+      "archive_sha256": "8CCA6A11C6F04D3267187112112244057ABCCB3073898BBE7027B264AE68D0D9",
+      "scenario_result": "10/10"
+    },
+    {
+      "package_id": "dev.beralee.v18.raging-bolt-ogerpon",
+      "package_version": "1.0.0",
+      "source_deck_id": 800018509,
+      "unique_printing_count": 28,
+      "adapter_rule_count": 14,
+      "archive_bytes": 27524,
+      "archive_sha256": "BAF081E007AF0E983CE8D2A50FD76F033472484CBD7B5EC04BC359B3652A9B54",
+      "scenario_result": "10/10"
+    },
+    {
+      "package_id": "dev.beralee.v18.ns-zoroark",
+      "package_version": "1.0.0",
+      "source_deck_id": 800018502,
+      "unique_printing_count": 29,
+      "adapter_rule_count": 12,
+      "archive_bytes": 26809,
+      "archive_sha256": "5ADE7B78A3F43E2537CE8E35FE73E1C63927C1EA0D15963EA5D98EC53664FBD0",
+      "scenario_result": "10/10"
+    }
+  ],
+  "forge_acceptance": {
+    "deterministic_double_builds": 5,
+    "strict_host_validations": 5,
+    "scenario_cases": 50,
+    "scenario_cases_passed": 50,
+    "production_ready": false,
+    "cabt_engine_parity": false
+  },
+  "godot_development_acceptance": {
+    "focused_suite": "tests/ptcgdap/godot/test_reviewed_author_strategy_packages.gd",
+    "cases": 4,
+    "cases_passed": 4,
+    "catalog_discovery": true,
+    "exact_hash_gate": true,
+    "restricted_ir_primary_macro_execution": true,
+    "exact_deck_engine_owner_bind": true,
+    "battle_setup_loaded_and_startable": true,
+    "classic_fallback_used": false,
+    "production_authority": false
+  },
+  "rollback": {
+    "current_match_hot_swap": false,
+    "new_matches_only": true,
+    "mode": "disable_author_strategy_feature_or_remove_exact_builtin_candidates",
+    "user_data_deleted": false
+  },
+  "known_limits": [
+    "Restricted IR v1 cannot express arbitrary cross-window conditional graphs.",
+    "Exact damage allocation and energy-discard budgets remain blueprint-only where current predicates are insufficient.",
+    "Development fixture signatures do not grant production trust or CABT engine parity."
+  ]
+}

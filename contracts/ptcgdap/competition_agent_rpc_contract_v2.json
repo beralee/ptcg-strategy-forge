@@ -1,0 +1,63 @@
+{
+  "document_type": "ptcgdap_competition_agent_rpc_contract_v2",
+  "schema_version": 2,
+  "transport": {
+    "kind": "per_seat_filesystem_mailbox_v2",
+    "message_encoding": "utf8_sorted_key_json_finite_numbers_v1",
+    "atomic_publish": "same_filesystem_replace_v1",
+    "one_in_flight_request_per_seat": true,
+    "channel_shared_between_seats": false
+  },
+  "request": {
+    "document_type": "competition_agent_request_v2",
+    "max_bytes": 16777216,
+    "observation_profile": "official_seat_scoped_cabt_raw_v1",
+    "call_kinds": ["deck_bootstrap", "selection"],
+    "response_domains": ["official_card_ids", "current_option_indexes"],
+    "search_begin_input_ephemeral": true,
+    "persist_request": false
+  },
+  "response": {
+    "document_type": "competition_agent_response_v2",
+    "max_bytes": 65536,
+    "max_indexes": 100000,
+    "minimum_index": 0,
+    "maximum_index": 1000000,
+    "deck_card_count": 60,
+    "persist_response": false
+  },
+  "binding": {
+    "session_token_required": true,
+    "match_id_required": true,
+    "seat_required": true,
+    "ordinal_required": true,
+    "request_sha256_echo_required": true,
+    "call_kind_echo_required": true,
+    "response_domain_echo_required": true,
+    "unknown_fields_fail_closed": true
+  },
+  "timeouts": {
+    "minimum_decision_seconds": 1,
+    "maximum_decision_seconds": 30,
+    "default_decision_seconds": 10,
+    "poll_interval_milliseconds": 5
+  },
+  "production": {
+    "agent_package_mount_read_only": true,
+    "channel_mount_private_to_one_seat": true,
+    "root_filesystem_read_only": true,
+    "temporary_filesystem_only": true,
+    "network_mode": "none",
+    "service_credentials_visible": false,
+    "database_visible": false,
+    "opponent_package_visible": false,
+    "host_container_socket_visible": false
+  },
+  "authority": {
+    "deck_bootstrap": "signed_release_deck_exact_match_only",
+    "selection": "current_request_option_indexes_only",
+    "engine_execution": false,
+    "service_api": false,
+    "player_runtime": false
+  }
+}

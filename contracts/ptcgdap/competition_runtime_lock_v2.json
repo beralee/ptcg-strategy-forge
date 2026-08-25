@@ -1,0 +1,73 @@
+{
+  "document_type": "ptcgdap_competition_runtime_lock_v2",
+  "schema_version": 2,
+  "runtime_profile_id": "ptcgdap.cabt.python311.clean-room.developer.v2",
+  "platform": {
+    "os": "windows",
+    "architecture": "x86_64",
+    "python_implementation": "CPython",
+    "python_version": "3.11.13",
+    "python_abi": "cp311-win_amd64"
+  },
+  "sdk": {
+    "module": "cg",
+    "contract_sha256": "593F1298E52A635F90F8F505A52113E9AF114F444C293404E37906F18EE06CED",
+    "distribution": "platform_owned_private_or_clean_room_contract_only",
+    "a1_scope_sha256": "55D3F6B8DCD6BD3386277E90D062A705DCE9321EBBACB753B1B59F4A13B9086C",
+    "time_profile_sha256": "4EF4A46A9A4CB7F80712F3F7B17C5487975E72E452039FB1397E992B666973D3",
+    "search_capability": "none"
+  },
+  "rpc": {
+    "contract": "competition_agent_rpc_contract_v2.json",
+    "contract_sha256": "9187EB9C2A9FC58DD697C88248FDC8157D422A7D32932CE4A973A8594166DF08"
+  },
+  "dependencies": [],
+  "import_policy": {
+    "author_path": "src",
+    "resource_path_importable": false,
+    "user_site": false,
+    "pth_files": false,
+    "pip_install": false,
+    "reserved_modules": ["cg", "kaggle_environments", "sitecustomize", "usercustomize"]
+  },
+  "environment": {
+    "encoding": "utf-8",
+    "locale": "C.UTF-8",
+    "timezone": "UTC",
+    "python_hash_seed": "platform_match_seed"
+  },
+  "capabilities": {
+    "network": false,
+    "subprocess": false,
+    "wall_clock": false,
+    "entropy": false,
+    "filesystem_write": "private_scratch_only",
+    "search": "none",
+    "initial_deck_domain": "official_card_ids",
+    "selection_domain": "current_option_indexes"
+  },
+  "limits": {
+    "callback_seconds": 30,
+    "match_time_bank_seconds": 600,
+    "memory_bytes": 2147483648,
+    "processes": 1,
+    "threads": 4,
+    "open_files": 64,
+    "stdout_bytes": 1048576,
+    "stderr_bytes": 1048576,
+    "scratch_bytes": 67108864
+  },
+  "fault_taxonomy": {
+    "timeout": "agent_timeout",
+    "exception": "agent_exception",
+    "invalid_output": "invalid_agent_output",
+    "out_of_memory": "agent_out_of_memory",
+    "crash": "agent_process_crash",
+    "owner_fallback": false
+  },
+  "authority": {
+    "qualification": "developer_local_only",
+    "production_multi_tenant_isolation": false,
+    "official_engine_claim": false
+  }
+}

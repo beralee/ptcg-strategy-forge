@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ptcgdap.local/contracts/competition_bundle_v2.schema.json",
+  "title": "PtcgDAP competition strategy manifest v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["document_type", "schema_version", "identity", "deck", "runtime", "compatibility", "qualification"],
+  "properties": {
+    "document_type": {"const": "ptcgdap_competition_strategy_v2"},
+    "schema_version": {"const": 2},
+    "identity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["strategy_id", "release_version", "author_id", "display_name", "summary"],
+      "properties": {
+        "strategy_id": {"$ref": "#/$defs/identifier"},
+        "release_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][A-Za-z0-9.-]+)?$"},
+        "author_id": {"$ref": "#/$defs/identifier"},
+        "display_name": {"type": "string", "minLength": 1, "maxLength": 120},
+        "summary": {"type": "string", "minLength": 1, "maxLength": 2000}
+      }
+    },
+    "deck": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "card_count", "card_id_domain", "deck_id", "archetype_id", "display_name"],
+      "properties": {
+        "path": {"const": "deck.csv"}, "sha256": {"$ref": "#/$defs/sha256"},
+        "card_count": {"const": 60}, "card_id_domain": {"const": "official_cabt_card_id"},
+        "deck_id": {"$ref": "#/$defs/identifier"}, "archetype_id": {"$ref": "#/$defs/identifier"},
+        "display_name": {"type": "string", "minLength": 1, "maxLength": 120}
+      }
+    },
+    "runtime": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "entrypoint", "runtime_lock_path", "runtime_lock_sha256", "content_manifest_path", "content_manifest_sha256", "source_manifest_sha256", "resource_manifest_sha256", "runtime_profile_id", "runtime_profile_sha256", "python_abi", "sdk_contract_sha256"],
+      "properties": {
+        "kind": {"const": "cabt_python_agent_v2"}, "entrypoint": {"const": "submission.main:agent"},
+        "runtime_lock_path": {"const": "runtime-lock.json"}, "runtime_lock_sha256": {"$ref": "#/$defs/sha256"},
+        "content_manifest_path": {"const": "content-manifest.json"}, "content_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "source_manifest_sha256": {"$ref": "#/$defs/sha256"}, "resource_manifest_sha256": {"$ref": "#/$defs/sha256"},
+        "runtime_profile_id": {"$ref": "#/$defs/identifier"}, "runtime_profile_sha256": {"$ref": "#/$defs/sha256"},
+        "python_abi": {"const": "cp311-win_amd64"}, "sdk_contract_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "compatibility": {
+      "type": "object", "additionalProperties": false,
+      "required": ["environment", "engine_family", "engine_build_sha256", "observation_contract_sha256", "card_catalog_sha256", "required_capabilities"],
+      "properties": {
+        "environment": {"const": "cabt"}, "engine_family": {"const": "official_cabt"},
+        "engine_build_sha256": {"$ref": "#/$defs/sha256"}, "observation_contract_sha256": {"$ref": "#/$defs/sha256"},
+        "card_catalog_sha256": {"$ref": "#/$defs/sha256"},
+        "required_capabilities": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/identifier"}}
+      }
+    },
+    "qualification": {
+      "type": "object", "additionalProperties": false,
+      "required": ["profile_id", "profile_sha256", "deterministic_replay_required"],
+      "properties": {
+        "profile_id": {"$ref": "#/$defs/identifier"}, "profile_sha256": {"$ref": "#/$defs/sha256"},
+        "deterministic_replay_required": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9A-F]{64}$"},
+    "identifier": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"}
+  }
+}

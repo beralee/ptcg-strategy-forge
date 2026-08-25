@@ -22,6 +22,8 @@
 - manifest 未登记的额外 SDK 文件；
 - 生成合同是否漂移。
 
+`.ptcgbot` 新工作区还包含 `src/submission/ucis.py`。`competition doctor/check/build/prequalify` 要求它与 Forge generation-locked runtime SDK exact bytes 相同，并把 SHA-256 写入 build/qualification receipt；修改或 symlink 会得到 `competition_ucis_runtime_sdk_mismatch`。该 helper 仍只是作者 current-window view，不是 engine legality 或 production security boundary。
+
 ## 凭据
 
 发布凭据只能通过环境变量提供。报告固定声明 `credential_persisted=false`，测试会递归扫描证据，禁止 token/password/secret 等键。不要把 `.env`、shell history 或服务器数据库提交到 Git。

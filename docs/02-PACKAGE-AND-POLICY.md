@@ -70,3 +70,23 @@ Base owner 负责合法性、强制/终局、hard tier、veto、fallback 和输�
 - 持久计划只能保存语义目标或稳定身份，不能保存旧 index、旧分数或旧约束；
 - 未知字段/枚举必须 fail closed 或进入已审计 fallback；
 - adapter 无 engine、ticket、callback 或网络权限。
+
+## UCIS 标准窗口
+
+卡牌效果现在统一走：
+
+```text
+CardEffectSpec → InteractionProgram → fresh SelectionWindow
+→ agent(...) 返回当前 indexes → Host 验证/提交 → invalidate/reobserve
+```
+
+作者不再为卡牌自定义 prompt、Context 数字、option shape 或复合返回命令。当前 generation 固定 49 个 Context、17 个 Option shape 和 16 个领域原语；无法编译的能力显式 unsupported，不会回退到某张卡的私有协议。
+
+使用命名化开发者视图：
+
+```powershell
+.\forge.ps1 ucis catalog
+.\forge.ps1 ucis inspect --scenario scenarios\01-positive.json
+```
+
+`.ptcgbot` 模板中的 `SelectionWindow` 还提供 `choose_exact`、`choose_up_to`、`rebind`、`choose_number`、`choose_boolean` 和 `first_legal`。完整示例见 [UCIS SDK 开发者指南](15-UCIS-SDK-DEVELOPER-GUIDE.md)。这些 helper 只产生 index proposal；不会改变 Base/Host authority。

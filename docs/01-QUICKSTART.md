@@ -18,6 +18,15 @@ python -m venv .venv
 
 `doctor` 必须同时通过 Python、SDK byte manifest、合同漂移和模板包严格校验。
 
+然后用两条命令确认当前 UCIS generation 和开发者视图可用：
+
+```powershell
+.\forge.ps1 ucis catalog
+.\forge.ps1 ucis walkthrough
+```
+
+`walkthrough` 应显示精确选择 `[0,2,4]`，重排后的新索引 `[4,2,0]`，并以 `ucis_runtime_option_shape_invalid` 拒绝未知字段。
+
 ## 2. 创建工作区
 
 ```powershell
@@ -36,6 +45,8 @@ python -m venv .venv
 
 ```text
 my-strategy/
+  README.md
+  STRATEGY-BLUEPRINT.md
   package/
     strategy_package.json
     README.md
@@ -52,9 +63,34 @@ my-strategy/
   build/
 ```
 
-`new` 会直接生成与 demo 同等级的 10 场景套件，不需要开发者手工补一个只能跑正例的测试入口。
+`new` 会直接生成与 demo 同等级的 10 场景套件和策略思考蓝图，不需要开发者手工补一个只能跑正例的测试入口。先按[策略思考方法](09-STRATEGY-THINKING.md)填写蓝图，再修改 adapter。
 
-## 3. 先运行模板场景
+若要从已审核的 18.0 精确牌组开始，增加 `--deck-id`：
+
+```powershell
+.\forge.ps1 new `
+  --output work\gardevoir `
+  --deck-id 800017097 `
+  --package-id dev.example.v18.gardevoir `
+  --package-version 1.0.0 `
+  --author-id example.author `
+  --author-name "Example Author"
+```
+
+当前支持 `800018501`（玛俐长毛巨魔）、`800017097`（无碟沙奈朵）、`800018499`（多龙巴鲁托）、`800018509`（猛雷鼓厄诡椪）和 `800018502`（N 的索罗亚克）。该路径会写入逐 printing 源哈希、精确 60 卡 manifest、牌组专用 adapter、完整蓝图和 10 个 RED→GREEN/重排/安全场景。
+
+## 3. 先看懂当前窗口
+
+不要从 raw 数字猜 context。检查生成的正向场景：
+
+```powershell
+.\forge.ps1 ucis inspect `
+  --scenario work\my-strategy\scenarios\01-positive.json
+```
+
+报告会显示命名化 `select_type/context`、`min/max`、稀疏 options、公开 UID binding、双方剩余奖赏、当前 active 能量和 bench 空位；它不会回显完整 raw observation 或隐藏字段。若这里不是预期窗口，先修 scenario/identity，不要调整 adapter priority。
+
+## 4. 先运行模板场景
 
 ```powershell
 .\forge.ps1 build `
@@ -63,7 +99,7 @@ my-strategy/
 
 .\forge.ps1 simulate `
   --package work\my-strategy\build\v0.ptcgai `
-  --scenario work\my-strategy\scenarios\morgrem-evolve.json
+  --scenario work\my-strategy\scenarios\01-positive.json
 ```
 
 确认报告中：
@@ -77,7 +113,7 @@ claims.engine_execution=false
 claims.production_authority=false
 ```
 
-## 4. 按 RED→GREEN 修改
+## 5. 按 RED→GREEN 修改
 
 1. 复制场景并先修改 `expected_selected_indexes`，证明当前行为失败；
 2. 只修改 `package/policy/adapter.json` 中一个规则或 priority；
@@ -88,12 +124,16 @@ claims.production_authority=false
 
 参考 [`demo/marnie-forge`](../demo/marnie-forge) 的完整实现。
 
-## 5. 严格校验、安装和提交
+其中 [`sdk_walkthrough.py`](../demo/marnie-forge/sdk_walkthrough.py) 单独演示精确数量、语义重绑定、重复分配和 prize-clock/energy-debt；`.ptcgai` 包本身仍是 data-only，不会把 Python 带进 Godot。
+
+## 6. 一键验收、安装和提交
 
 ```powershell
-.\forge.ps1 validate --package work\my-strategy\build\v1.ptcgai
-.\forge.ps1 test --package work\my-strategy\build\v1.ptcgai --suite work\my-strategy\scenario-suite.json
+.\forge.ps1 check `
+  --workspace work\my-strategy `
+  --output work\my-strategy\build\v1.ptcgai `
+  --report work\my-strategy\build\check-report.json
 .\forge.ps1 install --package work\my-strategy\build\v1.ptcgai
 ```
 
-安装只进入 Godot 开发目录，不授予玩家开战或 production 权限。提交步骤见 [安装与发布](05-PUBLISHING.md)。
+`check` 的详细通过条件见[工作区一键验收](10-WORKSPACE-CHECK.md)。安装只进入 Godot 开发目录，不授予玩家开战或 production 权限。提交步骤见 [安装与发布](05-PUBLISHING.md)。

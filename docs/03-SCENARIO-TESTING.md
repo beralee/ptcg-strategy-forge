@@ -34,6 +34,20 @@
 7. 未知 UID fail closed；
 8. 隐藏信息污染被 firewall 拒绝。
 
+场景的 `select.type/context/option` 必须本身是 UCIS 合法组合。例如进化目标使用 `CARD / EVOLVES_TO / CARD`，不能把 CARD options 塞进 `YES_NO / IS_FIRST` header。先运行：
+
+```powershell
+.\forge.ps1 ucis inspect --scenario scenarios\01-positive.json
+```
+
+对精确数量或多窗口能力还要补：
+
+- `0..N` 中准确选择 0、边界值和策略需要值；
+- source→target 每一步使用新的 observation/window；
+- 新窗口 option 重排后相同 semantic key 得到新 index；
+- 目标消失时 `semantic_rebind_missing`，不能复用旧 index；
+- NUMBER、YES/NO、ENERGY units 不混用 list-length 编码。
+
 运行：
 
 ```powershell

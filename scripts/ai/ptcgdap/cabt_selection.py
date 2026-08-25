@@ -1844,7 +1844,16 @@ def _copy_option(
             continue
         if field_value is not None and not _is_exact_safe_int(field_value):
             return None, (), _selection_issue("invalid_option", pointer)
-        if field_name == "cardId" and field_value is not None and field_value < 1:
+        if (
+            field_name == "cardId"
+            and field_value is not None
+            and field_value < 1
+            and not (
+                value["type"] == 15
+                and field_value == 0
+                and value.get("serial") == 0
+            )
+        ):
             return None, (), _selection_issue("invalid_option", pointer)
         copied[field_name] = field_value
 
@@ -1859,6 +1868,19 @@ def _copy_option(
             sparse_mismatch = any(value[field] is None for field in expected_shape[1:])
         if sparse_mismatch:
             fallback_issues.append(_selection_issue("sparse_shape_mismatch", pointer))
+    if option_type == 15:
+        card_id = copied.get("cardId")
+        serial = copied.get("serial")
+        if not (
+            (card_id == 0 and serial == 0)
+            or (
+                type(card_id) is int
+                and type(serial) is int
+                and card_id > 0
+                and serial > 0
+            )
+        ):
+            return None, (), _selection_issue("invalid_option", pointer)
 
     for field_name in ("area", "inPlayArea"):
         if field_name in copied and copied[field_name] is not None:

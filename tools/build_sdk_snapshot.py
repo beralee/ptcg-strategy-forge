@@ -4,6 +4,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import shutil
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,6 +15,141 @@ PREFIXES = (
     Path("data/bundled_user"),
     Path("tools/ptcgdap"),
 )
+
+# Explicitly reviewed files whose PtcgDAP locations differ from the standalone
+# Forge layout.  Refresh copies bytes only from these allow-listed sources.
+REFRESH_FILES = {
+    Path("scripts/ai/ptcgdap/cabt_selection.py"): Path(
+        "scripts/ai/ptcgdap/cabt_selection.py"
+    ),
+    Path("scripts/ai/ptcgdap/cabt_a1_contract.py"): Path(
+        "scripts/ai/ptcgdap/cabt_a1_contract.py"
+    ),
+    Path("scripts/ai/ptcgdap/cabt_window_v2.py"): Path(
+        "scripts/ai/ptcgdap/cabt_window_v2.py"
+    ),
+    Path("scripts/ai/ptcgdap/cabt_match_lifecycle_v2.py"): Path(
+        "scripts/ai/ptcgdap/cabt_match_lifecycle_v2.py"
+    ),
+    Path("scripts/ai/ptcgdap/cabt_time_search_v2.py"): Path(
+        "scripts/ai/ptcgdap/cabt_time_search_v2.py"
+    ),
+    Path("scripts/ai/ptcgdap/a1_scope.py"): Path(
+        "scripts/ai/ptcgdap/a1_scope.py"
+    ),
+    Path("scripts/ai/ptcgdap/ucis.py"): Path(
+        "scripts/ai/ptcgdap/ucis.py"
+    ),
+    Path("scripts/ai/ptcgdap/ucis_sdk.py"): Path(
+        "scripts/ai/ptcgdap/ucis_sdk.py"
+    ),
+    Path("services/ptcgdap_replay/competition_bundle.py"): Path(
+        "tools/ptcgdap/competition_bundle.py"
+    ),
+    Path("services/ptcgdap_replay/competition_rights.py"): Path(
+        "tools/ptcgdap/competition_rights.py"
+    ),
+    Path("services/ptcgdap_replay/competition_agent_rpc.py"): Path(
+        "tools/ptcgdap/competition_agent_rpc.py"
+    ),
+    Path("contracts/ptcgdap/competition_bundle_v2.schema.json"): Path(
+        "contracts/ptcgdap/competition_bundle_v2.schema.json"
+    ),
+    Path("contracts/ptcgdap/competition_bundle_v2_conformance_vectors.json"): Path(
+        "contracts/ptcgdap/competition_bundle_v2_conformance_vectors.json"
+    ),
+    Path("contracts/ptcgdap/competition_bundle_v2_profile.json"): Path(
+        "contracts/ptcgdap/competition_bundle_v2_profile.json"
+    ),
+    Path("contracts/ptcgdap/competition_runtime_lock_v2.json"): Path(
+        "contracts/ptcgdap/competition_runtime_lock_v2.json"
+    ),
+    Path("contracts/ptcgdap/competition_agent_rpc_contract_v2.json"): Path(
+        "contracts/ptcgdap/competition_agent_rpc_contract_v2.json"
+    ),
+    Path("contracts/ptcgdap/competition_release_qualification_profile_v2.json"): Path(
+        "contracts/ptcgdap/competition_release_qualification_profile_v2.json"
+    ),
+    Path("contracts/ptcgdap/cabt_interface_census_v2.json"): Path(
+        "contracts/ptcgdap/cabt_interface_census_v2.json"
+    ),
+    Path("contracts/ptcgdap/cabt_prompt_coverage_matrix_v2.json"): Path(
+        "contracts/ptcgdap/cabt_prompt_coverage_matrix_v2.json"
+    ),
+    Path("contracts/ptcgdap/cabt_lifecycle_coverage_matrix_v2.json"): Path(
+        "contracts/ptcgdap/cabt_lifecycle_coverage_matrix_v2.json"
+    ),
+    Path("contracts/ptcgdap/cabt_time_profile_v2.json"): Path(
+        "contracts/ptcgdap/cabt_time_profile_v2.json"
+    ),
+    Path("contracts/ptcgdap/cabt_search_capability_v2.json"): Path(
+        "contracts/ptcgdap/cabt_search_capability_v2.json"
+    ),
+    Path("contracts/ptcgdap/cabt_fault_taxonomy_v2.json"): Path(
+        "contracts/ptcgdap/cabt_fault_taxonomy_v2.json"
+    ),
+    Path("evidence/ptcgdap/a1/scope_v2.json"): Path(
+        "contracts/ptcgdap/cabt_a1_scope_report_v2.json"
+    ),
+    Path("data/ptcgdap/a3/five_deck_scope_v2.json"): Path(
+        "data/ptcgdap/a3/five_deck_scope_v2.json"
+    ),
+    Path("contracts/ptcgdap/ucis_registry_v1.json"): Path(
+        "contracts/ptcgdap/ucis_registry_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_card_effect_step_schema_v1.json"): Path(
+        "contracts/ptcgdap/ucis_card_effect_step_schema_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_compiled_interaction_step_schema_v1.json"): Path(
+        "contracts/ptcgdap/ucis_compiled_interaction_step_schema_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_card_effect_spec_schema_v1.json"): Path(
+        "contracts/ptcgdap/ucis_card_effect_spec_schema_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_interaction_program_schema_v1.json"): Path(
+        "contracts/ptcgdap/ucis_interaction_program_schema_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_card_catalog_v1.json"): Path(
+        "contracts/ptcgdap/ucis_card_catalog_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_legacy_inventory_v1.json"): Path(
+        "contracts/ptcgdap/ucis_legacy_inventory_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_coverage_ledger_v1.json"): Path(
+        "contracts/ptcgdap/ucis_coverage_ledger_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_conformance_vectors_v1.json"): Path(
+        "contracts/ptcgdap/ucis_conformance_vectors_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_bundle_v1.json"): Path(
+        "contracts/ptcgdap/ucis_bundle_v1.json"
+    ),
+    Path("contracts/ptcgdap/ucis_runtime_attestation_v1.json"): Path(
+        "contracts/ptcgdap/ucis_runtime_attestation_v1.json"
+    ),
+    Path("evidence/ptcgdap/ucis/ucis_performance_qualification_v1.json"): Path(
+        "contracts/ptcgdap/ucis_performance_qualification_v1.json"
+    ),
+    Path("evidence/ptcgdap/ucis/ucis_catalog_qualification_v1.json"): Path(
+        "contracts/ptcgdap/ucis_catalog_qualification_v1.json"
+    ),
+    Path("evidence/ptcgdap/a3/corresponding_card_whole_battle_input_index_v1.json"): Path(
+        "contracts/ptcgdap/corresponding_card_whole_battle_input_index_v1.json"
+    ),
+}
+
+
+def refresh(source_root: Path) -> None:
+    source = source_root.resolve(strict=True)
+    if source.is_symlink() or not (source / "AGENTS.md").is_file():
+        raise SystemExit("reviewed PtcgDAP source invalid")
+    for source_relative, target_relative in REFRESH_FILES.items():
+        source_path = source / source_relative
+        target_path = ROOT / target_relative
+        if not source_path.is_file() or source_path.is_symlink():
+            raise SystemExit(f"reviewed source missing: {source_relative.as_posix()}")
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source_path, target_path)
 
 
 def sha(path: Path) -> str:
@@ -46,7 +182,12 @@ def build() -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--refresh-from", type=Path)
     args = parser.parse_args()
+    if args.refresh_from is not None:
+        if args.check:
+            raise SystemExit("--check and --refresh-from are mutually exclusive")
+        refresh(args.refresh_from)
     path = ROOT / "vendor/ptcgdap-sdk-manifest.json"
     expected = (json.dumps(build(), ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     if args.check:

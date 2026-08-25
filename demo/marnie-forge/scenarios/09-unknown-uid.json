@@ -4,8 +4,8 @@
   "scenario_id": "forge-morgrem-unknown-uid",
   "raw_observation": {
     "select": {
-      "type": 9,
-      "context": 41,
+      "type": 1,
+      "context": 19,
       "minCount": 1,
       "maxCount": 1,
       "remainDamageCounter": 0,

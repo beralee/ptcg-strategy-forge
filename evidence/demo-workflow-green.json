@@ -319,6 +319,46 @@
       }
     ]
   },
+  "ucis_sdk": {
+    "document_type": "ptcg_strategy_forge_ucis_sdk_walkthrough_v1",
+    "schema_version": 1,
+    "status": "passed",
+    "exact_quantity": {
+      "desired_count": 3,
+      "first_indexes": [
+        0,
+        2,
+        4
+      ],
+      "reordered_indexes": [
+        4,
+        2,
+        0
+      ]
+    },
+    "repeated_assignment": {
+      "first_indexes": [
+        1
+      ],
+      "reordered_indexes": [
+        0
+      ]
+    },
+    "public_facts": {
+      "acting_energy_units": 1,
+      "acting_energy_debt_for_two": 1,
+      "opponent_prizes_remaining": 2,
+      "acting_attack_windows_to_win_at_two_prizes": 1
+    },
+    "unknown_shape_error": "ucis_runtime_option_shape_invalid",
+    "fresh_reobserve": true,
+    "claims": {
+      "current_window_indexes_only": true,
+      "engine_authority": false,
+      "full_rule_a3": false,
+      "production_authority": false
+    }
+  },
   "claims": {
     "development_only": true,
     "production_ready": false,

@@ -12,6 +12,8 @@
 6. `adjudication.candidates`：是否被 forced/tier/veto/cardinality 淘汰；
 7. `selected_source`：adapter、mandatory、terminal 或 fallback 谁最终拥有决策。
 
+在第 4 步前可先运行 `forge ucis inspect --scenario <file>`。如果报告直接给出 `context_type_mismatch` 或 `option_shape_invalid`，问题属于交互合同，不属于策略 priority。
+
 不要先通过改 priority 掩盖 UID、公开上下文或窗口绑定错误。
 
 ## RED→GREEN demo
@@ -29,6 +31,14 @@
 ```
 
 输出目录必须不存在。通过报告同时证明：baseline RED、10/10 GREEN、严格校验和两次 archive exact-byte 一致。
+
+同一命令现在也执行 UCIS SDK walkthrough。报告的 `ucis_sdk` 必须证明：
+
+- `0..5` 窗口准确取 3；
+- 重排后相同语义从 `[0,2,4]` 重新绑定为 `[4,2,0]`；
+- repeated assignment 每次 fresh parse；
+- 能量债务和奖赏时钟只来自公开 state；
+- 未知稀疏字段以稳定错误拒绝。
 
 ## 优化准则
 

@@ -1,0 +1,93 @@
+{
+  "document_type": "ptcgdap_competition_bundle_profile_v2",
+  "schema_version": 2,
+  "bundle_schema_generation": 2,
+  "canonical_zip_profile_generation": 1,
+  "archive_media_type": "application/vnd.ptcgdap.competition-strategy",
+  "required_root_files": [
+    "content-manifest.json",
+    "deck.csv",
+    "manifest.json",
+    "runtime-lock.json"
+  ],
+  "required_source_files": [
+    "src/submission/__init__.py",
+    "src/submission/main.py"
+  ],
+  "limits": {
+    "max_archive_bytes": 16777216,
+    "max_uncompressed_bytes": 33554432,
+    "max_file_count": 512,
+    "max_source_file_bytes": 2097152,
+    "max_source_total_bytes": 8388608,
+    "max_resource_file_bytes": 8388608,
+    "max_resource_total_bytes": 16777216,
+    "max_manifest_bytes": 131072,
+    "max_deck_bytes": 65536,
+    "max_path_bytes": 240
+  },
+  "canonical_zip": {
+    "compression_method": "stored",
+    "dos_date": 33,
+    "dos_time": 0,
+    "creator_system": "unix",
+    "creator_version": 20,
+    "extract_version": 20,
+    "utf8_flag": 2048,
+    "regular_file_mode": 33188,
+    "allow_extra": false,
+    "allow_comment": false,
+    "allow_data_descriptor": false,
+    "allow_zip64": false,
+    "allow_encryption": false
+  },
+  "source": {
+    "root": "src",
+    "suffixes": [
+      ".py"
+    ],
+    "encoding": "utf-8",
+    "reserved_top_level_modules": [
+      "cg",
+      "kaggle_environments",
+      "sitecustomize",
+      "usercustomize"
+    ],
+    "forbidden_suffixes": [
+      ".dll",
+      ".dylib",
+      ".exe",
+      ".joblib",
+      ".marshal",
+      ".pdb",
+      ".pickle",
+      ".pkl",
+      ".pth",
+      ".pyc",
+      ".pyd",
+      ".so",
+      ".whl"
+    ]
+  },
+  "resources": {
+    "root": "resources",
+    "allowed_media_types": {
+      ".csv": "text/csv",
+      ".json": "application/json",
+      ".npy": "application/vnd.numpy.ndarray",
+      ".txt": "text/plain"
+    },
+    "loader_capabilities": {
+      ".csv": "utf8_csv_v1",
+      ".json": "strict_json_v1",
+      ".npy": "numpy_allow_pickle_false_v1",
+      ".txt": "utf8_text_v1"
+    }
+  },
+  "runtime_lock_path": "contracts/ptcgdap/competition_runtime_lock_v2.json",
+  "qualification_profile": {
+    "profile_id": "developer-local-v2",
+    "path": "contracts/ptcgdap/competition_release_qualification_profile_v2.json",
+    "profile_sha256": "B8058CE6541D985B3AB71F0A7C8C27240BA52A1C8FC1D30DDF9A540775D7C324"
+  }
+}

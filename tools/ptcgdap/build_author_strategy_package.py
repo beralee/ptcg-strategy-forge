@@ -49,10 +49,17 @@ REQUIRED_PAYLOAD_PATHS = frozenset(
 )
 OPTIONAL_PAYLOAD_KINDS = {
     "policy/weights.bin": "weights",
+    "model/model_manifest.json": "json",
+    "model/actor.ort": "weights",
     "assets/icon.png": "png",
     "assets/banner.png": "png",
     "assets/icon.webp": "webp",
     "assets/banner.webp": "webp",
+}
+V1_CONTRACT_OPTIONAL_PAYLOAD_KINDS = {
+    path: kind
+    for path, kind in OPTIONAL_PAYLOAD_KINDS.items()
+    if path not in {"model/model_manifest.json", "model/actor.ort"}
 }
 FIXED_PAYLOAD_KINDS = {
     "strategy_package.json": "json",
@@ -337,7 +344,9 @@ def build_profile() -> dict[str, object]:
         },
         "required_payload_paths": sorted(REQUIRED_PAYLOAD_PATHS),
         "generated_member_paths": sorted(GENERATED_PATHS),
-        "optional_payload_kinds": OPTIONAL_PAYLOAD_KINDS,
+        # The v1 contract remains byte-identical. V2 model members are
+        # validated by the generation-specific manifest/model validator.
+        "optional_payload_kinds": V1_CONTRACT_OPTIONAL_PAYLOAD_KINDS,
         "payload_kinds": FIXED_PAYLOAD_KINDS,
         "resource_limits": {
             "max_archive_bytes": 12 * 1024 * 1024,

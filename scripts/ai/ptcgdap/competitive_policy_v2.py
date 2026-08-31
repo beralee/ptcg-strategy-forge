@@ -16,6 +16,13 @@ from types import MappingProxyType
 from typing import Any, Mapping
 
 from .cabt_tree_hash import CabtTreeHashError, public_observation_hash
+from .public_damage_planning import (
+    PublicDamageCapabilityRegistry,
+    PublicDamagePlanner,
+    SemanticTransactionJournal,
+    validate_damage_plans,
+    validate_semantic_transactions,
+)
 
 
 PROFILE_ID = "ptcgdap-competitive-policy-v2"
@@ -32,6 +39,7 @@ COUNT_MODES = frozenset(
         "fixed",
         "goal_energy_debt",
         "goal_missing_energy_sources",
+        "distinct_card_uids",
         "ceil_public_fact_divisor",
         "ceil_public_fact_divisor_with_reserve",
     }
@@ -143,8 +151,10 @@ SCALAR_FACTS = frozenset(
         "option.card_uid",
         "option.source_uid",
         "option.source_serial",
+        "option.source_entity_serial",
         "option.target_uid",
         "option.target_serial",
+        "option.target_entity_serial",
         "option.target_remaining_hp",
         "option.target_prize_value",
         "option.target_attached_energy_count",
@@ -156,6 +166,7 @@ SCALAR_FACTS = frozenset(
         "option.projected_knockout",
         "option.requires_interaction",
         "option.attack_index",
+        "option.option_number",
         "option.ability_index",
         "option.pending_assignment_count",
         "option.tags",
@@ -191,6 +202,47 @@ SCALAR_FACTS = frozenset(
         "threat.own_attacks_to_win",
         "threat.opponent_attacks_to_win",
         "threat.tempo_margin",
+        "damage.movable_counter_count",
+        "damage.available_mover_count",
+        "damage.froslass_check_count",
+        "damage.best_transfer_count",
+        "damage.best_transfer_target_entity_serial",
+        "damage.best_transfer_attack_windows_to_ko",
+        "damage.best_transfer_prize_yield",
+        "damage.best_transfer_remaining_debt",
+        "damage.best_target_entity_serial",
+        "damage.best_attack_windows_to_ko",
+        "damage.best_prize_yield",
+        "damage.best_remaining_debt",
+        "damage.current_attack_damage",
+        "damage.best_gust_target_entity_serial",
+        "damage.best_gust_attack_windows_to_ko",
+        "damage.best_gust_prize_yield",
+        "damage.best_gust_remaining_debt",
+        "damage.option.target_entity_serial",
+        "damage.option.projected_damage",
+        "damage.option.attack_windows_to_ko",
+        "damage.option.prize_yield",
+        "damage.option.remaining_debt",
+        "damage.option.overkill",
+        "damage.option.response_risk",
+        "transaction.active",
+        "transaction.id",
+        "transaction.phase",
+        "transaction.target_entity_serial",
+        "transaction.remaining_damage_debt",
+        "transaction.remaining_energy_debt",
+        "transaction.deadline_turn",
+        "transaction.candidate.card_uid",
+        "transaction.candidate.remaining_damage_debt",
+        "transaction.candidate.remaining_energy_debt",
+        "transaction.candidate.is_damage_best",
+        "transaction.candidate.is_transfer_best",
+        "transaction.candidate.is_gust_best",
+        "transaction.option.matches_target",
+        "transaction.candidate.is_damage_best",
+        "transaction.candidate.is_transfer_best",
+        "transaction.candidate.is_gust_best",
     }
 )
 ZONE_FACTS = frozenset(
@@ -263,6 +315,10 @@ NUMERIC_TERM_FACTS = frozenset(
         "turn.supporter_available",
         "turn.manual_attachment_available",
         "turn.retreat_available",
+        "transaction.active",
+        "transaction.id",
+        "transaction.phase",
+        "transaction.option.matches_target",
     }
 )
 PRIVATE_KEYS = frozenset(
@@ -293,6 +349,8 @@ DOCUMENT_KEYS = DOCUMENT_REQUIRED_KEYS | {
     "route_candidates",
     "interaction_recipes",
     "turn_bonus_contracts",
+    "damage_plans",
+    "semantic_transactions",
 }
 GOAL_KEYS = {"goal_id", "stage", "priority", "requirements"}
 REQUIREMENT_REQUIRED_KEYS = {"card_uid", "ready_target_count", "energy_required"}
@@ -430,7 +488,7 @@ OPPONENT_KEYS = {
 }
 SEMANTIC_KEYS = {"min_count", "max_count", "select_type_raw", "select_context_raw"}
 CARD_KEYS = {"serial", "local_card_uid"}
-SLOT_KEYS = {
+SLOT_REQUIRED_KEYS = {
     "serial",
     "local_card_uid",
     "remaining_hp",
@@ -441,10 +499,18 @@ SLOT_KEYS = {
     "attack_ready",
     "energy_debt",
 }
-OPTION_KEYS = {
+SLOT_KEYS = SLOT_REQUIRED_KEYS | {
+    "entity_serial",
+    "max_hp",
+    "damage_counters",
+    "attached_tool_uid",
+    "pokemon_stack_uids",
+}
+OPTION_REQUIRED_KEYS = {
     "index",
     "kind",
     "card_uid",
+    "card_serial",
     "source_uid",
     "source_serial",
     "target_uid",
@@ -460,12 +526,17 @@ OPTION_KEYS = {
     "projected_knockout",
     "requires_interaction",
     "attack_index",
+    "option_number",
     "ability_index",
+    "energy_type_raw",
+    "energy_count",
+    "special_condition_type",
     "pending_assignment_count",
     "tags",
     "option_type_raw",
     "option_player_index",
 }
+OPTION_KEYS = OPTION_REQUIRED_KEYS | {"source_entity_serial", "target_entity_serial"}
 
 
 def _sha(value: Any) -> str:
@@ -561,7 +632,10 @@ def _condition_list_error(
             return error
         fact = condition["fact"]
         if not allow_option_facts and (
-            fact.startswith("option.") or fact.startswith("goal.option.")
+            fact.startswith("option.")
+            or fact.startswith("goal.option.")
+            or fact.startswith("damage.option.")
+            or fact.startswith("transaction.option.")
         ):
             return "invalid_public_condition"
     return None
@@ -728,6 +802,8 @@ def _document_error(value: Any, allowed_uids: frozenset[str]) -> str | None:
     route_candidates = value.get("route_candidates", [])
     interaction_recipes = value.get("interaction_recipes", [])
     turn_bonus_contracts = value.get("turn_bonus_contracts", [])
+    damage_plans = value.get("damage_plans", [])
+    semantic_transactions = value.get("semantic_transactions", [])
     if type(goals) is not list or not goals or len(goals) > 64:
         return "invalid_goal_state"
     if type(count_rules) is not list or len(count_rules) > 128:
@@ -742,6 +818,14 @@ def _document_error(value: Any, allowed_uids: frozenset[str]) -> str | None:
         return "invalid_interaction_recipe"
     if type(turn_bonus_contracts) is not list or len(turn_bonus_contracts) > 64:
         return "invalid_turn_bonus_contract"
+    if damage_plans:
+        damage_error = validate_damage_plans(damage_plans)
+        if damage_error:
+            return damage_error
+    if semantic_transactions:
+        transaction_error = validate_semantic_transactions(semantic_transactions)
+        if transaction_error:
+            return transaction_error
     goal_ids: set[str] = set()
     for goal in goals:
         if type(goal) is not dict or set(goal) != GOAL_KEYS:
@@ -810,6 +894,18 @@ def _document_error(value: Any, allowed_uids: frozenset[str]) -> str | None:
             if attack_index is not None and ability_index is not None:
                 return "invalid_goal_state"
             seen_uids.add(uid)
+    for damage_plan in damage_plans:
+        if damage_plan["goal_id"] not in goal_ids:
+            return "invalid_damage_plan"
+    for transaction in semantic_transactions:
+        if transaction["goal_id"] not in goal_ids:
+            return "invalid_semantic_transaction"
+        for key in ("start_when", "continue_when", "success_when", "abort_when"):
+            error = _condition_list_error(
+                transaction[key], allowed_uids, allow_option_facts=False
+            )
+            if error is not None:
+                return error
     route_ids: set[str] = set()
     for route in turn_routes:
         if type(route) is not dict or set(route) != TURN_ROUTE_KEYS:
@@ -982,7 +1078,11 @@ def _document_error(value: Any, allowed_uids: frozenset[str]) -> str | None:
         if count_rule["mode"] == "fixed":
             if not _safe_int(fixed) or fixed > 1024 or fact is not None or divisor is not None:
                 return "invalid_count_rule"
-        elif count_rule["mode"] in {"goal_energy_debt", "goal_missing_energy_sources"}:
+        elif count_rule["mode"] in {
+            "goal_energy_debt",
+            "goal_missing_energy_sources",
+            "distinct_card_uids",
+        }:
             if fixed is not None or fact is not None or divisor is not None:
                 return "invalid_count_rule"
             if count_rule["mode"] == "goal_missing_energy_sources":
@@ -1114,13 +1214,33 @@ class CompetitivePolicyV2Compiler:
 
 
 def _card_error(value: Any, *, slot: bool) -> bool:
-    keys = SLOT_KEYS if slot else CARD_KEYS
-    if type(value) is not dict or set(value) != keys:
+    if type(value) is not dict or (
+        (not SLOT_REQUIRED_KEYS <= set(value) <= SLOT_KEYS)
+        if slot
+        else set(value) != CARD_KEYS
+    ):
         return True
     if not _safe_int(value["serial"]) or not _uid(value["local_card_uid"]):
         return True
     if not slot:
         return False
+    if "entity_serial" in value and (
+        not _safe_int(value["entity_serial"]) or value["entity_serial"] < 1
+    ):
+        return True
+    if "max_hp" in value and not _safe_int(value["max_hp"]):
+        return True
+    if "damage_counters" in value and not _safe_int(value["damage_counters"]):
+        return True
+    if "attached_tool_uid" in value and value["attached_tool_uid"] is not None \
+        and not _uid(value["attached_tool_uid"]):
+        return True
+    if "pokemon_stack_uids" in value and (
+        type(value["pokemon_stack_uids"]) is not list
+        or not value["pokemon_stack_uids"]
+        or any(not _uid(uid) for uid in value["pokemon_stack_uids"])
+    ):
+        return True
     return not (
         _safe_int(value["remaining_hp"])
         and _safe_int(value["prize_value"])
@@ -1225,7 +1345,11 @@ def _frame_error(value: Any) -> str | None:
     ):
         return "invalid_public_frame"
     for index, option in enumerate(options):
-        if type(option) is not dict or set(option) != OPTION_KEYS or option["index"] != index:
+        if (
+            type(option) is not dict
+            or not OPTION_REQUIRED_KEYS <= set(option) <= OPTION_KEYS
+            or option["index"] != index
+        ):
             return "invalid_public_frame"
         if type(option["kind"]) is not str or not option["kind"]:
             return "invalid_public_frame"
@@ -1233,8 +1357,11 @@ def _frame_error(value: Any) -> str | None:
             if option[key] is not None and not _uid(option[key]):
                 return "invalid_public_frame"
         for key in (
+            "card_serial",
             "source_serial",
+            "source_entity_serial",
             "target_serial",
+            "target_entity_serial",
             "target_remaining_hp",
             "target_prize_value",
             "target_attached_energy_count",
@@ -1242,8 +1369,14 @@ def _frame_error(value: Any) -> str | None:
             "target_energy_debt",
             "projected_damage",
             "attack_index",
+            "option_number",
             "ability_index",
+            "energy_type_raw",
+            "energy_count",
+            "special_condition_type",
         ):
+            if key not in option:
+                continue
             if not _nullable(option[key], int) or (type(option[key]) is int and not _safe_int(option[key])):
                 return "invalid_public_frame"
         attached_uids = option["target_attached_energy_uids"]
@@ -1266,7 +1399,43 @@ def _frame_error(value: Any) -> str | None:
             or option["option_player_index"] not in {0, 1, None}
         ):
             return "invalid_public_frame"
+        if not _valid_native_option_shape(option):
+            return "invalid_public_frame"
     return None
+
+
+def _valid_native_option_shape(option: Mapping[str, Any]) -> bool:
+    option_type = option["option_type_raw"]
+
+    def entity(prefix: str) -> bool:
+        serial = option[f"{prefix}_serial"]
+        return _uid(option[f"{prefix}_uid"]) and _safe_int(serial) and serial > 0
+
+    if option_type == 0:
+        return _safe_int(option["option_number"])
+    if option_type in {3, 4, 5, 7, 11}:
+        return entity("card")
+    if option_type == 6:
+        return (
+            entity("source")
+            and _safe_int(option["energy_type_raw"])
+            and 0 <= option["energy_type_raw"] <= 11
+            and _safe_int(option["energy_count"])
+            and option["energy_count"] > 0
+        )
+    if option_type in {8, 9}:
+        return entity("card") and entity("target")
+    if option_type == 10:
+        return entity("source")
+    if option_type == 13:
+        return _uid(option["source_uid"]) and _safe_int(option["attack_index"])
+    if option_type == 15:
+        return (
+            option["card_uid"] is None and option["card_serial"] is None
+        ) or entity("card")
+    if option_type == 16:
+        return _safe_int(option["special_condition_type"]) and 0 <= option["special_condition_type"] <= 4
+    return option_type in {1, 2, 12, 14}
 
 
 def _requirement_slot_debt(requirement: dict[str, Any], slot: dict[str, Any]) -> int:
@@ -1469,6 +1638,18 @@ def _goal_missing_energy_source_quotas(
     }
 
 
+def _distinct_card_uid_quotas(frame: dict[str, Any]) -> dict[str, int]:
+    """Select at most one option for every distinct public printing UID."""
+    return {
+        uid: 1
+        for uid in dict.fromkeys(
+            option.get("card_uid")
+            for option in frame["options"]
+            if type(option.get("card_uid")) is str and option.get("card_uid")
+        )
+    }
+
+
 def _slot_after_energy(slot: dict[str, Any], energy_uid: str) -> dict[str, Any]:
     projected = dict(slot)
     projected["attached_energy_count"] = slot["attached_energy_count"] + 1
@@ -1632,6 +1813,33 @@ def _fact(
     threat: dict[str, int],
     card_uid: str | None,
 ) -> Any:
+    damage = frame.get("_derived_damage", {})
+    transaction = frame.get("_derived_transaction", {})
+    if fact.startswith("damage.option."):
+        if option is None:
+            return None
+        metrics = damage.get("options", {}).get(str(option.get("index")), {})
+        return metrics.get(fact.removeprefix("damage.option."))
+    if fact.startswith("damage."):
+        return damage.get("facts", {}).get(fact)
+    if fact == "transaction.active":
+        return bool(transaction.get("state"))
+    if fact == "transaction.id":
+        return transaction.get("state", {}).get("transaction_id")
+    if fact == "transaction.phase":
+        return transaction.get("state", {}).get("phase")
+    if fact.startswith("transaction.option."):
+        if option is None:
+            return None
+        target = transaction.get("state", {}).get("target_entity_serial")
+        option_target = option.get("target_entity_serial")
+        if option.get("kind") in {"attack", "granted_attack"}:
+            option_target = damage.get("options", {}).get(
+                str(option.get("index")), {}
+            ).get("target_entity_serial")
+        return type(target) is int and target == option_target
+    if fact.startswith("transaction."):
+        return transaction.get("state", {}).get(fact.removeprefix("transaction."))
     own = frame["public_state"]["self"]
     opponent = frame["public_state"]["opponent"]
     turn = own.get("turn", {})
@@ -1742,14 +1950,19 @@ def _fact(
     if fact in {"option.source_is_active", "option.target_is_active"}:
         if option is None:
             return None
-        serial_field = "source_serial" if fact == "option.source_is_active" else "target_serial"
-        serial = option.get(serial_field)
-        return serial is not None and any(
-            slot["serial"] == serial
+        prefix = "source" if fact == "option.source_is_active" else "target"
+        entity_serial = option.get(f"{prefix}_entity_serial")
+        serial = option.get(f"{prefix}_serial")
+        return (entity_serial is not None or serial is not None) and any(
+            (
+                slot.get("entity_serial") == entity_serial
+                if entity_serial is not None
+                else slot["serial"] == serial
+            )
             for slot in frame["public_state"]["self"]["active"]
         )
     if fact.startswith("option."):
-        return None if option is None else option[fact.split(".", 1)[1]]
+        return None if option is None else option.get(fact.split(".", 1)[1])
     return None
 
 
@@ -2287,6 +2500,9 @@ def _evaluate(
         elif rule["mode"] == "goal_missing_energy_sources":
             selection_quotas = _goal_missing_energy_source_quotas(goal, frame)
             desired = sum(selection_quotas.values())
+        elif rule["mode"] == "distinct_card_uids":
+            selection_quotas = _distinct_card_uid_quotas(frame)
+            desired = sum(selection_quotas.values())
         else:
             actual = _fact(rule["fact"], frame, None, goal, threat, None)
             if type(actual) is not int:
@@ -2345,6 +2561,7 @@ class CompetitivePolicyV2Runtime:
         terminal_indexes: list[int] | None = None,
         base_hard_tiers: list[dict[str, Any]] | None = None,
         base_vetoed_indexes: list[int] | None = None,
+        transaction_journal: SemanticTransactionJournal | None = None,
     ) -> CompetitivePolicyV2Decision:
         if type(policy) is not CompetitivePolicyV2 or not policy.validate_integrity():
             return CompetitivePolicyV2Decision(False, "invalid_policy", [], {})
@@ -2352,6 +2569,51 @@ class CompetitivePolicyV2Runtime:
         error = _frame_error(frame_value)
         if error is not None:
             return CompetitivePolicyV2Decision(False, error, [], {})
+        document = policy.to_public_dict()
+        damage_result: dict[str, Any] = {
+            "accepted": True,
+            "error_code": "",
+            "facts": {},
+            "options": {},
+            "targets": {},
+            "audit_hash": "",
+        }
+        if document.get("damage_plans"):
+            damage_result = PublicDamagePlanner.calculate(
+                frame_value,
+                document["damage_plans"],
+                PublicDamageCapabilityRegistry.load_default(),
+            )
+            if not damage_result.get("accepted"):
+                return CompetitivePolicyV2Decision(
+                    False,
+                    str(damage_result.get("error_code", "damage_plan_failed")),
+                    [],
+                    {},
+                )
+        transaction_result: dict[str, Any] = {
+            "accepted": True,
+            "error_code": "",
+            "event": "idle",
+            "reason": "journal_not_bound",
+            "state": {},
+            "audit_hash": "",
+        }
+        if document.get("semantic_transactions") and transaction_journal is not None:
+            transaction_result = transaction_journal.advance(
+                frame_value,
+                document["semantic_transactions"],
+                damage_result,
+            )
+            if not transaction_result.get("accepted"):
+                return CompetitivePolicyV2Decision(
+                    False,
+                    str(transaction_result.get("error_code", "semantic_transaction_failed")),
+                    [],
+                    {},
+                )
+        frame_value["_derived_damage"] = damage_result
+        frame_value["_derived_transaction"] = transaction_result
         option_count = len(frame_value["options"])
         mandatory = [] if mandatory_indexes is None else copy.deepcopy(mandatory_indexes)
         terminal = [] if terminal_indexes is None else copy.deepcopy(terminal_indexes)
@@ -2464,6 +2726,12 @@ class CompetitivePolicyV2Runtime:
             "goal_states": goals,
             "threat_clock": threat,
             "turn_contract": turn_contract,
+            "damage_plan": {
+                "audit_hash": damage_result.get("audit_hash", ""),
+                "facts": copy.deepcopy(damage_result.get("facts", {})),
+                "best_target_entity_serial": damage_result.get("best_target_entity_serial"),
+            },
+            "semantic_transaction": copy.deepcopy(transaction_result),
             "scorecards": scorecards,
             "fallback_used": fallback_used,
             "public_only": True,

@@ -538,8 +538,13 @@ class AuthorStrategyMatchHandleBuilder:
             raise AuthorStrategyMatchError("package_integrity_invalid")
         metadata = package.to_dict()
         compatibility = metadata.get("compatibility")
+        expected_game_api = (
+            "ptcgdap-author-host-v2"
+            if metadata.get("package_document_type") == "strategy_package_v2"
+            else "ptcgdap-author-host-v1"
+        )
         if compatibility != {
-            "minimum_game_api": "ptcgdap-author-host-v1",
+            "minimum_game_api": expected_game_api,
             "cabt_contract_sha256": CABT_CONTRACT_SHA256,
             "card_catalog_sha256": CARD_CATALOG_SHA256,
             "base_executor_sha256": BASE_EXECUTOR_SHA256,

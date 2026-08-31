@@ -1,0 +1,178 @@
+{
+  "document_type": "ogerpon_godot_adaptation_final_evidence_v1",
+  "schema_version": 1,
+  "recorded_at": "2026-08-25",
+  "status": "windows_development_complete",
+  "development_only": true,
+  "official_cabt_engine_parity": false,
+  "production_ready": false,
+  "source": {
+    "path": "D:\\ai\\code\\ptcgtrain-main\\deliverables\\ptcgabc_ogerpon_v523a_handoff_20260812",
+    "read_only": true,
+    "champion_sha256": "d6580b1a00f7609dee68053acb67f8de3d68bea440a90774677fa25b74313207",
+    "deck_sha256": "66b339a7ef8178dc0095c4369b685acb33a2d6e4fc16b452bb6fb4a5ff048b37",
+    "model_sha256": "d0e72d029d7ab9fd90537622d9d2a5139b7822bd23f049dede9d594b6cc677d3",
+    "archive_sha256": "e7eea5a7e6f753b62757151f5647e85a9ed99b83f196c98c6a2ca45d01a465cc",
+    "submission_id": 55435118,
+    "record": "33-22"
+  },
+  "deck": {
+    "source_deck_id": 800052301,
+    "card_count": 60,
+    "unique_printing_count": 19,
+    "identity_domain": "godot_local_card_uid_v1"
+  },
+  "packages": [
+    {
+      "round": "R0",
+      "version": "0.1.0",
+      "archive_sha256": "6BA5D78C7790212692B821354623FE10A36EF0A6C222BA2C4D61B09261CC310E",
+      "scenario_passed": 10,
+      "scenario_total": 10
+    },
+    {
+      "round": "R1",
+      "version": "0.2.0",
+      "archive_sha256": "A2E61810BD2B91915EFFDDB73EBE0B27DD64BEDF3BE0125F4B1172C00A53A3E1",
+      "scenario_passed": 13,
+      "scenario_total": 13
+    },
+    {
+      "round": "R2",
+      "version": "0.3.0",
+      "archive_sha256": "A759D05AFAC27AAA41CC8C5D9EC2740AA89D5D5BA7DD69A0769FC5722A2CC468",
+      "scenario_passed": 18,
+      "scenario_total": 18
+    },
+    {
+      "round": "R3",
+      "version": "0.4.0",
+      "archive_sha256": "A2C84D69C4F5A69D78E0821B9CE4E404953FF7138EE450C36DA651CE3E8E9423",
+      "scenario_passed": 21,
+      "scenario_total": 21
+    },
+    {
+      "round": "final",
+      "version": "1.0.0",
+      "archive_sha256": "9531F683F2AB9E0138D8054D3E3813D7378F9F6E5F7F8CAF9C428C3FCAFF8D9F",
+      "archive_bytes": 82805,
+      "scenario_passed": 21,
+      "scenario_total": 21,
+      "score_rule_count": 65,
+      "count_rule_count": 6,
+      "deterministic_build": true,
+      "forge_path": "work/ogerpon-crustle-v523a-final/build/ogerpon-crustle-v523a-1.0.0.ptcgai",
+      "ptcgdap_path": "data/ptcgdap/author_strategy_packages/ogerpon-crustle-v523a-1.0.0.ptcgai"
+    }
+  ],
+  "development_rounds": [
+    {
+      "round": "R1",
+      "seed_base": 62300,
+      "games": 20,
+      "control_wins": 12,
+      "candidate_wins": 13,
+      "change": "remove_unrelated_ogerpon_prerequisite_from_dwebble_ascension"
+    },
+    {
+      "round": "R2",
+      "seed_base": 67300,
+      "games": 20,
+      "control_wins": 14,
+      "candidate_wins": 14,
+      "control_policy_calls": 903,
+      "candidate_policy_calls": 825,
+      "change": "public_debt_aware_energy_switch_source_target_routing"
+    },
+    {
+      "round": "R3",
+      "seed_base": 67300,
+      "games": 20,
+      "control_wins": 14,
+      "candidate_wins": 14,
+      "control_policy_calls": 825,
+      "candidate_policy_calls": 824,
+      "change": "teal_dance_requires_deck_count_greater_than_four",
+      "fixed_seed_outcome_flip": false
+    }
+  ],
+  "resolved_blockers": [
+    "GODOT-OGER-001",
+    "GODOT-OGER-002",
+    "GODOT-OGER-003",
+    "GODOT-OGER-004",
+    "GODOT-OGER-005",
+    "GODOT-OGER-006",
+    "GODOT-OGER-007",
+    "GODOT-OGER-008",
+    "GODOT-OGER-009",
+    "GODOT-OGER-010",
+    "GODOT-OGER-011",
+    "GODOT-OGER-012"
+  ],
+  "final_benchmark": {
+    "report": "D:\\ai\\code\\PtcgDAP\\artifacts\\deck_training\\ogerpon_final_1_0_0_20x5_one_shot_clean.json",
+    "engine_version": "4.6.1-stable",
+    "seed_base": 72300,
+    "matchup_offset": 1000,
+    "max_steps": 700,
+    "games": 100,
+    "terminal_games": 100,
+    "candidate_wins": 75,
+    "candidate_losses": 25,
+    "draws": 0,
+    "is_clean": true,
+    "policy_calls": 3995,
+    "policy_successes": 3995,
+    "policy_errors": 0,
+    "invalid_outputs": 0,
+    "classic_fallbacks": 0,
+    "same_window_fallbacks": 0,
+    "engine_rejections": 0,
+    "pending_window_contract": "durable_one_shot; invalid_output_does_not_consume_window",
+    "matchups": [
+      {"opponent_deck_id": 800018501, "name": "玛俐长毛巨魔", "wins": 17, "games": 20},
+      {"opponent_deck_id": 800017097, "name": "无碟沙奈朵", "wins": 16, "games": 20},
+      {"opponent_deck_id": 800018499, "name": "多龙巴鲁托", "wins": 12, "games": 20},
+      {"opponent_deck_id": 800018509, "name": "猛雷鼓厄诡椪", "wins": 11, "games": 20},
+      {"opponent_deck_id": 800018502, "name": "N 的索罗亚克", "wins": 19, "games": 20}
+    ]
+  },
+  "public_replay_audit": {
+    "root": "D:\\ai\\code\\PtcgDAP\\artifacts\\deck_training\\ogerpon_final_1_0_0_representatives_one_shot_clean",
+    "rows": 100,
+    "accepted": 100,
+    "files": 100,
+    "independent_artifact_hash_manifest_mismatches": 0,
+    "identity": "exact_heterogeneous_rule_identity",
+    "frame_chain": "verified"
+  },
+  "local_game": {
+    "catalog_discoverable": true,
+    "battle_setup_selectable": true,
+    "battle_start_allowed": true,
+    "focused_suite_passed": 16,
+    "focused_suite_total": 16
+  },
+  "validation": {
+    "forge_unittest_passed": 48,
+    "forge_unittest_failed": 0,
+    "forge_doctor": "passed",
+    "forge_sdk_snapshot_check": "passed",
+    "forge_final_workspace_scenarios": "21/21",
+    "forge_demo_scenarios": "10/10",
+    "ptcgdap_relevant_godot_and_python_checks_passed": 200,
+    "ptcgdap_relevant_checks_failed": 0,
+    "git_diff_check_forge": "passed_with_line_ending_warning_only",
+    "git_diff_check_ptcgdap": "passed_with_line_ending_warnings_only"
+  },
+  "non_claims": [
+    "official_numeric_card_id_equality",
+    "official_cabt_full_engine_parity",
+    "official_rng_equivalence",
+    "production_signature_or_approval",
+    "android_or_a5_acceptance",
+    "statistical_strength_guarantee"
+  ],
+  "findings_document": "docs/16-OGERPON-GODOT-ADAPTATION-FINDINGS.md"
+}

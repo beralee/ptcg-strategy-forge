@@ -1,0 +1,96 @@
+{
+  "entry_node_id": "n00",
+  "graph_id": "dev.codex.minimal-bc-rl-marnie",
+  "nodes": [
+    {
+      "config": {
+        "frontier": "current_window"
+      },
+      "next_node_ids": [
+        "n10"
+      ],
+      "node_id": "n00",
+      "operator": "legality_guard",
+      "owner": "base"
+    },
+    {
+      "config": {
+        "mandatory_precedence": true,
+        "terminal_precedence": true
+      },
+      "next_node_ids": [
+        "n20"
+      ],
+      "node_id": "n10",
+      "operator": "mandatory_terminal_guard",
+      "owner": "base"
+    },
+    {
+      "config": {
+        "macro_ids": [
+          "marnie.poffin.play",
+          "marnie.spikemuth.play",
+          "marnie.morgrem.evolve",
+          "marnie.grimmsnarl.evolve",
+          "marnie.punk-up.energy",
+          "marnie.shadow-bullet.attack",
+          "marnie.night-stretcher.play"
+        ]
+      },
+      "next_node_ids": [
+        "n30"
+      ],
+      "node_id": "n20",
+      "operator": "macro_proposal",
+      "owner": "adapter"
+    },
+    {
+      "config": {
+        "same_tier_only": true
+      },
+      "next_node_ids": [
+        "n40"
+      ],
+      "node_id": "n30",
+      "operator": "hard_tier_filter",
+      "owner": "base"
+    },
+    {
+      "config": {
+        "enabled": true
+      },
+      "next_node_ids": [
+        "n50"
+      ],
+      "node_id": "n40",
+      "operator": "base_veto",
+      "owner": "base"
+    },
+    {
+      "config": {
+        "strategy": "same_window_first_min"
+      },
+      "next_node_ids": [
+        "n60"
+      ],
+      "node_id": "n50",
+      "operator": "deterministic_fallback",
+      "owner": "base"
+    },
+    {
+      "config": {},
+      "next_node_ids": [],
+      "node_id": "n60",
+      "operator": "emit_decision",
+      "owner": "base"
+    }
+  ],
+  "profile_id": "ptcgdap-restricted-base-graph-ir-p4-wp2-v1",
+  "required_capabilities": [
+    "public_context",
+    "current_window",
+    "deterministic_fallback",
+    "strategic_trace_v2"
+  ],
+  "schema_version": 1
+}

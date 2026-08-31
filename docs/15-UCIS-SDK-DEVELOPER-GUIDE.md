@@ -13,34 +13,36 @@ SDK 不执行引擎动作，也不持有 ticket。它只解析当前不可变 `s
 ```powershell
 .\setup.ps1
 .\forge.ps1 doctor
-.\forge.ps1 ucis catalog
+.\forge.ps1 workspace status demo\marnie-forge
+.\forge.ps1 workspace inspect demo\marnie-forge
 .\forge.ps1 ucis walkthrough
-.\forge.ps1 ucis inspect --scenario demo\marnie-forge\scenarios\01-positive.json
 ```
 
-三个 `ucis` 子命令分别回答：
+每个新工作区还会得到 `SUPPORTED-CARDS.json`，它是 `data/developer/supported-cards-v1.json` 的 exact copy。开发者可以先按 `card_uid` 检查目标卡是否 `usable`，再用本页 API 处理它产生的 current-window；详情见[支持卡牌清单](19-SUPPORTED-CARDS.md)。
+
+日常开发用 `workspace inspect`；需要检查整个 UCIS generation 或运行教学向量时再使用三个底层 `ucis` 子命令：
 
 - `catalog`：当前 generation、16 个原语、729 个可用 effect、unsupported 清单和资格 hash；
 - `walkthrough`：运行精确取 3、option 重排、重复分配、能量债务、奖赏时钟和未知 shape 拒绝；
 - `inspect`：把一个场景显示为命名化 context/option 和公开事实，不回显 `raw_observation`、Search token 或隐藏数据。
 
-## 两种策略制品如何使用 SDK
+## 统一 `.ptcgai` 如何使用 SDK
 
-| 制品 | SDK 使用方式 | 运行位置 |
+| 模式 | SDK 使用方式 | 状态/运行位置 |
 |---|---|---|
-| `.ptcgbot` | `competition init` 自动生成 `src/submission/ucis.py`；策略可直接 `from .ucis import ...` | developer-local CPython 3.11.13 runner |
-| `.ptcgai` | 包仍是 data-only；用 `forge ucis inspect/catalog/walkthrough` 理解并测试窗口，再把规则写入 adapter | Godot Host/Base Graph |
+| `rules_only` | 用 `forge ucis inspect/catalog/walkthrough` 理解并测试窗口，再把规则写入 adapter | 当前已实现；Godot Host/Base Graph |
+| `rules_with_model` | 同一 UCIS/public frame 生成固定整数张量、presence/mask；冻结 ORT Actor 只输出当前候选分数与精确数量 | Forge/reference 与 Windows Godot ORT/Host/Base 已实现；macOS 实机门待完成 |
 
-`.ptcgbot` 的 Python 表达力不会扩大 `.ptcgai` 权限。两条路径共享 UCIS generation、命名、稀疏 option shape 和 current-window 不变量。
+下一代只有 `.ptcgai` 制品。规则与模型共享 UCIS generation、命名、稀疏 option shape 和 current-window 不变量；模型路径不会扩大规则/Base authority。历史 `.ptcgbot` Python SDK 已退出目标路径，迁移说明见 [旧 `.ptcgbot` 退出与迁移](14-KAGGLE-STYLE-PTCGBOT-QUICKSTART.md)。
 
 ## 从一个合法窗口开始
 
-`competition init` 生成的 `main.py` 已经是可执行例子：
+当前 Forge helper 的等价可执行窗口示例是：
 
 ```python
 from pathlib import Path
 
-from .ucis import SelectionWindow, semantic_key
+from ptcg_strategy_forge.ucis_runtime import SelectionWindow, semantic_key
 
 _DECK = [int(value) for value in Path("deck.csv").read_text(encoding="ascii").splitlines()]
 _SEARCH_TARGET = semantic_key("CARD", area=2, index=20, playerIndex=0)
@@ -66,7 +68,7 @@ def agent(raw_observation):
 不用记忆 `OptionType.CARD == 3` 或稀疏字段集合：
 
 ```python
-from .ucis import option
+from ptcg_strategy_forge.ucis_runtime import option
 
 candidate = option("CARD", area=2, index=20, playerIndex=0)
 number = option("NUMBER", number=3)
@@ -118,7 +120,7 @@ return window.first_legal()
 ### 公开奖赏时钟和能量债务
 
 ```python
-from .ucis import PublicBattleFacts
+from ptcg_strategy_forge.ucis_runtime import PublicBattleFacts
 
 facts = PublicBattleFacts.parse(raw_observation)
 debt = facts.acting_active_energy_debt(required_units=2)
@@ -150,13 +152,19 @@ their_clock = facts.opponent_attack_windows_to_win(prizes_per_attack=1)
 .\forge.ps1 demo --output "$env:TEMP\ptcg-forge-demo"
 ```
 
-`.ptcgbot` 工作区使用：
+模型工作区优先使用以下命令：
 
 ```powershell
-.\forge.ps1 competition test --workspace work\my-bot
-.\forge.ps1 competition check --workspace work\my-bot
-.\forge.ps1 competition prequalify --workspace work\my-bot
+.\forge.ps1 workspace model inspect work\my-strategy
+.\forge.ps1 workspace model tensorize work\my-strategy --scenario scenarios\01-positive.json
+.\forge.ps1 workspace model import work\my-strategy --source exports\actor.onnx --training-method bc_rl --source-run-id run-001
+.\forge.ps1 workspace model conformance work\my-strategy
+.\forge.ps1 workspace build work\my-strategy
 ```
+
+工作区 `model import` 会先在临时位置验证，再替换模板 Actor；底层 `model import` 保持非覆盖语义，主要用于独立 artifact 诊断。tensor SDK 复用 current-window 的 parse、firewall、presence、semantic key、fresh rebind 和 public facts 语义，并由 `competitive_public_actor_i32_v1` 固定输入名称、`int32` dtype、shape、padding/mask 和 hash。它不会把 Python runtime 复制进作者包。完整合同见[统一 `.ptcgai` 规则与模型策略设计](17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md)。
+
+完整工作区 Python 门面见 [Python 开发者 SDK 参考](18-DEVELOPER-SDK-REFERENCE.md)。
 
 ## 稳定错误和排查顺序
 
@@ -176,4 +184,4 @@ their_clock = facts.opponent_attack_windows_to_win(prizes_per_attack=1)
 
 UCIS generation 1 覆盖 49/49 Context、17/17 Option shape、16 个交互原语和 729 个声明可用 effect；1 个动态未登记能力显式 unsupported。九类代表性双引擎证据只证明 current-window input、ordered semantic options 和双方接受的 indexes。
 
-SDK 不证明提交后的 state、damage、KO、RNG、terminal、完整规则 A3、Search、production sandbox、Android/device acceptance 或策略强度。完整边界见[明确限制](LIMITATIONS.md)。
+SDK 不证明提交后的 state、damage、KO、RNG、terminal、完整规则 A3、Search、production sandbox、Android/device acceptance 或策略强度。统一 v2 与 Windows ORT Actor 有独立可执行证据，但当前 SDK 仍不证明 macOS 实机能力。完整边界见[明确限制](LIMITATIONS.md)。

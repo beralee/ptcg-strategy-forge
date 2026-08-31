@@ -70,7 +70,7 @@ UCIS 已让引擎用统一标准窗口表达精确数量、分配、支付、换
 
 ## 从蓝图编译到 adapter
 
-`forge new` 会生成 `STRATEGY-BLUEPRINT.md`。推荐顺序：
+`forge workspace create` 会生成 `STRATEGY-BLUEPRINT.md`。推荐顺序：
 
 1. 写 Match Agenda、角色、资源债务和关键路线；
 2. 标出信息动作及其重观察检查点；

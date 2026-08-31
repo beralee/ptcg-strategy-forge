@@ -124,6 +124,7 @@ def _option(index: int, *, card_uid: str | None = None) -> dict[str, object]:
         "index": index,
         "kind": "assignment_source",
         "card_uid": card_uid,
+        "card_serial": 1000 + index if card_uid is not None else None,
         "source_uid": None,
         "source_serial": None,
         "target_uid": None,
@@ -139,10 +140,14 @@ def _option(index: int, *, card_uid: str | None = None) -> dict[str, object]:
         "projected_knockout": False,
         "requires_interaction": False,
         "attack_index": None,
+        "option_number": None,
         "ability_index": None,
+        "energy_type_raw": None,
+        "energy_count": None,
+        "special_condition_type": None,
         "pending_assignment_count": 0,
         "tags": [],
-        "option_type_raw": 3,
+        "option_type_raw": 3 if card_uid is not None else 14,
         "option_player_index": 0,
     }
 
@@ -1633,6 +1638,56 @@ class CompetitiveForgeV2Tests(unittest.TestCase):
         no_wrong_type = CompetitivePolicyV2Runtime.decide(compiled.policy, unavailable)
         self.assertEqual([], no_wrong_type.selected_indexes)
 
+    def test_distinct_card_uid_count_uses_each_printing_at_most_once(self) -> None:
+        froslass = "CSV6C_053"
+        adapter = _adapter()
+        adapter["adapter_version"] = 5
+        adapter["count_rules"] = [
+            {
+                "rule_id": "distinct-evolution-printings",
+                "priority": 0,
+                "goal_id": "ready-two-attackers",
+                "mode": "distinct_card_uids",
+                "fixed_count": None,
+                "fact": None,
+                "divisor": None,
+                "when": [_condition("prompt_kind", "eq", "search")],
+            }
+        ]
+        compiled = CompetitivePolicyV2Compiler.compile_local_uid(
+            adapter,
+            allowed_card_uids={GRIMMSNARL, MORGREM, DARK_ENERGY, froslass},
+        )
+        self.assertTrue(compiled.accepted, compiled.error_code)
+        self.assertIsNotNone(compiled.policy)
+
+        frame = _frame()
+        frame["prompt_kind"] = "search"
+        frame["select_semantics"].update({"min_count": 0, "max_count": 2})
+        frame["options"] = [
+            _option(0, card_uid=froslass),
+            _option(1, card_uid=froslass),
+            _option(2, card_uid=MORGREM),
+            _option(3, card_uid=MORGREM),
+        ]
+        for option in frame["options"]:
+            option["kind"] = "effect_target"
+        exact = CompetitivePolicyV2Runtime.decide(compiled.policy, frame)
+        self.assertEqual([0, 2], exact.selected_indexes)
+
+        reordered = copy.deepcopy(frame)
+        reordered["source"]["window_id"] = "9" * 64
+        reordered["options"] = [
+            _option(0, card_uid=MORGREM),
+            _option(1, card_uid=froslass),
+            _option(2, card_uid=froslass),
+            _option(3, card_uid=MORGREM),
+        ]
+        for option in reordered["options"]:
+            option["kind"] = "effect_target"
+        semantic = CompetitivePolicyV2Runtime.decide(compiled.policy, reordered)
+        self.assertEqual([0, 1], semantic.selected_indexes)
+
     def test_package_builder_accepts_declared_attack_route_contract(self) -> None:
         adapter = _adapter()
         adapter["adapter_version"] = 3
@@ -1796,9 +1851,21 @@ class CompetitiveForgeV2Tests(unittest.TestCase):
         pivot["source"]["window_id"] = "C" * 64
         pivot["prompt_kind"] = "send_out"
         fan_target = copy.deepcopy(attach_fan)
-        fan_target.update({"kind": "send_out", "card_uid": None, "index": 0})
+        fan_target.update({
+            "kind": "send_out",
+            "card_uid": FAN_ROTOM,
+            "card_serial": 20,
+            "index": 0,
+            "option_type_raw": 3,
+        })
         bolt_target = copy.deepcopy(attach_bolt)
-        bolt_target.update({"kind": "send_out", "card_uid": None, "index": 1})
+        bolt_target.update({
+            "kind": "send_out",
+            "card_uid": RAGING_BOLT,
+            "card_serial": 21,
+            "index": 1,
+            "option_type_raw": 3,
+        })
         pivot["options"] = [fan_target, bolt_target, copy.deepcopy(end_turn)]
         not_ready = CompetitivePolicyV2Runtime.decide(compiled.policy, pivot)
         self.assertEqual([2], not_ready.selected_indexes)

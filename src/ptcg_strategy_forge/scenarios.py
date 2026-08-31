@@ -15,6 +15,7 @@ from scripts.ai.ptcgdap.competitive_policy_v2 import (
     CompetitivePolicyV2Compiler,
     CompetitivePolicyV2Runtime,
 )
+from scripts.ai.ptcgdap.public_damage_planning import SemanticTransactionJournal
 from scripts.ai.ptcgdap.source_lock import load_json_bytes_strict
 
 
@@ -116,6 +117,11 @@ def simulate_competitive_public_frame(
                 decision = CompetitivePolicyV2Runtime.decide(
                     compiled.policy,
                     scenario["frame"],
+                    transaction_journal=SemanticTransactionJournal(
+                        f"scenario:{scenario['scenario_id']}",
+                        int(scenario["frame"].get("seat", 0)),
+                        f"{package.package_id}@{package.package_version}#{package.archive_sha256}",
+                    ),
                     mandatory_indexes=copy.deepcopy(authority["mandatory_indexes"]),
                     terminal_indexes=copy.deepcopy(authority["terminal_indexes"]),
                     base_hard_tiers=copy.deepcopy(authority["base_hard_tiers"]),

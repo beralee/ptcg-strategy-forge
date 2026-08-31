@@ -19,6 +19,15 @@ PREFIXES = (
 # Explicitly reviewed files whose PtcgDAP locations differ from the standalone
 # Forge layout.  Refresh copies bytes only from these allow-listed sources.
 REFRESH_FILES = {
+	Path("scripts/ai/ptcgdap/author_strategy_package.py"): Path(
+		"scripts/ai/ptcgdap/author_strategy_package.py"
+	),
+	Path("scripts/ai/ptcgdap/competitive_policy_v2.py"): Path(
+		"scripts/ai/ptcgdap/competitive_policy_v2.py"
+	),
+	Path("scripts/ai/ptcgdap/public_damage_planning.py"): Path(
+		"scripts/ai/ptcgdap/public_damage_planning.py"
+	),
     Path("scripts/ai/ptcgdap/cabt_selection.py"): Path(
         "scripts/ai/ptcgdap/cabt_selection.py"
     ),
@@ -52,9 +61,39 @@ REFRESH_FILES = {
     Path("services/ptcgdap_replay/competition_agent_rpc.py"): Path(
         "tools/ptcgdap/competition_agent_rpc.py"
     ),
-    Path("contracts/ptcgdap/competition_bundle_v2.schema.json"): Path(
+	Path("contracts/ptcgdap/competition_bundle_v2.schema.json"): Path(
         "contracts/ptcgdap/competition_bundle_v2.schema.json"
-    ),
+	),
+	Path("contracts/ptcgdap/competitive_policy_v2.schema.json"): Path(
+		"contracts/ptcgdap/competitive_policy_v2.schema.json"
+	),
+	Path("contracts/ptcgdap/competitive_policy_v2_profile.json"): Path(
+		"contracts/ptcgdap/competitive_policy_v2_profile.json"
+	),
+	Path("contracts/ptcgdap/competitive_policy_v2_conformance_vectors.json"): Path(
+		"contracts/ptcgdap/competitive_policy_v2_conformance_vectors.json"
+	),
+	Path("contracts/ptcgdap/competitive_policy_v2_bundle.json"): Path(
+		"contracts/ptcgdap/competitive_policy_v2_bundle.json"
+	),
+	Path("contracts/ptcgdap/public_damage_capability_registry_v1.json"): Path(
+		"contracts/ptcgdap/public_damage_capability_registry_v1.json"
+	),
+	Path("data/bundled_user/cards/CSV10C_208.json"): Path(
+		"data/bundled_user/cards/CSV10C_208.json"
+	),
+	Path("data/bundled_user/cards/CSV1C_126.json"): Path(
+		"data/bundled_user/cards/CSV1C_126.json"
+	),
+	Path("data/bundled_user/decks/646600.json"): Path(
+		"data/bundled_user/decks/646600.json"
+	),
+	Path("tools/ptcgdap/build_competitive_policy_v2_contract.py"): Path(
+		"tools/ptcgdap/build_competitive_policy_v2_contract.py"
+	),
+	Path("tools/ptcgdap/build_public_damage_capability_registry.py"): Path(
+		"tools/ptcgdap/build_public_damage_capability_registry.py"
+	),
     Path("contracts/ptcgdap/competition_bundle_v2_conformance_vectors.json"): Path(
         "contracts/ptcgdap/competition_bundle_v2_conformance_vectors.json"
     ),

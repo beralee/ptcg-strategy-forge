@@ -1,0 +1,203 @@
+{
+  "document_type": "ogerpon_supporter_stage_curve_r4_v1",
+  "schema_version": 1,
+  "date": "2026-08-26",
+  "status": "ptcgdap_windows_development_published_behavior_fixed_same_seed_win_rate_regressed",
+  "source_evidence": {
+    "previous_version": "1.3.0",
+    "previous_archive_sha256": "B813433007BCC1A516376D2C95E4911999B4B4B5A804BD5EE1329799280C40CA",
+    "matched_iono_windows": 33,
+    "effect_confirmed_iono_plays": 6,
+    "effect_confirmed_judge_plays": 50,
+    "games": 200,
+    "evidence_path": "evidence/ogerpon-supporter-three-round-iteration.json"
+  },
+  "diagnosis": {
+    "owning_layer": "policy_adapter",
+    "platform_bug": false,
+    "root_causes": [
+      "iono_development_rule_required_tera_orb_bug_set_and_pokegear_to_be_absent",
+      "judge_rule_remained_positive_when_opponent_had_three_prizes",
+      "supporter_value_was_not_explicitly_split_by_public_game_stage_and_board_debt"
+    ]
+  },
+  "red_green": {
+    "red": {
+      "command": ".venv/Scripts/python.exe -m unittest tests.test_forge.ForgeTests.test_ogerpon_supporter_curve_uses_phase_and_board_state -v",
+      "result": "failed",
+      "failure": "adapter_version was 5 instead of expected stage-curve version 6"
+    },
+    "green": {
+      "command": ".venv/Scripts/python.exe -m unittest tests.test_forge.ForgeTests.test_ogerpon_supporter_curve_uses_phase_and_board_state tests.test_forge.ForgeTests.test_new_workspace_supports_ogerpon_champion_migration_v2 -v",
+      "result": "2_pass_0_fail"
+    }
+  },
+  "behavior": {
+    "adapter_version": 6,
+    "score_rule_count": 67,
+    "count_rule_count": 6,
+    "iono_self_brick": {
+      "rule_id": "main.iono-self-brick-reset",
+      "base_score": 24000,
+      "public_guard": "no_ready_attacker_and_positive_energy_debt_and_supporter_available_and_deck_gt_6",
+      "item_absence_gate_removed": true
+    },
+    "iono_late_lock": {
+      "rule_id": "main.iono-late-prize-lock",
+      "base_score": 23000,
+      "public_guard": "self_prizes_gte_3_and_opponent_prizes_lte_3_and_supporter_available_and_deck_gt_6"
+    },
+    "judge_early_disruption": {
+      "rule_id": "main.judge-early-prize-disruption",
+      "base_score": 14500,
+      "public_guard": "turn_lte_6_and_opponent_prizes_gte_4_and_tempo_margin_lte_minus_1",
+      "opponent_hand_count_guard_removed": true
+    },
+    "judge_late_veto": {
+      "rule_id": "main.avoid-judge-late-game",
+      "base_score": -24000,
+      "public_guard": "opponent_prizes_lte_3"
+    },
+    "low_deck_iono_veto_preserved": true
+  },
+  "candidate": {
+    "package_id": "dev.beralee.v18.ogerpon-crustle-v523a",
+    "package_version": "1.4.0",
+    "archive_path": "work/ogerpon-crustle-supporter-r4/build/ogerpon-crustle-supporter-r4-1.4.0-checked.ptcgai",
+    "archive_bytes": 85056,
+    "archive_sha256": "3B4E78A16EB2C238CD9CFB29CA29B8CF44E0D7D99822CA9C1ECD90A2651DFFB8",
+    "adapter_sha256": "C61995148A8ACB6360BDC47ED76FD3B5BEBB7541DA6E9E5AB1392457396B6034",
+    "scenario_suite_sha256": "339F347671D1B22B8FE6B90F6EA692080B63BAF22400C8B062A65FB8584413DD",
+    "check_report_sha256": "C15FA8DD03B78D9ECABD8FA6F3DFF132CF7370D6893388E3838708144FF6B26C",
+    "double_build_deterministic": true,
+    "strict_scenarios": "31/31",
+    "policy_preflight": true,
+    "development_only": true,
+    "engine_witness": true,
+    "production_ready": false
+  },
+  "scenario_additions": [
+    "self_brick_iono_beats_low_yield_tera_orb",
+    "late_iono_prize_lock",
+    "late_iono_semantic_option_reorder",
+    "late_judge_hold",
+    "late_iono_low_deck_hold"
+  ],
+  "full_regression": {
+    "command": ".venv/Scripts/python.exe -m unittest discover -s tests -v",
+    "result": "46_pass_13_fail",
+    "supporter_targeted_tests_passed": true,
+    "failure_scope": "tests/test_competitive_forge_v2.py only",
+    "failure_code": "invalid_public_frame",
+    "known_dirty_worktree_mismatch": "competitive_policy_v2 public slot contract was modified while legacy test frames were not updated",
+    "treated_as_candidate_green": false
+  },
+  "engine_evidence": {
+    "installed_path": "D:/ai/code/PtcgDAP/data/ptcgdap/author_strategy_packages/ogerpon-crustle-v523a-supporter-r4-1.4.0.ptcgai",
+    "installed_bytes": 85056,
+    "installed_sha256": "3B4E78A16EB2C238CD9CFB29CA29B8CF44E0D7D99822CA9C1ECD90A2651DFFB8",
+    "publication_red_green": {
+      "red": "17_pass_3_fail_exact_gate_battle_setup_and_real_host",
+      "green": "20_pass_0_fail",
+      "final_ogerpon_suite": "26_pass_0_fail",
+      "serial_registry_suite": "21_pass_0_fail"
+    },
+    "runtime_identity": {
+      "engine_sha256": "D78E40E24D95B2407DA6E1BF171DFE86FDC58EA062F86B1D60948A9321D4CEE6",
+      "runtime_manifest_sha256": "AD66CB3A54CECCEDF83CFA9B095A17A9C0D4BB90F64D07AE924790A6B0919A78",
+      "rules_sha256": "58AC8F82ECEED1874F516E5F78A3F73F4444891AFF04DF4D57797A5F7DF174D0",
+      "card_catalog_sha256": "AB8CF10465F492A98DA8247A84572AECEE281D0726F7BB7B8E5DBC03A6AC70D4",
+      "host_contract_sha256": "B642E704B92A8A76E0D15D02C20B8CC006C4AD2FEE90324FEEBD35114DF92262"
+    },
+    "host_block_closure": {
+      "dirty_batch_counted_in_win_rate": false,
+      "exact_seed": 95308,
+      "red_error": "pokemon_entity_projection_failed",
+      "owning_layer": "godot_host_pokemon_entity_lifecycle",
+      "fix": "retire_old_root_then_issue_new_entity_serial_for_reused_engine_slot_container",
+      "negative_invariant": "retired_same_root_slot_reuse_remains_rejected",
+      "exact_rerun": "2_terminal_58_policy_calls_2_replays_146_frames_0_mismatch"
+    },
+    "same_seed_ab": {
+      "seed_base": 72300,
+      "games_per_version": 100,
+      "baseline_1_3_0": {
+        "wins": 77,
+        "losses": 23,
+        "matchup_wins": [18, 15, 13, 12, 19],
+        "judge_plays": 31,
+        "iono_plays": 4,
+        "report_sha256": "7F19D640AC6E9310429B8619165EAB3AF7CAE3A237D7CBA64D43BEE43A7AED2C",
+        "audit_sha256": "4BA4F9DE1140D1988D32137087551AE1032BC16CA0103301406FE01ABC860355"
+      },
+      "candidate_1_4_0": {
+        "wins": 73,
+        "losses": 27,
+        "matchup_wins": [15, 13, 13, 13, 19],
+        "judge_plays": 29,
+        "iono_plays": 29,
+        "iono_early_mid": 3,
+        "iono_late_prize_lock": 25,
+        "judge_early_mid_disruption": 29,
+        "report_sha256": "3D3B098AA59D766D2F3466773D6FB01C1C3D4DC35251870C34AD415581437D85",
+        "audit_sha256": "999B191F0D5A4427FAD858C3F6B26D62AD5DC953DE3268CC025724A88B79C7F5"
+      },
+      "win_rate_delta_percentage_points": -4,
+      "same_engine_rules_catalog_host_runtime_seed_and_seat": true
+    },
+    "fresh_seed_candidate": {
+      "seed_base": 92300,
+      "wins": 77,
+      "losses": 23,
+      "matchup_wins": [17, 13, 15, 12, 20],
+      "judge_plays": 34,
+      "iono_plays": 16,
+      "iono_early_mid": 1,
+      "iono_late_prize_lock": 13,
+      "judge_early_mid_disruption": 34,
+      "report_sha256": "8B66B96184A5CBBCAD3C29C2802D11CB1B53E7F17427690BFEA3CEA7DAF31959",
+      "audit_sha256": "673530907ACA9D40C039952B358C4E6CC1DF24EFDD0566D3886C6A6FFAC7E7E9"
+    },
+    "combined_candidate": {
+      "games": 200,
+      "wins": 150,
+      "losses": 50,
+      "win_rate_percent": 75.0,
+      "policy_calls": 8336,
+      "policy_successes": 8336,
+      "validated_replays": 200,
+      "validated_frames": 18740,
+      "replay_mismatches": 0,
+      "policy_errors": 0,
+      "invalid_outputs": 0,
+      "fallbacks": 0,
+      "engine_rejections": 0,
+      "judge_plays": 63,
+      "iono_plays": 45,
+      "unclassified_supporter_events": 0
+    },
+    "ptcgdap_evidence_path": "D:/ai/code/PtcgDAP/evidence/ptcgdap/ogerpon_supporter_stage_curve_r4_v1.json"
+  },
+  "authorization_boundary": {
+    "user_authorized_publication_and_benchmark": true,
+    "ptcgdap_install_performed": true,
+    "godot_engine_tests_performed": true,
+    "win_rate_benchmark_performed": true,
+    "production_publication_performed": false,
+    "community_marketplace_publication_performed": false,
+    "reason": "the user explicitly authorized the Windows development publication and win-rate run; no higher authority was requested"
+  },
+  "acceptance": {
+    "supporter_stage_behavior_problem_closed": true,
+    "same_seed_win_rate_improved": false,
+    "development_publication_complete": true,
+    "production_ready": false,
+    "official_cabt_engine_parity": false,
+    "statistical_strength_claim": false
+  },
+  "rollback": {
+    "package_version": "1.3.0",
+    "installed_path": "D:/ai/code/PtcgDAP/data/ptcgdap/author_strategy_packages/ogerpon-crustle-v523a-supporter-r3-1.3.0.ptcgai",
+    "archive_sha256": "B813433007BCC1A516376D2C95E4911999B4B4B5A804BD5EE1329799280C40CA"
+  }
+}

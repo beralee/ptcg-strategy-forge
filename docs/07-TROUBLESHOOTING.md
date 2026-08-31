@@ -19,9 +19,27 @@
 | `workspace_check_invalid` | 工作区不是普通目录，或缺少 `package/` / `scenario-suite.json` |
 | `workspace_check_output_exists` | `check` 不覆盖已存在的 archive；提升版本或选择新输出名 |
 | `workspace_check_paths_conflict` | `--output` 与 `--report` 指向同一路径；为包和 JSON 证据使用不同文件 |
+| `workspace_manifest_missing` | `workspace` 入口没有找到 `package/strategy_package.json`；确认传入的是工作区根目录 |
+| `workspace_manifest_invalid` | 工作区 manifest 不是受支持的 v1/v2 结构或身份字段非法 |
+| `workspace_model_not_enabled` | 在 `rules_only` 工作区调用模型子命令；用 `--mode model` 创建新工作区，不能只补模型文件 |
+| `workspace_scenario_invalid` | 场景不存在、越出工作区或不能通过严格场景投影 |
+| `model_hidden_field` | 模型张量输入没有通过 public observation firewall；移除对手隐藏区或私有字段 |
 | `demo_output_exists` | demo 不覆盖证据；使用新的版本化输出目录 |
 | `platform_endpoint_insecure` | 使用 HTTPS；本地测试需显式 loopback 标志 |
 | `platform_write_token_invalid` | 设置 32–256 字符、允许字符范围内的环境凭据 |
 | `developer_install_identity_conflict` | 同 package/version 已有不同 archive；提升版本而非覆盖 |
+| `package_signature_untrusted` | 上传包仍使用 test-fixture、误选旧包、公钥已撤销/未登记，或包内作者 ID 让服务端无法在正确账号下找到该公钥。即使网页 key ID 看起来一致，仍可能是 `author_id` 漏掉 `developer-` 前缀；先逐字符核对作者 ID，再核对签名报告 key ID |
+| `release_author_mismatch` | 包内 `author_id` 与登录账号完整 `developer_id` 不同；必须包括 `developer-` 前缀。切换到原作者账号，或在源工作区修正后重新 check/build/resign；不要直接修改 ZIP 或通过换作者继承历史身份/得分 |
+| `release_key_path_exists` | 密钥命令拒绝覆盖；继续使用原密钥，或明确选择新的版本化路径并登记新公钥 |
+| `release_output_exists` | 正式签包拒绝覆盖；使用新的输出文件名 |
 
 排查时保留失败报告。不要通过放宽 firewall、跳过 Host preflight、关闭 Base veto 或复用旧 index 来“修好”测试。
+
+## 首次上传最短排查顺序
+
+1. 在开发者后台重新复制完整开发者 ID，不从显示名称推断；
+2. 打开源工作区 `package/strategy_package.json`，核对 `author.author_id`；
+3. 查看 `release-signing.json` 的 `signature_key_id` 和 `archive_sha256`；
+4. 在后台确认同一 key ID 状态为“有效”；
+5. 确认网页选择的是与该 SHA 对应的最终 `*-upload.ptcgai`；
+6. 修复身份后重新构建和签名，旧包不会因公钥正确而自动变为可信。

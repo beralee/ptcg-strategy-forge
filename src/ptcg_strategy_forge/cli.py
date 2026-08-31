@@ -29,12 +29,35 @@ from tools.ptcgdap.build_author_strategy_package import write_or_check_contracts
 from tools.ptcgdap.build_competitive_policy_v2_contract import (  # noqa: E402
     write_or_check as write_or_check_competitive_v2_contract,
 )
+from tools.build_developer_supported_cards import verify_supported_cards_delivery  # noqa: E402
 from tools.ptcgdap.publish_strategy_release import PublishError, publish  # noqa: E402
 from scripts.ai.ptcgdap.ucis_sdk import UcisDeveloperSdk, UcisSdkError  # noqa: E402
+from scripts.ai.ptcgdap.author_strategy_package import (  # noqa: E402
+    CABT_CONTRACT_SHA256,
+    CARD_CATALOG_SHA256,
+)
+from scripts.ai.ptcgdap.ptcgai_model_actor import PublicActorTensorizer  # noqa: E402
+from scripts.ai.ptcgdap.ptcgai_model_package import (  # noqa: E402
+    build_model_manifest,
+    canonical_bytes,
+)
 
 from .provenance import verify_snapshot
-from . import competition as competition_tools
+from .ptcgai_ort import (
+    OrtActorError,
+    conformance as model_conformance,
+    import_onnx_to_ort,
+    inspect_onnx,
+    inspect_ort,
+    write_linear_actor_onnx,
+)
 from .reviewed_decks import customize_reviewed_workspace, reviewed_deck_ids
+from .release_signing import (
+    build_registered_release,
+    generate_release_key,
+    resign_registered_release,
+)
+from .sdk import StrategyWorkspace, WorkspaceError
 from .ucis_runtime import PublicBattleFacts, UcisRuntimeError
 from .scenarios import (
     SUITE_DOCUMENT_TYPE,
@@ -150,6 +173,14 @@ def _customize_workspace(
         "summary": summary or "Data-only current-window strategy developed with PTCG Strategy Forge.",
     }
     write_json(path, manifest)
+    policy_ir_path = workspace / "package/policy/policy_ir.json"
+    policy_ir = load_json(policy_ir_path)
+    policy_ir["graph_id"] = package_id
+    write_json(policy_ir_path, policy_ir)
+    adapter_path = workspace / "package/policy/adapter.json"
+    adapter = load_json(adapter_path)
+    adapter["adapter_id"] = package_id
+    write_json(adapter_path, adapter)
 
 
 def _write_workspace_guides(workspace: Path) -> list[str]:
@@ -257,37 +288,48 @@ agent(raw_observation) -> list[int]
 """
     workspace_readme = f"""# {strategy_name} 开发工作区
 
-1. 先读 `UCIS-SDK.md`，用 `forge ucis inspect` 确认当前场景的命名化窗口。
-2. 在 `STRATEGY-BLUEPRINT.md` 中写清公开事实、路线、资源债务、信息检查点和场景矩阵。
-3. 修改 `package/policy/adapter.json`；除非合同升级，不改 Base IR 拓扑。
-4. 在 `scenarios/` 增加 RED→GREEN 和单事实 metamorphic 用例，并登记到 `scenario-suite.json`。
-5. 从 PTCG Strategy Forge 根目录执行：
+这是一个可构建为 data-only `.ptcgai` 的完整开发工作区。开发时只需要围绕同一个 `workspace` 生命周期操作：
+
+1. 运行 `status`，查看本工作区应该编辑什么、缺少什么、产物会写到哪里。
+2. 在 `STRATEGY-BLUEPRINT.md` 写清公开事实、路线、资源债务和信息检查点。
+3. 修改 `package/policy/adapter.json`；模型模式再替换 `package/model/actor.ort`，但始终保留规则 fallback。
+4. 在 `SUPPORTED-CARDS.json` 用本地 UID 核对当前游戏可用卡牌与交互状态。
+5. 在 `scenarios/` 增加 RED→GREEN、option 重排和单事实 metamorphic 用例。
+6. 依次 inspect、check、build；通过后再安装：
 
 ```powershell
-.\\forge.ps1 ucis inspect --scenario <本工作区路径>\\scenarios\\01-positive.json
-.\\forge.ps1 check --workspace <本工作区路径> --output <本工作区路径>\\build\\strategy.ptcgai
+python forge.py workspace status <本工作区路径>
+python forge.py workspace inspect <本工作区路径>
+python forge.py workspace check <本工作区路径>
+python forge.py workspace build <本工作区路径>
+python forge.py workspace install <本工作区路径>
 ```
 
-`check` 通过只代表开发包确定性、合同与公开窗口场景通过；不授予引擎、CABT 或 production 权限。
+PowerShell 用户也可以把 `python forge.py` 替换为 `.\\forge.ps1`。`check` 通过只代表开发包确定性、合同与公开窗口场景通过；不授予引擎、CABT 或 production 权限。
 """
     sdk_guide = f"""# {strategy_name} 的 UCIS 上手卡
 
 本工作区是 data-only `.ptcgai`：Python SDK 只用于开发检查，不会装进游戏。
 
 ```powershell
-.\\forge.ps1 ucis catalog
-.\\forge.ps1 ucis walkthrough
-.\\forge.ps1 ucis inspect --scenario <本工作区路径>\\scenarios\\01-positive.json
+.\\forge.ps1 workspace inspect <本工作区路径>
+.\\forge.ps1 workspace check <本工作区路径>
 ```
 
-先确认场景是合法的命名化 Context/Option 组合，再编辑 adapter。每次选择接受后旧 index 失效；跨窗口只保留公开语义目标、稳定 UID 或资源债务，并在新 observation 上重新绑定。精确数量、重复分配、NUMBER/YES_NO、奖赏时钟和能量债务的可执行代码位于 Forge `demo/marnie-forge/sdk_walkthrough.py`。
+`workspace inspect` 是日常入口；需要查看完整 UCIS 能力表或教学样例时，再使用高级命令 `ucis catalog` 与 `ucis walkthrough`。先确认场景是合法的命名化 Context/Option 组合，再编辑 adapter。每次选择接受后旧 index 失效；跨窗口只保留公开语义目标、稳定 UID 或资源债务，并在新 observation 上重新绑定。精确数量、重复分配、NUMBER/YES_NO、奖赏时钟和能量债务的可执行代码位于 Forge `demo/marnie-forge/sdk_walkthrough.py`。
+
+`SUPPORTED-CARDS.json` 是创建工作区时复制的 qualification-locked 卡牌清单。`usable=true` 表示该本地 UID 的声明交互路径可用，不等于官方完整规则结果一致或已有牌组策略模板；显示名称不在此身份合同中，不能替代 UID。
 
 当前包牌组：{deck_name}。Base Graph 仍拥有合法性、mandatory/terminal、hard tier、veto、fallback 和最终裁决。
 """
+    supported_cards_source = ROOT / "data/developer/supported-cards-v1.json"
+    if not supported_cards_source.is_file():
+        raise ValueError("supported_cards_delivery_missing")
     (workspace / "STRATEGY-BLUEPRINT.md").write_text(blueprint, encoding="utf-8")
     (workspace / "README.md").write_text(workspace_readme, encoding="utf-8")
     (workspace / "UCIS-SDK.md").write_text(sdk_guide, encoding="utf-8")
-    return ["README.md", "STRATEGY-BLUEPRINT.md", "UCIS-SDK.md"]
+    (workspace / "SUPPORTED-CARDS.json").write_bytes(supported_cards_source.read_bytes())
+    return ["README.md", "STRATEGY-BLUEPRINT.md", "UCIS-SDK.md", "SUPPORTED-CARDS.json"]
 
 
 def doctor() -> dict[str, object]:
@@ -299,6 +341,11 @@ def doctor() -> dict[str, object]:
     except (OSError, UnicodeError, ValueError) as error:
         snapshot = {"accepted": False, "file_count": 0, "failures": [{"error_code": str(error)}]}
     checks.append({"id": "sdk-snapshot", **snapshot})
+    try:
+        supported_cards = verify_supported_cards_delivery()
+    except (OSError, UnicodeError, ValueError) as error:
+        supported_cards = {"accepted": False, "error_code": str(error)}
+    checks.append({"id": "supported-cards", **supported_cards})
     try:
         ucis = UcisDeveloperSdk.load(ROOT)
         ucis_catalog = ucis.capability_catalog()
@@ -682,6 +729,35 @@ def check_workspace(workspace: Path, *, output: Path | None = None) -> dict[str,
     except (OSError, UnicodeError, ValueError, UcisSdkError) as error:
         raise ValueError("workspace_ucis_contract_invalid") from error
 
+    manifest_path = package_source / "strategy_package.json"
+    package_manifest = load_json(manifest_path) if manifest_path.is_file() else {}
+    policy = package_manifest.get("policy", {})
+    model_required = (
+        package_manifest.get("document_type") == "strategy_package_v2"
+        and isinstance(policy, dict)
+        and policy.get("policy_mode") == "rules_with_model"
+    )
+    model_report: dict[str, object] = {
+        "required": model_required,
+        "status": "not_applicable",
+        "cpu_only": True,
+        "remote_inference": False,
+    }
+    if model_required:
+        try:
+            model_report = {
+                "required": True,
+                **model_conformance(package_source / "model/actor.ort"),
+            }
+        except OrtActorError as error:
+            model_report = {
+                "required": True,
+                "status": "failed",
+                "error_code": error.code,
+                "cpu_only": True,
+                "remote_inference": False,
+            }
+
     with tempfile.TemporaryDirectory(prefix="ptcg-strategy-forge-check-") as temp_name:
         temp_root = Path(temp_name)
         package_a = temp_root / "workspace-a.ptcgai"
@@ -697,6 +773,7 @@ def check_workspace(workspace: Path, *, output: Path | None = None) -> dict[str,
             and validation.get("status") == "valid"
             and scenarios.get("status") == "passed"
             and ucis_accepted
+            and (not model_required or model_report.get("status") == "passed")
         )
         artifact_path: Path | None = None
         if accepted and output is not None:
@@ -715,6 +792,7 @@ def check_workspace(workspace: Path, *, output: Path | None = None) -> dict[str,
             },
             "validation": validation,
             "scenarios": scenarios,
+            "model": model_report,
             "ucis": {
                 "accepted": ucis_accepted,
                 "ucis_generation": ucis_catalog["ucis_generation"],
@@ -809,12 +887,143 @@ def run_demo(output: Path) -> dict[str, object]:
     return report
 
 
+def _configure_model_workspace(workspace: Path) -> dict[str, object]:
+    package_root = workspace / "package"
+    manifest_path = package_root / "strategy_package.json"
+    manifest = load_json(manifest_path)
+    manifest["document_type"] = "strategy_package_v2"
+    manifest["schema_version"] = 2
+    manifest["compatibility"]["minimum_game_api"] = "ptcgdap-author-host-v2"
+    capabilities = list(manifest["compatibility"].get("required_capabilities", []))
+    if "learned_policy_head_v1" not in capabilities:
+        capabilities.append("learned_policy_head_v1")
+    manifest["compatibility"]["required_capabilities"] = capabilities
+    manifest["policy"] = {
+        **manifest["policy"],
+        "weights_path": None,
+        "policy_mode": "rules_with_model",
+        "model_manifest_path": "model/model_manifest.json",
+        "model_artifact_path": "model/actor.ort",
+    }
+    training_root = workspace / "model-source"
+    package_model_root = package_root / "model"
+    legacy_weights = package_root / "policy/weights.bin"
+    if legacy_weights.exists():
+        legacy_weights.unlink()
+    training_root.mkdir()
+    package_model_root.mkdir()
+    onnx_path = training_root / "actor.onnx"
+    ort_path = package_model_root / "actor.ort"
+    source_report = write_linear_actor_onnx(onnx_path, [1] + [0] * 15)
+    import_report = import_onnx_to_ort(onnx_path, ort_path)
+    model_manifest = build_model_manifest(
+        ort_path.read_bytes(),
+        model_id=f"{manifest['package_id']}.actor",
+        cabt_contract_sha256=CABT_CONTRACT_SHA256,
+        card_catalog_sha256=CARD_CATALOG_SHA256,
+        training_method="other",
+        source_run_id="forge-model-template",
+    )
+    manifest_path.write_bytes(canonical_bytes(manifest))
+    (package_model_root / "model_manifest.json").write_bytes(canonical_bytes(model_manifest))
+    return {
+        "policy_mode": "model",
+        "package_document_type": "strategy_package_v2",
+        "model_source": str(onnx_path.resolve()),
+        "model_artifact": str(ort_path.resolve()),
+        "model_artifact_sha256": import_report["artifact_sha256"],
+        "operators": source_report["operators"],
+        "training_required_for_quality": True,
+    }
+
+
+def _configure_rules_workspace(workspace: Path) -> dict[str, object]:
+    package_root = workspace / "package"
+    manifest_path = package_root / "strategy_package.json"
+    manifest = load_json(manifest_path)
+    manifest["document_type"] = "strategy_package_v2"
+    manifest["schema_version"] = 2
+    manifest["compatibility"]["minimum_game_api"] = "ptcgdap-author-host-v2"
+    manifest["compatibility"]["required_capabilities"] = [
+        capability
+        for capability in manifest["compatibility"].get("required_capabilities", [])
+        if capability != "learned_policy_head_v1"
+    ]
+    manifest["policy"] = {
+        **manifest["policy"],
+        "weights_path": None,
+        "policy_mode": "rules_only",
+        "model_manifest_path": None,
+        "model_artifact_path": None,
+    }
+    legacy_weights = package_root / "policy/weights.bin"
+    if legacy_weights.exists():
+        legacy_weights.unlink()
+    manifest_path.write_bytes(canonical_bytes(manifest))
+    return {
+        "policy_mode": "rules",
+        "package_document_type": "strategy_package_v2",
+        "model_artifact": None,
+    }
+
+
+def _model_import(source: Path, output: Path, manifest: Path, model_id: str) -> dict[str, object]:
+    if manifest.exists() or manifest.is_symlink():
+        raise OrtActorError("model_output_exists")
+    report = import_onnx_to_ort(source, output)
+    document = build_model_manifest(
+        Path(output).read_bytes(),
+        model_id=model_id,
+        cabt_contract_sha256=CABT_CONTRACT_SHA256,
+        card_catalog_sha256=CARD_CATALOG_SHA256,
+    )
+    manifest.write_bytes(canonical_bytes(document))
+    return {**report, "model_manifest": str(manifest.resolve())}
+
+
+def _model_tensorize(context_path: Path, output: Path) -> dict[str, object]:
+    if output.exists() or output.is_symlink():
+        raise OrtActorError("model_output_exists")
+    context = load_json(context_path)
+    tensors = PublicActorTensorizer.tensorize(context)
+    document = {
+        "document_type": "ptcgai_public_actor_tensors_v1",
+        "schema_version": 1,
+        "profile_id": tensors.profile_id,
+        "frame_i32": [list(tensors.frame_i32)],
+        "frame_presence_i32": [list(tensors.frame_presence_i32)],
+        "option_i32": [[list(row) for row in tensors.option_i32]],
+        "option_presence_i32": [[list(row) for row in tensors.option_presence_i32]],
+        "option_mask_i32": [list(tensors.option_mask_i32)],
+        "row_to_current_index": list(tensors.row_to_current_index),
+        "semantic_keys": list(tensors.semantic_keys),
+        "public_only": True,
+    }
+    payload = canonical_bytes(document)
+    output.write_bytes(payload)
+    return {
+        "document_type": "ptcgai_model_tensorize_report_v1",
+        "status": "written",
+        "output": str(output.resolve()),
+        "bytes": len(payload),
+        "sha256": hashlib.sha256(payload).hexdigest().upper(),
+        "option_count": len(tensors.row_to_current_index),
+        "public_only": True,
+    }
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Develop, test, optimize, install, and publish PtcgDAP data-only strategies.")
+    parser = argparse.ArgumentParser(
+        description="Develop, verify, build, and install data-only .ptcgai workspaces.",
+        epilog="New developers: start with `workspace create`, then `workspace status`.",
+    )
     commands = parser.add_subparsers(dest="command", required=True)
     doctor_parser = commands.add_parser("doctor", help="Verify Python, pinned SDK bytes, contracts, and template package.")
     doctor_parser.add_argument("--report", type=Path, help="Write the JSON report to this path.")
-    new = commands.add_parser("new", help="Create a non-overwriting strategy workspace and strict scenario suite.")
+    new = commands.add_parser(
+        "new",
+        help="Low-level compatibility entry for explicit workspace scaffolding.",
+    )
     new.add_argument("--output", type=Path, required=True, help="New workspace directory; it must not exist.")
     new.add_argument("--package-id", required=True, help="Stable reverse-domain package identifier.")
     new.add_argument("--package-version", default="0.1.0", help="Initial package version (default: 0.1.0).")
@@ -823,16 +1032,117 @@ def main() -> int:
     new.add_argument("--strategy-name", help="Strategy display name.")
     new.add_argument("--summary", help="Short public strategy summary.")
     new.add_argument(
+        "--policy-mode",
+        choices=("rules", "model"),
+        default="rules",
+        help="Create a rules-only package or a v2 rules-with-model package.",
+    )
+    new.add_argument(
         "--deck-id",
         type=int,
         choices=reviewed_deck_ids(),
         help="Use one reviewed exact 18.0 Windows-local deck instead of the Marnie template.",
     )
     new.add_argument("--report", type=Path, help="Write the JSON report to this path.")
+    workspace = commands.add_parser(
+        "workspace",
+        help="Create, understand, check, build, and install one developer workspace.",
+    )
+    workspace_commands = workspace.add_subparsers(dest="workspace_command", required=True)
+    workspace_create = workspace_commands.add_parser(
+        "create", help="Create a workspace with convention-based identity defaults."
+    )
+    workspace_create.add_argument("path", type=Path, help="New workspace directory; it must not exist.")
+    workspace_create.add_argument("--author-id", required=True, help="Stable author identifier.")
+    workspace_create.add_argument("--author-name", help="Display name; defaults to --author-id.")
+    workspace_create.add_argument("--package-id", help="Defaults to dev.<author-id>.<workspace-name>.")
+    workspace_create.add_argument("--package-version", default="0.1.0")
+    workspace_create.add_argument("--strategy-name", help="Defaults to the workspace directory name.")
+    workspace_create.add_argument("--summary")
+    workspace_create.add_argument("--mode", choices=("rules", "model"), default="rules")
+    workspace_create.add_argument("--deck-id", type=int, choices=reviewed_deck_ids())
+    workspace_create.add_argument("--report", type=Path)
+    workspace_status = workspace_commands.add_parser(
+        "status", help="Show what to edit, readiness issues, outputs, and next commands."
+    )
+    workspace_status.add_argument("path", type=Path)
+    workspace_status.add_argument("--report", type=Path)
+    workspace_inspect = workspace_commands.add_parser(
+        "inspect", help="Inspect the first or selected public current-window scenario."
+    )
+    workspace_inspect.add_argument("path", type=Path)
+    workspace_inspect.add_argument("--scenario", type=Path)
+    workspace_inspect.add_argument("--report", type=Path)
+    workspace_check = workspace_commands.add_parser(
+        "check", help="Run all acceptance gates without writing an archive."
+    )
+    workspace_check.add_argument("path", type=Path)
+    workspace_check.add_argument("--report", type=Path)
+    workspace_build = workspace_commands.add_parser(
+        "build", help="Run acceptance and write the accepted archive and report."
+    )
+    workspace_build.add_argument("path", type=Path)
+    workspace_build.add_argument("--output", type=Path)
+    workspace_build.add_argument("--report", type=Path)
+    workspace_install = workspace_commands.add_parser(
+        "install", help="Build when needed, then validate and install for local development."
+    )
+    workspace_install.add_argument("path", type=Path)
+    workspace_install.add_argument("--artifact", type=Path)
+    workspace_install.add_argument("--report", type=Path)
+    workspace_model = workspace_commands.add_parser(
+        "model", help="Inspect, replace, tensorize, or check this workspace's frozen Actor."
+    )
+    workspace_model_commands = workspace_model.add_subparsers(
+        dest="workspace_model_command", required=True
+    )
+    workspace_model_inspect = workspace_model_commands.add_parser("inspect")
+    workspace_model_inspect.add_argument("path", type=Path)
+    workspace_model_inspect.add_argument("--artifact", type=Path)
+    workspace_model_inspect.add_argument("--report", type=Path)
+    workspace_model_import = workspace_model_commands.add_parser("import")
+    workspace_model_import.add_argument("path", type=Path)
+    workspace_model_import.add_argument("--source", type=Path, required=True)
+    workspace_model_import.add_argument("--model-id")
+    workspace_model_import.add_argument(
+        "--training-method",
+        choices=("bc", "rl", "bc_rl", "hybrid", "other"),
+        default="other",
+    )
+    workspace_model_import.add_argument("--source-run-id", default="developer-import")
+    workspace_model_import.add_argument("--report", type=Path)
+    workspace_model_tensorize = workspace_model_commands.add_parser("tensorize")
+    workspace_model_tensorize.add_argument("path", type=Path)
+    workspace_model_tensorize.add_argument("--scenario", type=Path, required=True)
+    workspace_model_tensorize.add_argument("--output", type=Path)
+    workspace_model_tensorize.add_argument("--report", type=Path)
+    workspace_model_check = workspace_model_commands.add_parser("conformance")
+    workspace_model_check.add_argument("path", type=Path)
+    workspace_model_check.add_argument("--report", type=Path)
     build = commands.add_parser("build", help="Build one deterministic test-fixture .ptcgai archive.")
     build.add_argument("--source", type=Path, required=True, help="Package source directory.")
     build.add_argument("--output", type=Path, required=True, help="New .ptcgai path; it must not exist.")
     build.add_argument("--report", type=Path, help="Write the JSON report to this path.")
+    release_key = commands.add_parser(
+        "release-key", help="Generate a non-overwriting Ed25519 key for registered releases."
+    )
+    release_key.add_argument("--private-key", type=Path, required=True)
+    release_key.add_argument("--public-key", type=Path, required=True)
+    release_key.add_argument("--report", type=Path)
+    release_build = commands.add_parser(
+        "release-build", help="Build a deterministic .ptcgai with a registered developer key."
+    )
+    release_build.add_argument("--source", type=Path, required=True)
+    release_build.add_argument("--output", type=Path, required=True)
+    release_build.add_argument("--private-key", type=Path, required=True)
+    release_build.add_argument("--report", type=Path)
+    release_resign = commands.add_parser(
+        "release-resign", help="Replace only a validated package signature with a registered developer key."
+    )
+    release_resign.add_argument("--package", type=Path, required=True)
+    release_resign.add_argument("--output", type=Path, required=True)
+    release_resign.add_argument("--private-key", type=Path, required=True)
+    release_resign.add_argument("--report", type=Path)
     validate = commands.add_parser("validate", help="Strictly validate a package through the runtime Host compile path.")
     validate.add_argument("--package", type=Path, required=True, help="Package archive to validate.")
     validate.add_argument("--report", type=Path, help="Write the JSON report to this path.")
@@ -878,79 +1188,94 @@ def main() -> int:
         help="Run exact-count, semantic-rebind, public-fact, and fail-closed examples.",
     )
     ucis_walkthrough.add_argument("--report", type=Path)
-    competition = commands.add_parser(
-        "competition", help="Develop deterministic multi-file .ptcgbot v2 agents."
+    model = commands.add_parser(
+        "model", help="Low-level artifact operations; prefer `workspace model` for a workspace."
     )
-    competition_commands = competition.add_subparsers(
-        dest="competition_command", required=True
-    )
-    competition_init = competition_commands.add_parser("init")
-    competition_init.add_argument("--output", type=Path, required=True)
-    competition_init.add_argument("--strategy-id", required=True)
-    competition_init.add_argument("--author-id", required=True)
-    competition_init.add_argument("--display-name", required=True)
-    competition_init.add_argument("--report", type=Path)
-    competition_doctor = competition_commands.add_parser("doctor")
-    competition_doctor.add_argument("--workspace", type=Path)
-    competition_doctor.add_argument("--report", type=Path)
-    competition_check = competition_commands.add_parser("check")
-    competition_check.add_argument("--workspace", type=Path, required=True)
-    competition_check.add_argument("--report", type=Path)
-    competition_run = competition_commands.add_parser("run")
-    competition_run.add_argument("--package", type=Path, required=True)
-    competition_run.add_argument("--suite", type=Path, required=True)
-    competition_run.add_argument("--report", type=Path)
-    competition_test = competition_commands.add_parser("test")
-    competition_test.add_argument("--workspace", type=Path, required=True)
-    competition_test.add_argument("--suite", type=Path)
-    competition_test.add_argument("--report", type=Path)
-    competition_trace = competition_commands.add_parser("trace")
-    competition_trace.add_argument("--package", type=Path, required=True)
-    competition_trace.add_argument("--suite", type=Path, required=True)
-    competition_trace.add_argument("--public", action="store_true")
-    competition_trace.add_argument("--report", type=Path)
-    competition_replay = competition_commands.add_parser("replay")
-    competition_replay.add_argument("--package", type=Path, required=True)
-    competition_replay.add_argument("--suite", type=Path, required=True)
-    competition_replay.add_argument("--report", type=Path)
-    competition_build = competition_commands.add_parser("build")
-    competition_build.add_argument("--workspace", type=Path, required=True)
-    competition_build.add_argument("--output", type=Path, required=True)
-    competition_build.add_argument("--report", type=Path)
-    competition_prequalify = competition_commands.add_parser("prequalify")
-    competition_prequalify.add_argument("--workspace", type=Path, required=True)
-    competition_prequalify.add_argument("--catalog", type=Path)
-    competition_prequalify.add_argument("--report", type=Path)
+    model_commands = model.add_subparsers(dest="model_command", required=True)
+    model_inspect = model_commands.add_parser("inspect")
+    model_inspect.add_argument("--artifact", type=Path, required=True)
+    model_inspect.add_argument("--report", type=Path)
+    model_import = model_commands.add_parser("import")
+    model_import.add_argument("--source", type=Path, required=True)
+    model_import.add_argument("--output", type=Path, required=True)
+    model_import.add_argument("--manifest", type=Path, required=True)
+    model_import.add_argument("--model-id", required=True)
+    model_import.add_argument("--report", type=Path)
+    model_tensorize = model_commands.add_parser("tensorize")
+    model_tensorize.add_argument("--context", type=Path, required=True)
+    model_tensorize.add_argument("--output", type=Path, required=True)
+    model_tensorize.add_argument("--report", type=Path)
+    model_check = model_commands.add_parser("conformance")
+    model_check.add_argument("--artifact", type=Path, required=True)
+    model_check.add_argument("--report", type=Path)
     args = parser.parse_args()
     try:
-        if args.command == "competition":
-            if args.competition_command == "init":
-                report = competition_tools.scaffold(
-                    args.output,
-                    strategy_id=args.strategy_id,
+        if args.command == "workspace":
+            if args.workspace_command == "create":
+                developer_workspace = StrategyWorkspace.create(
+                    args.path,
                     author_id=args.author_id,
-                    display_name=args.display_name,
+                    author_name=args.author_name,
+                    package_id=args.package_id,
+                    package_version=args.package_version,
+                    strategy_name=args.strategy_name,
+                    summary=args.summary,
+                    mode=args.mode,
+                    deck_id=args.deck_id,
                 )
-            elif args.competition_command == "doctor":
-                report = competition_tools.doctor(args.workspace)
-            elif args.competition_command == "check":
-                report = competition_tools.check(args.workspace)
-            elif args.competition_command == "run":
-                report = competition_tools.trace(args.package, args.suite, public=False)
-            elif args.competition_command == "test":
-                report = competition_tools.test(args.workspace, args.suite)
-            elif args.competition_command == "trace":
-                report = competition_tools.trace(
-                    args.package, args.suite, public=args.public
-                )
-            elif args.competition_command == "replay":
-                report = competition_tools.replay(args.package, args.suite)
-            elif args.competition_command == "build":
-                report = competition_tools.build(args.workspace, args.output)
+                status = developer_workspace.status()
+                report = {
+                    "document_type": "ptcg_strategy_forge_workspace_create_v1",
+                    "schema_version": 1,
+                    "status": "created",
+                    "workspace": {
+                        "path": str(developer_workspace.root),
+                        **status["package"],
+                    },
+                    "scenarios": status["scenarios"],
+                    "edit": status["edit"],
+                    "outputs": status["outputs"],
+                    "next_actions": status["next_actions"],
+                    "claims": status["claims"],
+                }
             else:
-                report = competition_tools.prequalify(
-                    args.workspace, catalog_path=args.catalog
+                developer_workspace = StrategyWorkspace.open(args.path)
+                if args.workspace_command == "status":
+                    report = developer_workspace.status()
+                elif args.workspace_command == "inspect":
+                    report = developer_workspace.inspect(args.scenario)
+                elif args.workspace_command == "check":
+                    report = developer_workspace.check()
+                elif args.workspace_command == "build":
+                    report = developer_workspace.build(args.output, report=args.report)
+                elif args.workspace_command == "install":
+                    report = developer_workspace.install(args.artifact)
+                elif args.workspace_model_command == "inspect":
+                    report = developer_workspace.model.inspect(args.artifact)
+                elif args.workspace_model_command == "import":
+                    report = developer_workspace.model.import_actor(
+                        args.source,
+                        model_id=args.model_id,
+                        training_method=args.training_method,
+                        source_run_id=args.source_run_id,
+                    )
+                elif args.workspace_model_command == "tensorize":
+                    report = developer_workspace.model.tensorize(args.scenario, args.output)
+                else:
+                    report = developer_workspace.model.conformance()
+        elif args.command == "model":
+            if args.model_command == "inspect":
+                report = (
+                    inspect_onnx(args.artifact)
+                    if args.artifact.suffix.casefold() == ".onnx"
+                    else inspect_ort(args.artifact)
                 )
+            elif args.model_command == "import":
+                report = _model_import(args.source, args.output, args.manifest, args.model_id)
+            elif args.model_command == "tensorize":
+                report = _model_tensorize(args.context, args.output)
+            else:
+                report = model_conformance(args.artifact)
         elif args.command == "ucis":
             if args.ucis_command == "catalog":
                 report = ucis_catalog_report()
@@ -983,8 +1308,18 @@ def main() -> int:
                 reviewed = customize_reviewed_workspace(args.output, args.deck_id, args.package_id)
                 report["reviewed_deck"] = reviewed
                 report["scenario_suite"] = reviewed["scenario_suite"]
+            if args.policy_mode == "model":
+                report["model"] = _configure_model_workspace(args.output)
+            else:
+                report["rules"] = _configure_rules_workspace(args.output)
         elif args.command == "build":
             report = build_development_package(args.source, args.output)
+        elif args.command == "release-key":
+            report = generate_release_key(args.private_key, args.public_key)
+        elif args.command == "release-build":
+            report = build_registered_release(args.source, args.output, args.private_key)
+        elif args.command == "release-resign":
+            report = resign_registered_release(args.package, args.output, args.private_key)
         elif args.command == "validate":
             report = validate_development_package(args.package)
         elif args.command == "simulate":
@@ -1023,19 +1358,13 @@ def main() -> int:
         return 0 if report.get("status") not in {"failed", "error"} else 2
     except (
         DeveloperToolError,
-        competition_tools.CompetitionToolError,
+        OrtActorError,
         PublishError,
+        WorkspaceError,
         ValueError,
         OSError,
     ) as error:
-        code = (
-            error.code
-            if isinstance(
-                error,
-                (DeveloperToolError, competition_tools.CompetitionToolError),
-            )
-            else str(error)
-        )
+        code = error.code if isinstance(error, (DeveloperToolError, OrtActorError, WorkspaceError)) else str(error)
         report = {
             "document_type": "ptcg_strategy_forge_error_v1",
             "schema_version": 1,

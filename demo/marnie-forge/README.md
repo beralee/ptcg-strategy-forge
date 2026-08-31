@@ -8,7 +8,9 @@
 从 Forge 根目录运行：
 
 ```powershell
-.\forge.ps1 ucis inspect --scenario demo\marnie-forge\scenarios\01-positive.json
+.\forge.ps1 workspace status demo\marnie-forge
+.\forge.ps1 workspace inspect demo\marnie-forge
+.\forge.ps1 workspace check demo\marnie-forge
 .\forge.ps1 ucis walkthrough
 .\forge.ps1 demo --output "$env:TEMP\ptcg-strategy-forge-demo"
 ```
@@ -18,6 +20,7 @@
 阅读顺序：
 
 - [`sdk_walkthrough.py`](sdk_walkthrough.py)：直接可运行的 SDK 代码；
+- [`STRATEGY-BLUEPRINT.md`](STRATEGY-BLUEPRINT.md)：这个窄 demo 的目标与非声明范围；
 - [`scenarios/01-positive.json`](scenarios/01-positive.json)：合法 `EVOLVES_TO` CARD 窗口；
 - [`scenarios/04-reordered.json`](scenarios/04-reordered.json)：同一语义目标移动到新 index；
 - [`optimization/README.md`](optimization/README.md)：adapter RED→GREEN；

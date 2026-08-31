@@ -1,18 +1,20 @@
 # Kaggle 级社区策略开发、CABT 接口对齐、统一卡牌交互规范与引擎一致性详细设计
 
+> **取代说明（2026-08-30）：** 本文 W1、`.ptcgbot`、双制品和 Python competition 开发路径均为历史设计/实施记录，已被 [`17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md`](17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md) 的统一 `.ptcgai` 规范与状态取代，不再具有下一代规范性。W2 UCIS、CABT core selection A1、W3 input/index 与 A3 non-claim 的既有回执继续按原 hash/scope 有效；统一 v2/Windows 模型能力有自己的新回执，本文旧回执仍不证明 macOS 或 production。
+
 ## 0. 文档控制
 
 | 字段 | 值 |
 |---|---|
-| 文档状态 | `implemented / UCIS catalog scoped pass / representative whole-battle operation input-index pass` |
+| 文档状态 | `W1 superseded historical record / UCIS catalog scoped pass / representative whole-battle operation input-index pass` |
 | 日期 | 2026-08-25 |
 | 适用仓库 | `ptcg-strategy-forge`、`PtcgDAP`；`ptcgabc` 只读 oracle |
-| 目标工作 | W1 Kaggle 式开发包与 SDK；W2 CABT observation/select/window A1 与统一卡牌交互规范；W3 五套 18.0 代表性向量及独立 A3 |
+| 目标工作 | 历史 W1 Kaggle 式开发包与 SDK；仍有效的 W2 CABT observation/select/window A1 与统一卡牌交互规范；W3 五套 18.0 代表性向量及独立 A3 |
 | 非目标 | 不部署服务、不开放外部作者、不改变 `.ptcgai` 生产权限、不修改只读 `ptcgabc` oracle |
 | 公共策略边界 | official: `agent(raw_observation) -> list[int]`; Godot: `agent(standardized_cabt_projection) -> list[int]` |
-| 当前权威声明 | `.ptcgbot` v2 developer-local 工具链和 Godot core selection A1 scoped pass 保持有效；UCIS generation 1、全卡目录 closure、729 个声明可用 effect、394/394 legacy callsite 单一 UCIS authority、性能门和九类代表性 whole-battle operation input/index 已签发精确回执；1 个动态未登记能力显式 unsupported 且不进入可用集；完整规则结果 A3、production、Android/device 与官方认证不在当前声明中 |
+| 当前权威声明 | 历史 `.ptcgbot` v2 工具链只保留原回执审计价值，不再是目标开发路径；Godot core selection A1、UCIS generation 1、全卡目录 closure、729 个声明可用 effect、394/394 legacy callsite 单一 UCIS authority、性能门和九类代表性 whole-battle operation input/index 继续按精确回执有效；1 个动态未登记能力显式 unsupported；统一 `.ptcgai v2`/Windows ORT 以文档 17 的独立回执为准，完整规则结果 A3、macOS 实机、production、Android/device 与官方认证仍不在当前声明中 |
 
-本文是三项工作的实施级主设计。它把“开发者像参加 Kaggle 一样写 Python 策略”“本地 Host 逐窗口精确控制”和“Godot 规则结果与官方 native engine 一致”拆成三条独立证据链。任何一条通过都不能替代另外两条。
+本文曾是三项工作的实施级主设计。它把历史 Python 策略工具链、本地 Host 逐窗口精确控制和 Godot 规则结果对齐拆成独立证据链。W1 产品方向虽已退出，任何历史通过项仍不能替代 W2/W3 或新统一 `.ptcgai` 的独立证据。
 
 ### 0.1 项目负责人最终范围决定（规范性，覆盖旧的 W0/official-ID 假设）
 
@@ -60,7 +62,7 @@ PtcgDAP 不再以“每张卡各自定义一套私有 prompt/frame/返回协议�
 
 “与官方形状一致”指当前锁定 generation 的操作入参、字段 presence、ordered option 语义、数量编码、chooser 和 index acceptance 可建立证据；不指两侧对象、私有 UID、原始 JSON bytes 或完整规则结果天然相同，也不构成官方背书。
 
-旧的卡牌私有协议只允许作为迁移输入存在于引擎内部兼容层，不能继续成为策略 SDK、`.ptcgai`、`.ptcgbot`、公开 evidence 或新卡实现的合同。迁移完成后必须以目录级 gate 证明“零卡牌自建 prompt、零私有 wire 外泄、零旧协议双重 authority”，而不是通过人工逐张验收来获得总体架构结论。
+旧的卡牌私有协议只允许作为迁移输入存在于引擎内部兼容层，不能继续成为策略 SDK、`.ptcgai`、历史 `.ptcgbot`、公开 evidence 或新卡实现的合同。迁移完成后必须以目录级 gate 证明“零卡牌自建 prompt、零私有 wire 外泄、零旧协议双重 authority”，而不是通过人工逐张验收来获得总体架构结论。
 
 本段记录规范形成时的架构决定；其后实现与资格状态以 §13 的精确回执为准，不能仅凭本文文字提升声明等级。
 
@@ -68,18 +70,18 @@ PtcgDAP 不再以“每张卡各自定义一套私有 prompt/frame/返回协议�
 
 ## 1. 结论与核心决策
 
-最终产品保留两个严格分域的策略制品：
+本节以下“双制品”结论已被统一 `.ptcgai` 设计取代，只记录当时架构：
 
 | 制品 | 执行位置 | 表达能力 | 安全模型 | 身份域 |
 |---|---|---|---|---|
-| `.ptcgbot` | CABT 比赛/开发 Runner 的隔离 Python runtime | 可执行 Python、有限本地资源、状态机、搜索或模型 | 第三方代码沙箱；本设计只覆盖包和本地 SDK，不关闭生产沙箱 | official CABT Card ID / Attack ID / serial |
+| 历史 `.ptcgbot` | CABT 比赛/开发 Runner 的隔离 Python runtime | 可执行 Python、有限本地资源、状态机、搜索或模型 | 第三方代码沙箱；未完成 production 沙箱 | official CABT Card ID / Attack ID / serial |
 | `.ptcgai` | 玩家 Godot 设备 | data-only restricted/competitive IR | 无任意作者代码；Host/Base 最终裁决 | Godot local UID 或受审 official domain |
 
-不得把 `.ptcgbot` 直接安装到玩家游戏，也不得把 `.ptcgai` 的有限表达力描述成 Kaggle Python 自由度。未来若需要把比赛策略带到玩家设备，必须生成新的 `.ptcgai` release，并以独立的行为一致性、签名和设备证据绑定；比赛名次本身不授予玩家执行权。
+历史 `.ptcgbot` 从未获得玩家安装权。新决策不再保留该制品：纯规则和 BC/RL 冻结 Actor 均迁入 data-only `.ptcgai`，并重新通过行为一致性、签名和设备证据；历史比赛名次/资格不授予玩家执行权。
 
 本设计接受以下架构决策：
 
-1. `.ptcgbot v2` 使用确定性、多文件、纯 Python 源码加不可执行资源的包格式；首版不允许作者携带 native wheel、DLL、EXE、安装器或比赛时动态安装依赖。
+1. 历史 `.ptcgbot v2` 曾使用确定性、多文件、纯 Python 源码加不可执行资源的包格式；该格式现已退出下一代目标。
 2. Python 依赖由冻结 runtime profile 预装，profile 固定 Python ABI、SDK、依赖集合、资源限制和 capability；包不能自我扩大权限。
 3. official native lane 将官方 acting-seat raw callback 作为权威输入；Godot lane 只能合成已声明、已认证的 CABT 字段，绝不猜测未知字段或伪造 Search token。
 4. 每个玩家决策都必须由同一 immutable current-window 生命周期承载；策略只返回当前有序 option 的 index。
@@ -183,7 +185,7 @@ Strategy Project
   src/**/*.py + deck.csv + resources/** + project metadata
                 |
                 v
-     deterministic .ptcgbot v2 builder
+     [historical] deterministic .ptcgbot v2 builder
                 |
        CompetitionBundleV2 owner
                 |
@@ -225,11 +227,13 @@ engine legality
 
 ---
 
-# 4. W1 — Kaggle 式 `.ptcgbot v2` 与开发者 SDK
+# 4. W1 — 历史 Kaggle 式 `.ptcgbot v2` 与开发者 SDK（已被取代）
+
+本章所有 builder、runtime、CLI、qualification 和服务表述均为历史实施记录，不是当前推荐或下一代目标；统一 v2 切换时将移出活动范围。
 
 ## 4.1 当前基线和缺口
 
-当前 `.ptcgbot v1` 是确定性 ZIP，只允许 `manifest.json`、`main.py`、`deck.csv`。它已经拥有 archive/hash、author/version、60-card deck、AST entrypoint、大小和危险路径验证，以及本地申请、上传、paired match、排行和 public replay 功能证据。
+当时的 `.ptcgbot v1` 是确定性 ZIP，只允许 `manifest.json`、`main.py`、`deck.csv`。它拥有 archive/hash、author/version、60-card deck、AST entrypoint、大小和危险路径验证，以及本地申请、上传、paired match、排行和 public replay 功能证据。
 
 但 v1 不能承载多文件 Base Graph、作者公共库、结构化查表数据或受控模型；没有冻结的作者 runtime/依赖合同和与 qualification 完全同构的开发 CLI。AST 只能证明可解析且有顶层 `agent`，不能证明第三方 Python 安全。
 
@@ -331,7 +335,7 @@ qualification:
 
 `runtime-lock.json` 由平台发布并固定/签名，作者包只能携带 exact copy；不能自定义 runtime。作者只声明需求；qualification owner 决定是否满足。manifest 不能改变网络、mount、CPU、内存、PID、timeout、Search 或 dependency allow-list。
 
-现有文档中若已经把“三文件包的 canonical archive”称为 `.ptcgbot v2`，实施前必须拆成两个独立版本维度：`bundle schema generation` 和 `canonical ZIP profile generation`，避免旧三文件包与本设计多文件 v2 同名。
+历史实施曾要求把“三文件包的 canonical archive”与多文件 `.ptcgbot v2` 拆成两个独立版本维度；该要求只用于解释旧回执。
 
 ## 4.4 Runtime 与依赖合同
 
@@ -409,7 +413,7 @@ Forge SDK 从同一 UCIS generation 生成只读 enum/types、sparse option pars
 - option reorder 后按 semantic fingerprint 找到新 index；
 - unknown enum/field、缺失 identity 或 unsupported capability 时 fail closed。
 
-`.ptcgai` restricted IR 使用同一 public fact vocabulary 和 primitive catalog，但仍受 data-only/Base authority 限制；`.ptcgbot` 的 Python 表达力不能反向扩大 `.ptcgai` 的权限。
+`.ptcgai` restricted IR 使用同一 public fact vocabulary 和 primitive catalog，并继续受 data-only/Base authority 限制；历史 `.ptcgbot` 的 Python 表达力从未扩大 `.ptcgai` 权限。
 
 ## 4.7 Qualification 顺序
 
@@ -668,7 +672,7 @@ UCIS Registry 由只读 source census 生成或校验，而不是手抄常量。
 ### 5.2.1 Official native lane
 
 - Host 保存 framework RawEnvelope 的 exact JSON tree：key/value/type/list order、未知字段和 missing/null/value 三态；
-- acting-seat 官方 raw callback 是 `.ptcgbot` 输入 authority；
+- 在历史 official lane 中，acting-seat 官方 raw callback 是 `.ptcgbot` 输入 authority；
 - `step`、`remainingOverageTime` 等 framework extras 保持来源值；
 - `search_begin_input` 仅在 capability 开启时原样、短暂交给该 callback；不得落盘、打印或进入 public evidence；
 - private replay container 不能整体进入策略，只有官方为该 seat 生成的 observation。
@@ -684,7 +688,7 @@ UCIS Registry 由只读 source census 生成或校验，而不是手抄常量。
 
 ### 5.2.3 `.ptcgai` lane
 
-数据包继续接收 public projection/typed facts，而非任意 raw engine state；它不因 `.ptcgbot` raw lane 存在而扩权。
+`.ptcgai` 数据包继续接收 public projection/typed facts，而非任意 raw engine state；它不因历史 `.ptcgbot` raw lane 曾存在而扩权。
 
 ### 5.2.4 三类 hash
 
@@ -1087,7 +1091,7 @@ capture both callbacks
 
 1. `semantic-script`：动作由 `SemanticCardRef/SemanticPokemonRef/SemanticZoneRef/SemanticAttackRef`、count/order 描述；两侧分别绑定本地 serial，禁止要求数值相等；
 2. `exact-index`：只有 ordered option 已全等时使用；
-3. `policy-driven`：同一冻结 `.ptcgbot` 产生动作，用于完整局，但不替代前两种诊断模式。
+3. 历史 `policy-driven`：同一冻结 `.ptcgbot` 产生动作，用于旧完整局证据，但不替代前两种诊断模式，也不进入新资格。
 
 跨引擎 entity relation 只允许有证据的 match-local alpha-renaming：官方 Card ID/Attack ID 与私有 UID/attack ordinal 分域保存，经 source-locked bridge 对应，绝不要求数值相等；card serial 通过 exact deck occurrence、zone movement 和 event lineage 建双射；duplicate printing 暂不可区分时保留 equivalence class；不得按 card name、slot name 或 current zone 猜配。official Pokémon serial 可能随进化顶层卡变化，Godot stable slot 不能直接冒充。每个 checkpoint 同时保留 raw per-engine fingerprint、entity-bijection hash 和映射后的 semantic fingerprint。只有 semantic option fingerprint 序列完全一致才可提交动作。
 
@@ -1330,7 +1334,7 @@ canonicalizer、comparator 或 entity relation generation 变化会使全部相�
 一个可评测 release 必须同时固定：
 
 ```text
-.ptcgbot archive hash
+历史 .ptcgbot archive hash
 runtime profile hash
 SDK/observation/select contract hash
 UCIS registry/compiler/catalog hash
@@ -1495,11 +1499,11 @@ M5 Developer Preview
 
 ## 10.4 对外可用声明
 
-三项全部通过后，只允许如下表述：
+历史三项在各自 scope 通过后的对外表述已被新产品决策收窄为：
 
-> 社区开发者可以使用 Kaggle 风格 Python `agent(raw_observation) -> list[int]` 开发、调试和构建确定性 `.ptcgbot`。PtcgDAP 卡牌效果统一编译到已公布 generation 的 UCIS，Godot Host 对当前锁定 CABT 选择接口达到 A1；在已公布的五套 18.0 私有 UID 对应卡 scope 内，Godot 与 source-locked 官方模拟器在声明的 current-window operation input、ordered legal options 和返回 indexes 上对齐。
+> PtcgDAP 卡牌效果统一编译到已公布 generation 的 UCIS；Godot Host 对当前锁定 CABT 选择接口达到 A1；在已公布的五套 18.0 私有 UID 对应卡 scope 内，Godot 与 source-locked 官方模拟器在声明的 current-window operation input、ordered legal options 和返回 indexes 上对齐。历史 `.ptcgbot` 工具链只保留其旧回执，不再作为开发入口。
 
-仍不得声称：Kaggle 官方背书、全卡池官方一致、提交后的规则状态/伤害/KO/随机/终局 A3、生产第三方代码沙箱、Android/A5、`.ptcgbot` 可直接安装到玩家设备，或策略强度达到经典 AI。
+仍不得声称：Kaggle 官方背书、全卡池官方一致、提交后的规则状态/伤害/KO/随机/终局 A3、统一 `.ptcgai` 模型已实现、production、macOS/Android/A5，或策略强度达到经典 AI。
 
 ---
 
@@ -1557,7 +1561,7 @@ M5 Developer Preview
 
 ### 13.1 已实现范围
 
-- W0/W1 保持原有分域：Forge 的 `.ptcgbot` v2 和 `.ptcgai` developer-local 工具链不携带本地 official binary/card data/private locator；公开策略边界仍为 `agent(raw_observation) -> list[int]`。
+- W0/W1 历史实现曾保持 `.ptcgbot` v2 与 `.ptcgai` 分域，且不携带本地 official binary/card data/private locator；该 W1 路径现已退出，公开策略边界仍为 `agent(raw_observation) -> list[int]`。
 - W2 CABT core selection A1 保持锁定 generation 的 49 Context、17 Option 稀疏 shape 和 lifecycle scoped pass；Search 仍为 `none`，未提升为 A1+Search。
 - UCIS Registry generation 1 注册 16 个领域原语、49/49 Context、17/17 Option shape、14/14 lifecycle row 和四类组合边；Python 与 GDScript compiler 对同一 typed `CardEffectSpec` 生成可哈希的 `InteractionProgram`，未知原语、非法组合、旧窗口 continuation 和 custom escape 均 fail closed。
 - PtcgDAP 卡牌目录扫描覆盖 797 张卡、730 个 effect：265 个 interactive effect 编译为 UCIS program，464 个为显式 automatic resolution，1 个 `gsm_dynamic_registration` 为解释清楚的 unsupported；729 个声明可用 effect 全部进入统一标准，可用集没有 silent fallback。
@@ -1615,7 +1619,7 @@ qualification_status = passed
 Forge 已将上述能力变成两层可直接使用的开发入口：
 
 - 仓库级 `UcisDeveloperSdk` 读取 fixed registry/catalog/coverage/qualification，`forge ucis catalog` 显示 generation、hash、16 个原语、729/1 usable/unsupported 分区，`forge ucis inspect` 把公开场景解析为命名化 Context/Option 和公开事实；
-- 无依赖 `ucis_runtime.py` 内嵌相同 generation/registry hash，提供 `SelectionWindow.parse`、`choose_exact`、`choose_up_to`、`rebind`、`choose_number`、`choose_boolean`、`first_legal` 与 `PublicBattleFacts`。`competition init` 将其 exact bytes 放入 `src/submission/ucis.py`，作者不需要手写 enum raw 值或稀疏 option shape。
+- 无依赖 `ucis_runtime.py` 内嵌相同 generation/registry hash，提供 `SelectionWindow.parse`、`choose_exact`、`choose_up_to`、`rebind`、`choose_number`、`choose_boolean`、`first_legal` 与 `PublicBattleFacts`。历史 `competition init` 曾将其 exact bytes 放入 Python submission；下一代只迁移可复用语义到统一 `.ptcgai` 张量 SDK，不复制 Python agent runtime。
 
 标准 competition 模板已从非标准 `preferred` 测试字段迁移为合法 `CARD / TO_HAND / CARD` 窗口；Marnie demo 的进化场景已从错误的 `YES_NO / IS_FIRST + CARD options` 修正为 `CARD / EVOLVES_TO / CARD`。`forge demo` 除原有 adapter RED→GREEN、10/10 场景、Host 校验与 deterministic build 外，还必须执行 SDK walkthrough，证明：
 

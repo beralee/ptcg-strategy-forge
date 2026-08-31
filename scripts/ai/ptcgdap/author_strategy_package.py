@@ -20,6 +20,13 @@ from jsonschema import Draft202012Validator
 
 from .author_strategy_release import AuthorStrategyReleaseGate
 from .competitive_policy_v2 import CompetitivePolicyV2Compiler
+from .ptcgai_model_package import (
+    MODEL_ARTIFACT_PATH,
+    MODEL_MANIFEST_PATH,
+    ModelPackageError,
+    load_model_manifest_bytes,
+    validate_v2_package_manifest,
+)
 from .source_lock import canonical_json_v1_bytes, load_json_bytes_strict, load_json_strict
 
 
@@ -39,7 +46,7 @@ EXPECTED_ARTIFACT_CANONICAL_SHA256 = {
 }
 COMPETITIVE_POLICY_V2_PROFILE_ID = "ptcgdap-competitive-policy-v2"
 COMPETITIVE_POLICY_V2_BUNDLE_ID = "ptcgdap-competitive-policy-v2-as2-wp1"
-COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256 = "1D7864C1828CEE1965E8C1A766155A716C2FC35C7AB2206BEDE4386F42793BD7"
+COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256 = "D82F3C5B6E82BD7D7362A61A3582B3B66AE6FB967C8AF9DF1B7C502A3AA41102"
 COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES = {
     "schema": "competitive_policy_v2.schema.json",
     "profile": "competitive_policy_v2_profile.json",
@@ -47,9 +54,9 @@ COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES = {
     "bundle": "competitive_policy_v2_bundle.json",
 }
 COMPETITIVE_POLICY_V2_EXPECTED_ARTIFACT_CANONICAL_SHA256 = {
-    "schema": "C3835C23C62C13F0191A281302F408288F982FE70F0387B0A9D466538CF81879",
-    "profile": "737CF28BF83D9CF270266B163DDFCDE03B6645D0BDE7012B54906BEE6CE723FF",
-    "vectors": "AEA98005727EEF0016687AB18A26E72608EDEE10697373B2E26C17ACBCF799FA",
+    "schema": "49C03933CE4F36FF4BF33C6D9404F57D8F373B0E560F7812BFC5EA7C33000296",
+    "profile": "88BB1D3D3A394CB67917ABF4AE38735FCCA4F347ACC58CA4274D02E818E51075",
+    "vectors": "234D446B1E0DC51D36B4CA9830F82A7A7C0A1A24CC3FA29B75E5EEBAA5DA2240",
 }
 CONTRACT_FILENAMES = {
     "schema": "author_strategy_package.schema.json",
@@ -87,6 +94,8 @@ REQUIRED_PAYLOAD_PATHS = frozenset(
 GENERATED_PATHS = frozenset({"files.sha256.json", "signature.json"})
 OPTIONAL_PAYLOAD_KINDS = {
     "policy/weights.bin": "weights",
+    MODEL_MANIFEST_PATH: "json",
+    MODEL_ARTIFACT_PATH: "weights",
     "assets/icon.png": "png",
     "assets/banner.png": "png",
     "assets/icon.webp": "webp",
@@ -148,7 +157,15 @@ FIXED_MODE = 0o100644 << 16
 HEX_RE = re.compile(r"^[0-9A-F]{64}$")
 PATH_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*(?:/[A-Za-z0-9][A-Za-z0-9._-]*)*$")
 SUPPORTED_CAPABILITIES = frozenset(
-    {"public_context", "current_window", "deterministic_fallback", "strategic_trace_v2"}
+    {
+        "public_context",
+        "current_window",
+        "deterministic_fallback",
+        "strategic_trace_v2",
+        "public_damage_plan_v1",
+        "semantic_transaction_v1",
+        "learned_policy_head_v1",
+    }
 )
 BASE_OPERATOR_ORDER = (
     "legality_guard",
@@ -702,6 +719,39 @@ class AuthorStrategyPackageLoader:
             _raise("package_archive_invalid")
         return members
 
+    def _validate_package_manifest(self, members: dict[str, bytes]) -> dict[str, Any]:
+        try:
+            raw = load_json_bytes_strict(members["strategy_package.json"])
+        except (UnicodeDecodeError, ValueError, TypeError):
+            _raise("package_manifest_invalid")
+        if type(raw) is not dict or raw.get("document_type") != "strategy_package_v2":
+            return _strict_json(
+                members["strategy_package.json"],
+                self._schema_validator,
+                "package_manifest_invalid",
+            )
+        try:
+            manifest = validate_v2_package_manifest(raw, members)
+        except ModelPackageError as error:
+            _raise(error.code)
+        compatibility_copy = copy.deepcopy(manifest)
+        compatibility_copy["document_type"] = "strategy_package_v1"
+        compatibility_copy["schema_version"] = 1
+        compatibility_copy["compatibility"]["minimum_game_api"] = "ptcgdap-author-host-v1"
+        compatibility_copy["policy"] = {
+            key: compatibility_copy["policy"][key]
+            for key in (
+                "entry_kind",
+                "ir_path",
+                "adapter_path",
+                "config_path",
+                "weights_path",
+            )
+        }
+        if not self._schema_validator.is_valid(compatibility_copy):
+            _raise("package_manifest_invalid")
+        return manifest
+
     def _validate_members(self, members: dict[str, bytes], archive_sha: str) -> AuthorStrategyPackageHandle:
         names = set(members)
         for path in names:
@@ -716,7 +766,7 @@ class AuthorStrategyPackageLoader:
             _raise("package_file_missing")
         self._validate_kind_sizes(members)
 
-        manifest = _strict_json(members["strategy_package.json"], self._schema_validator, "package_manifest_invalid")
+        manifest = self._validate_package_manifest(members)
         files_manifest = _strict_json(members["files.sha256.json"], self._schema_validator, "package_manifest_invalid")
         signature = _strict_json(members["signature.json"], self._schema_validator, "package_manifest_invalid")
 
@@ -742,7 +792,7 @@ class AuthorStrategyPackageLoader:
         signature_key = self._verify_signature(manifest, signature, members)
         self._verify_compatibility(manifest)
         deck_manifest, policy_ir, adapter, config = self._verify_deck_and_policy(manifest, members)
-        self._verify_optional_relations(manifest, members)
+        model_manifest = self._verify_optional_relations(manifest, members)
 
         manifest_sha = _sha(members["strategy_package.json"])
         manifest_canonical = _sha(canonical_json_v1_bytes(manifest))
@@ -753,7 +803,8 @@ class AuthorStrategyPackageLoader:
         execution_trusted = signature_key.get("execution_trusted") is True
         signature_status = "production_trusted" if execution_trusted else "test_fixture_trusted"
         metadata = {
-            "profile_id": PROFILE_ID,
+            "profile_id": "ptcgdap-author-strategy-package-v2" if manifest["schema_version"] == 2 else PROFILE_ID,
+            "package_document_type": manifest["document_type"],
             "package_id": manifest["package_id"],
             "package_version": manifest["package_version"],
             "archive_sha256": archive_sha,
@@ -773,6 +824,9 @@ class AuthorStrategyPackageLoader:
             "execution_authority": False,
             "deck_contract_valid": deck_manifest["card_count"] == 60,
             "policy_contract_valid": bool(policy_ir and adapter and config),
+            "policy_mode": manifest["policy"].get("policy_mode", "rules_only"),
+            "model_manifest_sha256": _sha(members[MODEL_MANIFEST_PATH]) if model_manifest is not None else None,
+            "model_artifact_sha256": _sha(members[MODEL_ARTIFACT_PATH]) if model_manifest is not None else None,
             "source_deck_id": deck_manifest.get("source_deck_id"),
             "deck_card_id_domain": deck_manifest.get("card_id_domain"),
             "deck_platform_scope": copy.deepcopy(deck_manifest.get("platform_scope", [])),
@@ -862,8 +916,13 @@ class AuthorStrategyPackageLoader:
 
     def _verify_compatibility(self, manifest: dict[str, Any]) -> None:
         compatibility = manifest["compatibility"]
+        expected_game_api = (
+            "ptcgdap-author-host-v2"
+            if manifest.get("document_type") == "strategy_package_v2"
+            else "ptcgdap-author-host-v1"
+        )
         if (
-            compatibility["minimum_game_api"] != "ptcgdap-author-host-v1"
+            compatibility["minimum_game_api"] != expected_game_api
             or compatibility["cabt_contract_sha256"] != CABT_CONTRACT_SHA256
             or compatibility["base_executor_sha256"] != BASE_EXECUTOR_SHA256
         ):
@@ -1030,7 +1089,11 @@ class AuthorStrategyPackageLoader:
         ):
             _raise("package_deck_unmapped")
 
-    def _verify_optional_relations(self, manifest: dict[str, Any], members: dict[str, bytes]) -> None:
+    def _verify_optional_relations(
+        self,
+        manifest: dict[str, Any],
+        members: dict[str, bytes],
+    ) -> dict[str, Any] | None:
         expected = set()
         weights_path = manifest["policy"]["weights_path"]
         if weights_path is not None:
@@ -1039,11 +1102,28 @@ class AuthorStrategyPackageLoader:
             path = manifest["presentation"][key]
             if path is not None:
                 expected.add(path)
+        model_manifest = None
+        if manifest.get("document_type") == "strategy_package_v2":
+            policy = manifest["policy"]
+            if policy["policy_mode"] == "rules_with_model":
+                expected.update({MODEL_MANIFEST_PATH, MODEL_ARTIFACT_PATH})
+                if "learned_policy_head_v1" not in manifest["compatibility"]["required_capabilities"]:
+                    _raise("package_policy_unsupported")
+                try:
+                    model_manifest = load_model_manifest_bytes(
+                        members[MODEL_MANIFEST_PATH],
+                        members[MODEL_ARTIFACT_PATH],
+                        cabt_contract_sha256=CABT_CONTRACT_SHA256,
+                        card_catalog_sha256=CARD_CATALOG_SHA256,
+                    )
+                except ModelPackageError as error:
+                    _raise(error.code)
         actual = set(members) & set(OPTIONAL_PAYLOAD_KINDS)
         if expected - actual:
             _raise("package_file_missing")
         if actual - expected:
             _raise("package_file_unlisted")
+        return model_manifest
 
 
 __all__ = [

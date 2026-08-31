@@ -131,6 +131,7 @@ def build_schema() -> dict[str, Any]:
                     "fixed",
                     "goal_energy_debt",
                     "goal_missing_energy_sources",
+                    "distinct_card_uids",
                     "ceil_public_fact_divisor",
                     "ceil_public_fact_divisor_with_reserve",
                 ]
@@ -435,6 +436,78 @@ def build_schema() -> dict[str, Any]:
         },
         ["contract_id", "priority", "goal_id", "when", "bonuses"],
     )
+    damage_plan = _object(
+        {
+            "plan_id": identifier,
+            "goal_id": identifier,
+            "priority": safe_unsigned,
+            "horizon_attack_windows": {"type": "integer", "minimum": 1, "maximum": 2},
+            "capability_ids": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 16,
+                "uniqueItems": True,
+                "items": identifier,
+            },
+            "target_roles": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 2,
+                "uniqueItems": True,
+                "items": {"enum": ["opponent.active", "opponent.bench"]},
+            },
+            "objective_order": {
+                "const": [
+                    "attack_windows",
+                    "prize_yield",
+                    "remaining_debt",
+                    "overkill",
+                    "response_risk",
+                ]
+            },
+        },
+        [
+            "plan_id",
+            "goal_id",
+            "priority",
+            "horizon_attack_windows",
+            "capability_ids",
+            "target_roles",
+            "objective_order",
+        ],
+    )
+    semantic_transaction = _object(
+        {
+            "transaction_id": identifier,
+            "goal_id": identifier,
+            "priority": safe_unsigned,
+            "max_own_turns": {"type": "integer", "minimum": 1, "maximum": 2},
+            "target_role": {"enum": ["opponent.pokemon", "self.pokemon"]},
+            "start_when": {"type": "array", "maxItems": 32, "items": condition},
+            "continue_when": {"type": "array", "maxItems": 32, "items": condition},
+            "success_when": {"type": "array", "maxItems": 32, "items": condition},
+            "abort_when": {"type": "array", "maxItems": 32, "items": condition},
+            "step_prompt_kinds": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 32,
+                "uniqueItems": True,
+                "items": {"type": "string", "minLength": 1, "maxLength": 64},
+            },
+        },
+        [
+            "transaction_id",
+            "goal_id",
+            "priority",
+            "max_own_turns",
+            "target_role",
+            "start_when",
+            "continue_when",
+            "success_when",
+            "abort_when",
+            "step_prompt_kinds",
+        ],
+    )
     adapter = _object(
         {
             "schema_version": {"const": 2},
@@ -459,6 +532,18 @@ def build_schema() -> dict[str, Any]:
                 "maxItems": 64,
                 "items": turn_bonus_contract,
             },
+            "damage_plans": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 32,
+                "items": damage_plan,
+            },
+            "semantic_transactions": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 32,
+                "items": semantic_transaction,
+            },
         },
         ["schema_version", "adapter_id", "adapter_version", "goals", "count_rules", "rules"],
     )
@@ -474,6 +559,16 @@ def build_schema() -> dict[str, Any]:
             "minimum_attack_energy_count": safe_unsigned,
             "attack_ready": {"type": "boolean"},
             "energy_debt": safe_unsigned,
+            "entity_serial": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
+            "max_hp": safe_unsigned,
+            "damage_counters": safe_unsigned,
+            "attached_tool_uid": nullable_uid,
+            "pokemon_stack_uids": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 3,
+                "items": uid,
+            },
         },
         [
             "serial",
@@ -492,10 +587,13 @@ def build_schema() -> dict[str, Any]:
             "index": safe_unsigned,
             "kind": {"type": "string", "minLength": 1, "maxLength": 64},
             "card_uid": nullable_uid,
+            "card_serial": nullable_unsigned,
             "source_uid": nullable_uid,
             "source_serial": nullable_unsigned,
+            "source_entity_serial": nullable_unsigned,
             "target_uid": nullable_uid,
             "target_serial": nullable_unsigned,
+            "target_entity_serial": nullable_unsigned,
             "target_remaining_hp": nullable_unsigned,
             "target_prize_value": nullable_unsigned,
             "target_attached_energy_count": nullable_unsigned,
@@ -512,7 +610,11 @@ def build_schema() -> dict[str, Any]:
             "projected_knockout": {"type": "boolean"},
             "requires_interaction": {"type": "boolean"},
             "attack_index": nullable_unsigned,
+            "option_number": nullable_unsigned,
             "ability_index": nullable_unsigned,
+            "energy_type_raw": nullable_unsigned,
+            "energy_count": nullable_unsigned,
+            "special_condition_type": nullable_unsigned,
             "pending_assignment_count": safe_unsigned,
             "tags": {"type": "array", "maxItems": 64, "items": {"type": "string", "maxLength": 64}},
             "option_type_raw": safe_unsigned,
@@ -522,6 +624,7 @@ def build_schema() -> dict[str, Any]:
             "index",
             "kind",
             "card_uid",
+            "card_serial",
             "source_uid",
             "source_serial",
             "target_uid",
@@ -537,7 +640,11 @@ def build_schema() -> dict[str, Any]:
             "projected_knockout",
             "requires_interaction",
             "attack_index",
+            "option_number",
             "ability_index",
+            "energy_type_raw",
+            "energy_count",
+            "special_condition_type",
             "pending_assignment_count",
             "tags",
             "option_type_raw",
@@ -675,6 +782,10 @@ def build_profile() -> dict[str, Any]:
             "typed_route_resource_budget",
             "lexicographic_route_value_and_opponent_response_risk",
             "base_owned_route_candidate_adjudication_audit",
+            "stable_public_pokemon_entity_serial",
+            "public_damage_capability_registry_v1",
+            "current_and_next_own_attack_window_damage_plan",
+            "semantic_transaction_current_window_rebinding",
         ],
         "official_select_semantics": {
             "oracle": "ptcgabc/official_data/kaggle_bundle/sample_submission/sample_submission/cg/api.py",
@@ -702,6 +813,8 @@ def build_profile() -> dict[str, Any]:
             "same_tier_soft_turn_intent_bonus_proposal",
             "goal_relative_public_continuity_debt_proposal",
             "bounded_current_window_route_candidate_proposal",
+            "verified_damage_plan_same_tier_proposal",
+            "semantic_transaction_current_window_step_proposal",
         ],
         "forbidden_inputs": [
             "opponent_hidden_cards",
@@ -717,6 +830,10 @@ def build_profile() -> dict[str, Any]:
         ],
         "compatibility": {
             "v1_behavior_unchanged": True,
+            "optional_host_capabilities": [
+                "public_damage_plan_v1",
+                "semantic_transaction_v1",
+            ],
             "v2_windows_local_only": True,
             "classic_gdscript_fallback_for_package": False,
         },
@@ -1008,6 +1125,7 @@ def _option(index: int, **updates: Any) -> dict[str, Any]:
         "index": index,
         "kind": "search",
         "card_uid": "SVI_003",
+        "card_serial": 1000 + index,
         "source_uid": None,
         "source_serial": None,
         "target_uid": None,
@@ -1023,13 +1141,33 @@ def _option(index: int, **updates: Any) -> dict[str, Any]:
         "projected_knockout": False,
         "requires_interaction": False,
         "attack_index": None,
+        "option_number": None,
         "ability_index": None,
+        "energy_type_raw": None,
+        "energy_count": None,
+        "special_condition_type": None,
         "pending_assignment_count": 0,
         "tags": [],
         "option_type_raw": 3,
         "option_player_index": 0,
     }
     value.update(updates)
+    kind_to_type = {
+        "attack": 13,
+        "attach_energy": 8,
+        "end_turn": 14,
+        "play_card": 7,
+        "play_trainer": 7,
+    }
+    value["option_type_raw"] = kind_to_type.get(value["kind"], 3)
+    value["card_serial"] = 1000 + index if value["card_uid"] is not None else None
+    if value["source_uid"] is not None and value["source_serial"] is None:
+        value["source_serial"] = 2000 + index
+    if value["target_uid"] is not None and value["target_serial"] is None:
+        value["target_serial"] = 3000 + index
+    if value["option_type_raw"] == 3 and value["card_uid"] is None and value["target_uid"] is not None:
+        value["card_uid"] = value["target_uid"]
+        value["card_serial"] = value["target_serial"]
     return value
 
 

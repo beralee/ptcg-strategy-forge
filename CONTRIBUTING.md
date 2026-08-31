@@ -18,12 +18,12 @@
 .\forge.ps1 ucis walkthrough
 python -m unittest discover -s tests -v
 python forge.py demo --output "$env:TEMP\ptcg-strategy-forge-demo"
-python forge.py check --workspace demo\marnie-forge
+python forge.py workspace check demo\marnie-forge
 ```
 
 demo 输出目录必须不存在。每个新规则至少增加正向、关键条件缺失、目标错误、option 重排和 Base 阻止场景。
 
-新增场景前用 `forge ucis inspect --scenario <file>` 验证 Context/SelectType/Option shape 组合。`.ptcgbot` 作者优先复用生成的 `submission/ucis.py`，不要复制 enum raw 值、缓存旧窗口或添加 private `preferred` 字段。
+新增场景前用 `forge ucis inspect --scenario <file>` 验证 Context/SelectType/Option shape 组合。统一 `.ptcgai` 作者使用公开 `StrategyWorkspace` / UCIS SDK，不要从历史 `.ptcgbot` 复制 Python runtime、enum raw 值、旧窗口或 private `preferred` 字段。
 
 策略行为变更应同步更新工作区 `STRATEGY-BLUEPRINT.md`。信息动作之后只能保留语义目标/债务，必须重观察并重新绑定当前窗口；关键阈值至少增加一个只改变单一事实的 metamorphic 配对。
 
@@ -35,3 +35,5 @@ python tools/build_sdk_snapshot.py --check
 ```
 
 不要手工修改 manifest 里的 hash。
+
+准备提交前，先检查 staged 文件名和差异，确认没有 `*.ed25519`、PEM/P12/PFX、`.env*`、token、cookie、验证码、服务器数据库、私有回放或开发者工作区产物。公开签名公钥不是秘密，但私钥和临时写入凭据永远不能进入提交。只有用户明确授权时才推送远端。

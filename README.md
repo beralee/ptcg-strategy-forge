@@ -1,164 +1,189 @@
 # PTCG Strategy Forge
 
-PTCG Strategy Forge 是一个独立的 Windows 策略开发者工具包。它把纯数据 `.ptcgai` 作者策略所需的 SDK、合同、命令、文档、测试场景、完整 demo 和发布客户端放在一个仓库中；开发者不需要另外检出 PtcgDAP 主工程。
+PTCG Strategy Forge 是独立的 `.ptcgai` 策略开发工具包。开发者在一个工作区里完成规则编写、BC/RL Actor 导入、公开窗口检查、场景验收、确定性构建和本地安装，不需要检出 PtcgDAP 游戏仓库。
 
-项目仓库：[github.com/beralee/ptcg-strategy-forge](https://github.com/beralee/ptcg-strategy-forge)；稳定发布：[PTCG Strategy Forge v0.1.1](https://github.com/beralee/ptcg-strategy-forge/releases/tag/v0.1.1)。
-
-当前稳定工作流是：
-
-```text
-环境自检 → 创建策略工作区 → 编写受限规则 → 确定性构建
-→ 严格校验 → RED→GREEN 场景测试 → 本地安装 → 提交 release
-```
-
-策略的公共边界始终是：
+策略边界始终是：
 
 ```text
 agent(raw_observation) -> list[int]
 ```
 
-返回值只能是当前不可变 `select.option` 窗口中的索引。策略包不能执行 Python/GDScript、访问 Godot 对象或读取对手隐藏信息；Base Graph 保留合法性、强制/终局保护、veto、fallback 和最终裁决权。
+返回值只能引用当前不可变 `select.option`。包是数据，不执行 Python/GDScript，不读取隐藏信息，也不能越过 Base Graph 的 legality、mandatory/terminal、hard tier、veto、fallback 和最终裁决。
 
-先按交付目标选择路径：
+第一次使用先读[开发者中心](docs/00-DEVELOPER-HUB.md)；准备上传到连续联赛时，先在[线上开发者中心](https://ptcg.skillserver.cn/dist/developers.html)注册并复制页面显示的完整开发者 ID。显示名称不是开发者 ID，复制时必须保留 `developer-` 前缀。
 
-| 我要开发 | 从哪里开始 | 能力边界 |
-|---|---|---|
-| 本地游戏可加载的 data-only 策略 | `forge new`，生成 `.ptcgai` | 受限/Competitive IR；Godot Host/Base 最终裁决 |
-| Kaggle 风格多文件 Python 策略 | `forge competition init`，生成 `.ptcgbot` | developer-local Python runner；不可直接安装进游戏 |
+## 四步跑通
 
-两条路径共享 UCIS current-window 合同。第一次接触项目时先运行 `forge ucis walkthrough`，它会用可执行例子说明精确数量、option 重排、重复分配、奖赏时钟、能量债务和 fail-closed。
-
-## 立即开始
-
-要求 Windows、PowerShell 7 和 Python 3.13：
+当前本地工具链要求 Windows、PowerShell 7 和 Python 3.13。
 
 ```powershell
 .\setup.ps1
 .\forge.ps1 doctor
-.\forge.ps1 ucis catalog
-.\forge.ps1 ucis walkthrough
+
+$developerId = "<从开发者后台复制的完整 ID>"
+.\forge.ps1 workspace create work\my-strategy `
+  --author-id $developerId `
+  --package-id dev.example.my-strategy
+.\forge.ps1 workspace status work\my-strategy
 ```
 
-创建自己的策略工作区：
+服务端生成的开发者 ID 较长，因此正式工作区应显式给出简短、稳定且全局唯一的 `--package-id`。`package_id` 是策略身份，不需要也不应复制完整开发者 ID。
+
+编辑生成的 `STRATEGY-BLUEPRINT.md`、`package/policy/adapter.json` 和 `scenarios/`，然后：
 
 ```powershell
-.\forge.ps1 new `
-  --output work\my-strategy `
-  --package-id dev.example.my-strategy `
-  --package-version 0.1.0 `
-  --author-id example.author `
-  --author-name "Example Author" `
-  --strategy-name "My Strategy"
+.\forge.ps1 workspace inspect work\my-strategy
+.\forge.ps1 workspace check work\my-strategy
+.\forge.ps1 workspace build work\my-strategy
+.\forge.ps1 workspace install work\my-strategy
 ```
 
-构建、校验和测试：
+`build` 会采用工作区身份生成默认产物，例如 `build/dev.example.my-strategy-0.1.0.ptcgai`，同时写出 `build/workspace-check.json`。工具不覆盖已有工作区、归档或证据。
+
+正式上传还需要在仓库外生成私钥、把公开 JSON 中的 `public_key_base64` 登记到当前账号，再用同一私钥执行 `release-resign`。浏览器永远不需要私钥。完整可复制流程见[安装与发布](docs/05-PUBLISHING.md)。
+
+## 选择规则或模型
+
+两条开发方式最终都是同一种 `.ptcgai v2`：
+
+| 目标 | 创建命令 | 运行时边界 |
+|---|---|---|
+| 纯规则 | `workspace create ... --mode rules` | `rules_only`，受限/Competitive IR |
+| BC/RL/混合模型 | `workspace create ... --mode model` | `rules_with_model`，冻结 CPU ORT Actor + 必需规则 fallback |
+
+模型训练方法不是运行时类型。Forge 不负责训练循环，只固定公开张量、Actor 合同、导入检查和运行裁决。训练后用工作区命令安全替换模板 Actor：
 
 ```powershell
-.\forge.ps1 build `
-  --source work\my-strategy\package `
-  --output work\my-strategy\build\my-strategy.ptcgai
+.\forge.ps1 workspace model inspect work\my-strategy `
+  --artifact work\my-strategy\model-source\actor.onnx
 
-.\forge.ps1 validate `
-  --package work\my-strategy\build\my-strategy.ptcgai
+.\forge.ps1 workspace model import work\my-strategy `
+  --source work\my-strategy\model-source\actor.onnx `
+  --training-method bc_rl `
+  --source-run-id my-training-run
 
-.\forge.ps1 test `
-  --package work\my-strategy\build\my-strategy.ptcgai `
-  --suite work\my-strategy\scenario-suite.json
+.\forge.ps1 workspace model tensorize work\my-strategy `
+  --scenario scenarios\01-positive.json
+
+.\forge.ps1 workspace model conformance work\my-strategy
 ```
 
-日常推荐用一条命令完成双构建、确定性比较、严格校验和整套场景，并且只在全部通过后写出包：
+导入流程先在临时位置检查 ONNX、转换 ORT 并跑 conformance，通过后才替换 `package/model/actor.ort` 和对应 manifest。模型只在规则选定的 hard tier 内评分；异常、超时、未知 UID/shape 或输出非法时回到本窗口规则/Base fallback。
 
-```powershell
-.\forge.ps1 check `
-  --workspace work\my-strategy `
-  --output work\my-strategy\build\my-strategy.ptcgai `
-  --report work\my-strategy\build\check-report.json
-```
+可执行的最小 BC→离线 contextual-bandit RL 示例在 [`examples/minimal-bc-rl-marnie`](examples/minimal-bc-rl-marnie)。它证明接入链路，不声明模型强度、full-game RL 或 production 资格。
 
-新工作区还会生成 `STRATEGY-BLUEPRINT.md`，引导开发者先写清 Match Agenda、攻击窗口、资源债务、信息动作后的重观察和类型化交互，再把当前合同可表达的部分编译成 adapter 规则。默认工作区来自已审核的 Marnie 18.0 模板；`new --deck-id` 还可生成五套已审核 18.0 精确本地 UID 工作区：玛俐长毛巨魔 `800018501`、无碟沙奈朵 `800017097`、多龙巴鲁托 `800018499`、猛雷鼓厄诡椪 `800018509`、N 的索罗亚克 `800018502`。其他牌组仍必须先建立并审核精确身份、卡源和 manifest，不能只改显示名。
-
-Competitive Policy IR v2 保持官方 `agent(raw_observation) -> list[int]` 调用形式不变，并把列表长度解释为当前窗口的精确合法数量。Host 对检索、弃牌、出战、撤退、效果、分配和伤害窗口逐次重观察；公开目标能量、攻击就绪、资源债务、奖赏价值与投影伤害可用于 data-only 规则，Base 仍负责合法性与最终裁决。架构与迁移门见 `docs/11-COMPETITIVE-POLICY-IR-V2.md`。
-
-当前 Host 还提供 sealed compiled fast path：完整 policy 验证在加载期完成，每个窗口只运行已封存的公开事实/规则计划。固定重放从 236.647 秒降到 10.958 秒（21.6×），平均作者决策从 819.485 ms 降到 26.211 ms。性能问题已经从“不可玩”降到可用，但猛雷鼓对经典 GDScript 的两个独立 20 局样本为 45%/40%，尚未达到 47% 强度门。设计、实现状态和下一阶段见 [架构升级设计与计划](docs/12-ARCHITECTURE-UPGRADE-DESIGN-AND-PLAN.md)。
-
-完整步骤见 [快速入门](docs/01-QUICKSTART.md)。
-
-另有一条严格分域的 Kaggle 风格 Python 开发预览：`forge.ps1 competition ...` 可创建多文件 `.ptcgbot` v2、做确定性双构建、公开 trace 和 developer-local prequalification。它固定 CPython 3.11.13、A1 scope、Search=none 与资源/隐私故障门，不可安装到玩家游戏，也不声称 official engine 或 production sandbox。见 [`.ptcgbot` v2 快速入门](docs/14-KAGGLE-STYLE-PTCGBOT-QUICKSTART.md)。
-
-`competition init` 会把无依赖、generation-locked 的 `src/submission/ucis.py` 放进新工程；开发者可用名称解析 Context/Option、精确选择数量、按 semantic key 在新窗口重绑定，并读取公开 prize clock/energy debt。完整 API 见 [UCIS SDK 开发者指南](docs/15-UCIS-SDK-DEVELOPER-GUIDE.md)。
-
-## 可执行命令
-
-| 命令 | 用途 |
-|---|---|
-| `doctor` | 验证 Python、SDK 快照、UCIS generation/目录资格/性能与 operation 回执、合同漂移和模板包 |
-| `ucis catalog/inspect/walkthrough` | 查看能力闭包、检查命名化公开窗口并运行 SDK 上手示例 |
-| `new` | 创建不可覆盖的策略工作区；可用 `--deck-id` 选择已审核 18.0 牌组 |
-| `build` | 生成确定性、test-fixture 签名的 `.ptcgai` |
-| `validate` | 用运行 Host 的同一编译入口严格校验 |
-| `simulate` | 在一个公开当前窗口上执行策略并输出裁决证据 |
-| `test` | 运行正向、负向、重排、forced、veto 和隐私套件 |
-| `check` | 双构建并比较 exact bytes，严格校验后运行完整工作区套件 |
-| `install` | 严格校验后安装到 Godot 开发包目录 |
-| `publish` | 通过 HTTPS 或显式 loopback 向策略平台提交 release |
-| `demo` | 完整验证基线 RED、最终 GREEN、双构建和严格校验 |
-| `regenerate-demo-scenarios` | 确定性重建 demo 的 10 个场景 |
-| `competition <subcommand>` | 创建、测试、构建、trace、重放和预资格 `.ptcgbot` v2 |
-
-运行 `python forge.py <command> --help` 查看精确参数。
-
-## 可复核 demo
-
-[`demo/marnie-forge`](demo/marnie-forge) 严格遵循本文档的 RED→GREEN 流程：
-
-- 错误基线把关键手牌 UID 写错，主场景实际选择 `[0]`，因此断言失败；
-- 修正策略匹配 `forge.morgrem.evolve`，主场景选择 `[1]`；
-- 10 个场景覆盖正向命中、关键卡缺失、错误目标、option 重排、mandatory、terminal、hard tier、veto、未知 UID 和隐藏信息污染；
-- SDK walkthrough 额外覆盖 `0..5` 精确取 3、重复 source→target 新窗口重绑定、公开奖赏/能量事实和未知 shape 拒绝；
-- 两次构建的 archive 字节完全一致；
-- 最终 demo 包已通过真实本地 HTTP release 提交。
-
-发布包：[`strategy-forge-marnie-demo-1.0.0.ptcgai`](demo/releases/strategy-forge-marnie-demo-1.0.0.ptcgai)；也可从 [GitHub Release](https://github.com/beralee/ptcg-strategy-forge/releases/download/v0.1.1/strategy-forge-marnie-demo-1.0.0.ptcgai) 下载。
+## 一个工作区里有什么
 
 ```text
-package_id     dev.beralee.marnie-forge-demo
-version        1.0.0
-SHA-256        7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A
-scenarios      10 / 10
-signature      test_fixture_only
-production     false
+my-strategy/
+  README.md                  日常命令
+  STRATEGY-BLUEPRINT.md      Match Agenda、路线和信息检查点
+  UCIS-SDK.md                当前窗口上手卡
+  SUPPORTED-CARDS.json       当前游戏卡牌/交互资格清单
+  package/
+    strategy_package.json    包身份和能力声明
+    deck/                    精确牌组与本地 UID
+    policy/adapter.json      开发者规则入口
+    policy/policy_ir.json    Base/受限 IR
+    model/                   model 模式才有冻结 Actor
+  scenarios/                 RED→GREEN 与安全负例
+  scenario-suite.json
+  model-source/              model 模式的训练导出源
+  build/                     验收报告和 `.ptcgai`
 ```
 
-证据见 [`evidence/demo-workflow-green.json`](evidence/demo-workflow-green.json) 和 [`evidence/demo-publish-receipt.json`](evidence/demo-publish-receipt.json)。
+根仓库的同源文件是 [`data/developer/supported-cards-v1.json`](data/developer/supported-cards-v1.json)。当前快照列出 797 个本地 UID 条目，其中 796 个 `usable=true`，1 个明确 unsupported；`usable` 只表示声明的 UCIS 交互路径可用，不代表官方完整规则结果一致、已有策略模板或卡名翻译身份。
 
-## 文档地图
+开发者通常只编辑蓝图、adapter、场景；模型工作区再更新 Actor。包格式、Base IR、安全合同和 vendored SDK hash 不是普通策略调参面。
 
-- [快速入门](docs/01-QUICKSTART.md)
-- [策略包与裁决模型](docs/02-PACKAGE-AND-POLICY.md)
-- [场景测试](docs/03-SCENARIO-TESTING.md)
-- [调试与优化](docs/04-DEBUGGING-AND-OPTIMIZATION.md)
-- [安装与发布](docs/05-PUBLISHING.md)
-- [安全与隐私](docs/06-SECURITY-AND-PRIVACY.md)
-- [故障排查](docs/07-TROUBLESHOOTING.md)
-- [架构与 SDK 来源](docs/08-ARCHITECTURE.md)
-- [从牌组思路到可验证策略](docs/09-STRATEGY-THINKING.md)
-- [工作区一键验收](docs/10-WORKSPACE-CHECK.md)
-- [Competitive Policy IR v2](docs/11-COMPETITIVE-POLICY-IR-V2.md)
-- [架构升级设计、实现与后续计划](docs/12-ARCHITECTURE-UPGRADE-DESIGN-AND-PLAN.md)
-- [Kaggle 级开发、CABT A1 与五牌组 A3 详细设计/实施状态](docs/13-KAGGLE-GRADE-DEVELOPER-AND-ENGINE-PARITY-DESIGN.md)
-- [Kaggle 风格 `.ptcgbot` v2 快速入门](docs/14-KAGGLE-STYLE-PTCGBOT-QUICKSTART.md)
-- [UCIS SDK 开发者指南](docs/15-UCIS-SDK-DEVELOPER-GUIDE.md)
-- [明确限制](docs/LIMITATIONS.md)
-- [实施 TODO 闭环](TODO.md)
+## Python SDK
 
-## 权限边界
+CLI 和 Python SDK 共享同一个工作区对象：
 
-开发包使用公开 test-fixture 签名，仅用于开发、影子验证和提交测试。`publish` 成功表示平台接受了一个 `submitted` release，不代表玩家可启动、production 签名、官方 CABT 一致性或 A5 晋升。生产批准和信任根由平台维护者掌握，工具包不会伪造这些权限。
+```python
+from ptcg_strategy_forge import StrategyWorkspace
 
-SDK 快照的每个文件都固定在 [`vendor/ptcgdap-sdk-manifest.json`](vendor/ptcgdap-sdk-manifest.json) 中；`doctor` 会拒绝缺失、篡改、额外未登记文件或 symlink。
+workspace = StrategyWorkspace.create(
+    "work/my-strategy",
+    author_id="<从后台复制的完整 developer_id>",
+    package_id="dev.example.my-strategy",
+    mode="rules",
+)
 
-当前 UCIS generation 1 固定 16 个交互原语和完整 49×17 CABT-shaped current-window census。PtcgDAP 目录中的 797 张卡/730 个 effect 已分为 265 个 compiled、464 个 automatic 和 1 个 explicit unsupported；729 个声明可用 effect 与 394/394 个旧交互入口均由单一 UCIS owner 管理。`doctor`/`check` 会在作者代码或场景执行前验证目录资格、热路径无 I/O 性能回执及九类代表性双引擎 operation input/index 回执。
+print(workspace.status())
+print(workspace.inspect())
+report = workspace.build()
+```
 
-## 许可
+模型入口是 `workspace.model.inspect/import_actor/tensorize/conformance`。稳定类型、错误码和方法合同见 [Python SDK 参考](docs/18-DEVELOPER-SDK-REFERENCE.md)。UCIS 的窗口级 `SelectionWindow`、`PublicBattleFacts` 等 API 继续公开，不需要从内部 `scripts/` 导入。
 
-本项目使用 Apache License 2.0。 vendored PtcgDAP 组件的来源和归属见 [NOTICE](NOTICE)。
+## 命令分层
+
+日常开发优先使用 `workspace`：
+
+| 命令 | 开发者问题 |
+|---|---|
+| `workspace create` | 创建规则或模型工作区 |
+| `workspace status` | 应该编辑什么、还缺什么、产物在哪里 |
+| `workspace inspect` | 当前场景到底是什么窗口和公开事实 |
+| `workspace check` | 源码能否通过全部门，不写产物 |
+| `workspace build` | 验收后生成确定性包和报告 |
+| `workspace install` | 构建（若需要）并安装开发包 |
+| `workspace model ...` | 检查、导入、张量化和验证 Actor |
+
+`new/build/validate/simulate/test/check/install`、`ucis ...` 和顶层 `model ...` 仍保留给已有脚本和底层诊断。`release-key/release-build/release-resign/publish` 属于发布流程；它们不会把开发包提升为 production。
+
+运行 `python forge.py --help` 或 `python forge.py workspace --help` 查看完整参数。
+
+## 已审核牌组起点
+
+`workspace create --deck-id <id>` 可从已固定身份和卡源的牌组开始：
+
+| deck id | 牌组 |
+|---:|---|
+| `800018501` | 玛俐长毛巨魔 |
+| `646600` | 玛俐的礼盒 |
+| `800017097` | 无碟沙奈朵 |
+| `800018499` | 多龙巴鲁托 |
+| `800018509` | 猛雷鼓厄诡椪 |
+| `800018502` | N 的索罗亚克 |
+| `800018880` | 阿响的火暴兽 |
+| `800052301` | 厄诡椪／岩殿居蟹迁移 |
+
+其他牌组必须先审核精确 deck/card identity 和本地 UID，不能只改显示名。已有策略证据和回放结果是参考，不是新工作区的自动能力。
+
+## 当前交付状态
+
+- `.ptcgai v1` 保持字节兼容；新工作区默认 v2 `rules_only` 或 `rules_with_model`。
+- Windows x86_64 已有规则/原生 CPU ORT 的 Forge 与真实 Godot 开发见证。
+- macOS arm64/x86_64 有构建入口，但实机安装、对局与回放门尚未完成。
+- Android、GPU/CoreML、有状态模型和 production 均不在当前已通过范围。
+- 旧 `.ptcgbot`/Python competition 运行期已退出活动产品路径，只保留历史审计证据。
+
+完整声明边界见[明确限制](docs/LIMITATIONS.md)和[统一规则/模型设计](docs/17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md)。
+
+## 文档按任务阅读
+
+- [开发者中心](docs/00-DEVELOPER-HUB.md)：从目标选择路径、文件和命令。
+- [快速入门](docs/01-QUICKSTART.md)：从空目录到第一个包。
+- [策略包与裁决](docs/02-PACKAGE-AND-POLICY.md)：包里有什么，谁拥有最终权力。
+- [场景测试](docs/03-SCENARIO-TESTING.md)：RED→GREEN、重排和负例。
+- [调试与优化](docs/04-DEBUGGING-AND-OPTIMIZATION.md)：从失败报告定位 owning layer。
+- [安装与发布](docs/05-PUBLISHING.md)：本地开发安装与账号签名。
+- [安全与隐私](docs/06-SECURITY-AND-PRIVACY.md)：公开输入和 fail-closed 边界。
+- [故障排查](docs/07-TROUBLESHOOTING.md)：稳定错误码。
+- [架构](docs/08-ARCHITECTURE.md)：Host/Base、SDK 快照和运行时。
+- [策略思考](docs/09-STRATEGY-THINKING.md)：从牌组计划到可验证规则。
+- [工作区验收](docs/10-WORKSPACE-CHECK.md)：双构建和 acceptance report。
+- [UCIS SDK](docs/15-UCIS-SDK-DEVELOPER-GUIDE.md)：current-window API。
+- [支持卡牌清单](docs/19-SUPPORTED-CARDS.md)：如何查询本地 UID、交互状态和声明边界。
+- [Python SDK 参考](docs/18-DEVELOPER-SDK-REFERENCE.md)：`StrategyWorkspace` API。
+- [明确限制](docs/LIMITATIONS.md)：不能从当前证据推出什么。
+
+更早的架构、Kaggle/CABT、迁移和牌组专项设计仍保留在 `docs/11`–`17`，但不是第一次开发的必读入口。
+
+## 来源、证据与许可
+
+vendored PtcgDAP SDK 的每个文件固定在 [`vendor/ptcgdap-sdk-manifest.json`](vendor/ptcgdap-sdk-manifest.json)；`doctor` 会拒绝缺失、篡改、额外文件和 symlink。开发包使用 test-fixture 或开发者账号签名，不等于平台批准。
+
+项目使用 Apache License 2.0；vendored 组件来源见 [NOTICE](NOTICE)。

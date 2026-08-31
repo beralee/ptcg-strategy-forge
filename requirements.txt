@@ -3,6 +3,9 @@ cffi==2.1.1
 cryptography==46.0.7
 jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
+numpy==2.3.3
+onnx==1.22.0
+onnxruntime==1.26.0
 pycparser==3.0
 referencing==0.37.0
 rpds-py==2026.6.3

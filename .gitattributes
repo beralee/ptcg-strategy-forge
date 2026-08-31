@@ -12,6 +12,7 @@ scripts/ai/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
 contracts/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
 data/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
 data/bundled_user/** -text whitespace=-blank-at-eof,cr-at-eol
+data/developer/** -text whitespace=-blank-at-eof,cr-at-eol
 tools/ptcgdap/** -text whitespace=-blank-at-eof,cr-at-eol
 vendor/ptcgdap-sdk-manifest.json -text whitespace=-blank-at-eof,cr-at-eol
 demo/** -text whitespace=-blank-at-eof,cr-at-eol

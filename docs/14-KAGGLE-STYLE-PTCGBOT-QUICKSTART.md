@@ -1,142 +1,67 @@
-# Kaggle 风格 `.ptcgbot` v2 快速入门
+# 旧 `.ptcgbot` 退出与迁移
 
-这条工作流用于多文件纯 Python 策略，与玩家设备上的 data-only `.ptcgai` 分开。`.ptcgbot` 当前只能获得 `developer_local_qualified`：不能直接安装到游戏，不声明 production sandbox、official engine 或完整规则 A3。
+## 状态
 
-## 1. 环境自检
+`.ptcgbot` 是历史 Kaggle 风格多文件 Python 策略制品。它曾提供 deterministic bundle、developer-local runner/RPC、公开 trace 与本地预资格，但不能安装到游戏。
 
-competition runtime 固定为 Windows x86_64、CPython `3.11.13` / `cp311-win_amd64`。Forge 自身使用项目 venv；competition 命令会查找 exact 3.11.13，也可通过 `PTCGBOT_PYTHON` 指向该解释器。
+项目已实施统一 `.ptcgai` 决策：活动 CLI 只保留 `rules_only` 与 `rules_with_model` 两种 data-only `.ptcgai`；`.ptcgbot` 不再是目标开发路径，也不提供安装或兼容运行期。
 
-```powershell
-.\setup.ps1
-.\forge.ps1 competition doctor
-.\forge.ps1 ucis catalog
-.\forge.ps1 ucis walkthrough
-```
+当前仓库仍保留历史合同、runner、测试和源码作为不可执行审计记录，但 `forge competition` 已从活动 CLI 移除。这些文件不表示新项目应继续采用该路径；本文不再提供创建、构建、上传或资格命令。
 
-`competition doctor` 检查 Python ABI、runtime lock、RPC、A1 scope、Search=none、time profile、SDK snapshot 和 clean-room 分发门。`ucis walkthrough` 先让开发者看懂 current-window 规则，不需要创建工程。
+权威目标见[统一 `.ptcgai` 规则与模型策略设计](17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md)。
 
-## 2. 创建工作区
+## 不可迁移的权限
 
-```powershell
-.\forge.ps1 competition init `
-  --output work\my-bot `
-  --strategy-id community.example.bot `
-  --author-id community.example `
-  --display-name "Example Bot"
-```
+以下能力不能从旧 Python 包带入玩家运行时：
 
-生成内容：
+- 任意 Python 执行、多文件 import 或持久进程状态；
+- 文件系统、subprocess、网络、动态依赖或作者 native module；
+- Python callback 对 raw observation 的任意解析；
+- 旧 runtime lock、RPC、qualification 或 service credential；
+- 旧窗口 index、score、binding、ticket 或 proof。
 
-```text
-my-bot/
-  README.md
-  STRATEGY-BLUEPRINT.md
-  ptcgbot.toml
-  runtime-lock.json
-  deck.csv
-  src/submission/
-    __init__.py
-    main.py          # 唯一 agent 入口
-    ucis.py          # generation-locked、无依赖 current-window SDK
-  scenarios/
-    smoke.json       # bootstrap + 正向 + semantic reorder
-  tests/README.md
-  resources/
-```
+历史 developer-local qualification 只证明原 scope 的工具链和 current-window 行为，不能自动成为 `.ptcgai`、Godot、macOS、模型或 production 证据。
 
-模板中的 scenario 已使用合法 `CARD / TO_HAND / CARD` 稀疏 wire，不使用测试私有的 `preferred` 字段。`ucis.py` 与 Forge 当前 registry generation/hash 有回归绑定，并作为作者源码进入 deterministic content manifest。
+## 迁移到纯规则 `.ptcgai`
 
-## 3. 读懂生成的 agent
+适用于主要由 `if`/规则表/语义 helper 构成的 Python agent：
 
-```python
-from pathlib import Path
+1. 固定旧策略、牌组和可公开 replay 的 exact hash，作为只读迁移输入。
+2. 从 Python 中提取 Match Agenda、当前路线、资源债务、信息检查点和类型化交互；不要翻译文件/网络/状态机副作用。
+3. 使用 `forge workspace create` 创建 `.ptcgai` 工作区，重新校验目标 PtcgDAP 私有 UID、精确 60 张与 deck manifest。
+4. 将当前 Competitive IR 能表达的公开、当前窗口部分人工写入 adapter；更丰富的条件图保留在 `STRATEGY-BLUEPRINT.md`，不能假装已执行。
+5. 为正向、缺少前置、错误目标、option reorder、精确数量、mandatory/terminal、hard tier/veto、未知 UID、隐藏字段和 fallback 建立 RED→GREEN 场景。
+6. 运行 `.ptcgai` 的 build/check、Godot 实战、回放和选择审计；旧 `.ptcgbot` receipt 不参与新资格。
 
-from .ucis import SelectionWindow, semantic_key
+不存在把 `main.py` 放入 `.ptcgai`、自动翻译任意 Python 或只改扩展名的受支持路径。
 
-_DECK = [int(value) for value in Path("deck.csv").read_text(encoding="ascii").splitlines()]
-_SEARCH_TARGET = semantic_key("CARD", area=2, index=20, playerIndex=0)
+## 迁移 BC/RL 策略
 
+适用于行为克隆、强化学习、BC→RL、self-play 或混合训练策略：
 
-def agent(raw_observation):
-    select = raw_observation.get("select")
-    if select is None and raw_observation.get("current") is None:
-        return list(_DECK)
+1. 训练仍在外部 Python/Kaggle/集群环境完成；Forge 不提供训练循环。
+2. 把最终 Actor 重新导出为首代受审的无状态、CPU-only、固定 shape 单文件 `actor.ort`。
+3. 移除 custom op、外部权重、动态维度、远程推理和作者 runtime dependency。
+4. 只使用 Competitive Public Frame allow-list，经统一 tensor profile 生成整数特征、presence 和 option mask；未知 UID/shape 必须 fail closed。
+5. 同时编写真实 Competitive IR fallback。`model_only` 包无效。
+6. 重新校验 card catalog/deck/UID、actor、runtime/operator/tensor/resource profile 的 hash。
+7. 通过 `forge workspace model inspect/import/tensorize/conformance`、统一 workspace build/check 和目标平台 Godot 门后，才形成可安装 `.ptcgai`。
 
-    window = SelectionWindow.parse(raw_observation)
-    if window.context_name == "TO_HAND":
-        return window.rebind([_SEARCH_TARGET])
-    return window.first_legal()
-```
+上述 model 命令、Windows x86_64 原生 ORT Host、安装和真实 Godot 对局门已经实现；macOS arm64/x86_64 已有同合同构建入口，但尚未获得实机安装、对局和回放证据。因此 Windows 开发包可安装验证，macOS 仍不能声明通过。
 
-初始牌组 callback 返回 exact 60 个 official Card ID；之后只能返回当前 `select.option` indexes。每次选择被接受后，旧 `SelectionWindow`、index、score、binding 和 proof 全部失效。
+## 历史资产处理
 
-开发者需要记住的循环只有：
-
-```text
-parse fresh observation
-→ derive public facts / semantic goal
-→ choose current indexes
-→ return
-→ next callback 重新 parse 和 rebind
-```
-
-精确数量、NUMBER/YES_NO、重复分配、公开奖赏时钟和能量债务示例见 [UCIS SDK 开发者指南](15-UCIS-SDK-DEVELOPER-GUIDE.md)。
-
-## 4. 第一轮 RED→GREEN
-
-先运行模板：
-
-```powershell
-.\forge.ps1 competition test --workspace work\my-bot
-```
-
-然后只改一个语义目标或期望，先让场景 RED；再修改 `main.py`/自有模块让它 GREEN。关键动作至少加入：
-
-- 目标存在与缺失；
-- min/max 精确数量；
-- option reorder；
-- 信息动作后 fresh callback；
-- one-fact metamorphic flip；
-- unknown Context/Option/字段拒绝；
-- invalid output、timeout 和 private sentinel containment。
-
-不要把最终 index 写死进跨 callback 状态。若要保存目标，保存 `semantic_key`、official serial 或公开角色债务，再对新窗口 `rebind`。
-
-## 5. 日常命令
-
-```powershell
-.\forge.ps1 competition test --workspace work\my-bot
-.\forge.ps1 competition check --workspace work\my-bot
-
-.\forge.ps1 competition build `
-  --workspace work\my-bot `
-  --output work\my-bot\build\my-bot.ptcgbot
-
-.\forge.ps1 competition trace `
-  --package work\my-bot\build\my-bot.ptcgbot `
-  --suite work\my-bot\scenarios\smoke.json `
-  --public
-
-.\forge.ps1 competition prequalify --workspace work\my-bot
-```
-
-| 命令 | 通过条件 |
+| 历史资产 | 处理 |
 |---|---|
-| `test` | scenario transcript 的每个 callback 返回与期望相同 |
-| `check` | 两次 canonical build exact bytes 相同、共享 Bundle owner 严格校验、scenario 全绿 |
-| `trace --public` | 只输出 ordinal、返回域、option fingerprint、result 和稳定错误，不回显 observation |
-| `prequalify` | ABI、deck、determinism、reorder、网络/子进程/私有 sentinel、timeout/output、scratch cleanup 全绿 |
+| `.ptcgbot` archive | 只读归档；不可安装、重签为 `.ptcgai` 或继续晋升 |
+| Python source | 作为人工迁移/重新导出输入；不进入玩家包 |
+| deck/identity data | 按当前 PtcgDAP catalog 重新校验，不沿用名称猜测 |
+| UCIS helper 语义 | 可迁入统一公共张量 SDK，但不携带 Python execution authority |
+| trace/replay/evidence | 保留原 generation/scope/non-claim；可用作新场景参考 |
+| qualification/service receipt | 不转换为游戏安装、模型或 production 权限 |
 
-构建输出不覆盖已有文件；建议把版本和 archive hash 一起记录到策略蓝图。
+## 历史证据仍然说明什么
 
-## 6. 多文件和资源
+旧 `.ptcgbot` 实现与 CABT core selection A1 证据仍可证明当时声明的 bundle、公开 current-window、ordered options 与 accepted indexes。UCIS generation、目录 closure 和九类 operation input/index 回执继续由各自 hash/scope 管理。
 
-`src/submission/` 可增加纯 Python 模块；`resources/` 只允许 profile 列出的 inert JSON/CSV/TXT/受限 NPY。禁止 wheel、DLL、EXE、pickle、`.pth`、动态安装依赖和作者提供的 `cg` 模块。
-
-`runtime-lock.json` 是平台拥有的 exact copy，不能由作者修改。需要新的 dependency/Search/native capability 时必须提升 runtime generation，不能在策略包里自行扩大权限。
-
-## 7. 当前 authority
-
-当前 `.ptcgbot` 只证明 developer-local tooling、确定性包链和 Godot core selection A1 scoped binding。项目负责人允许 user-private oracle 的本地研究比较，但 official bundle 不复制、不发布、不上传、不进入 SDK。
-
-对应卡九类 operation input/index 是独立 PtcgDAP 证据；它不授予本 runner official Search、official clock、服务端排名、production 多租户隔离、玩家安装，或提交后的 state/damage/KO/RNG/terminal 一致性。
+这些历史证据不证明提交后的 state、damage、KO、RNG、terminal、完整规则 A3、Search、production sandbox、Android/device acceptance 或策略强度，也不构成统一 `.ptcgai v2` 的实现证据；v2 的实现证据必须来自 Forge 和对应 Godot 平台门。

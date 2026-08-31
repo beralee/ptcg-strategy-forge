@@ -12,6 +12,17 @@ package_id + package_version + archive_sha256
 
 改变任何可分发行为都应提升版本。显示名不能参与卡牌映射或策略匹配。
 
+新开发者不直接拼装这些路径；`forge workspace create/status/check/build` 和公开 `StrategyWorkspace` SDK 负责工作区生命周期。底层包结构仍是验证与运行合同，不因为开发者门面简化而放宽。
+
+`.ptcgai v2` 有两种模式：
+
+| 模式 | 包内容 |
+|---|---|
+| `rules_only` | deck + Competitive IR/adapter/config |
+| `rules_with_model` | 同一完整规则 fallback + `model/model_manifest.json` + `model/actor.ort` |
+
+不支持 `model_only`。模型不可用时，包必须仍能在同一窗口沿规则/Base 路径裁决。
+
 ## 身份域
 
 当前 demo 使用 Windows 本地域：
@@ -89,4 +100,10 @@ CardEffectSpec → InteractionProgram → fresh SelectionWindow
 .\forge.ps1 ucis inspect --scenario scenarios\01-positive.json
 ```
 
-`.ptcgbot` 模板中的 `SelectionWindow` 还提供 `choose_exact`、`choose_up_to`、`rebind`、`choose_number`、`choose_boolean` 和 `first_legal`。完整示例见 [UCIS SDK 开发者指南](15-UCIS-SDK-DEVELOPER-GUIDE.md)。这些 helper 只产生 index proposal；不会改变 Base/Host authority。
+当前 UCIS 开发者 helper 提供 `choose_exact`、`choose_up_to`、`rebind`、`choose_number`、`choose_boolean` 和 `first_legal`。完整示例见 [UCIS SDK 开发者指南](15-UCIS-SDK-DEVELOPER-GUIDE.md)。这些 helper 只产生 index proposal；不会改变 Base/Host authority。
+
+## 当前统一规则/模型包
+
+当前只分发 data-only `.ptcgai`，v2 提供 `rules_only` 和 `rules_with_model` 两种 mode；不允许 `model_only`。模型 mode 必须同时携带 Competitive IR fallback 与受审的 `model/actor.ort`，Host 先完成 legality、mandatory/terminal、规则路线、hard tier 和 veto，再允许模型在当前获准候选中输出 `int32 option_scores` 与 `desired_count`。模型异常只在同一窗口降级到规则/Base，不能持有旧窗口 authority。
+
+`.ptcgai v1` loader 与既有 fixture 保持 exact bytes/hash/行为兼容；v1 可选 `weights.bin` 不被重新解释为 v2 模型。v2 的 `model/model_manifest.json`、公开定长张量、Python/Windows 原生 ORT runtime 与 operator profile 已实现；macOS arm64/x86_64 有构建配置但尚无实机对局证据。完整合同与平台状态见[统一 `.ptcgai` 规则与模型策略设计](17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md)。

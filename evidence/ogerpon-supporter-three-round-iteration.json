@@ -1,0 +1,185 @@
+{
+  "document_type": "ogerpon_supporter_three_round_iteration_v1",
+  "schema_version": 1,
+  "date": "2026-08-26",
+  "status": "windows_development_published_and_clean_benchmarked",
+  "source": {
+    "handoff": "D:/ai/code/ptcgtrain-main/deliverables/ptcgabc_ogerpon_v523a_handoff_20260812",
+    "champion_main_sha256": "D6580B1A00F7609DEE68053ACB67F8DE3D68BEA440A90774677FA25B74313207",
+    "deck_sha256": "66B339A7EF8178DC0095C4369B685ACB33A2D6E4FC16B452BB6FB4A5FF048B37",
+    "model_sha256": "D0E72D029D7AB9FD90537622D9D2A5139B7822BD23F049DEDE9D594B6CC677D3",
+    "archive_sha256": "E7EEA5A7E6F753B62757151F5647E85A9ED99B83F196C98C6A2CA45D01A465CC"
+  },
+  "diagnosis": {
+    "owning_layer": "policy_adapter",
+    "platform_bug": false,
+    "observed_supporter_windows": 37,
+    "observed_supporter_selections": 0,
+    "policy_errors": 0,
+    "invalid_outputs": 0,
+    "fallbacks": 0,
+    "root_causes": [
+      "iono_and_judge_required_self_hand_count_lte_4",
+      "positive_end_turn_scores_overrode_legal_supporter_options"
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "package_version": "1.1.0",
+      "archive_sha256": "90E905A3F761DA58A5124F1716B5616C426DA8AE1D6A43A1249CCA16D6E6A3C2",
+      "change": "development_debt_driven_iono_without_hand_lte_4",
+      "red_selected_indexes": [3],
+      "green_selected_indexes": [0],
+      "scenarios": "22/22"
+    },
+    {
+      "round": 2,
+      "package_version": "1.2.0",
+      "archive_sha256": "F15615F82C15DF356C77FAEFE92601EA36F10D9A13602FB6E18FE547E8EC7CC0",
+      "change": "public_prize_clock_and_opponent_hand_driven_judge",
+      "red_selected_indexes": [0],
+      "green_selected_indexes": [1],
+      "semantic_reorder": true,
+      "single_fact_prize_clock_flip": true,
+      "scenarios": "25/25"
+    },
+    {
+      "round": 3,
+      "package_version": "1.3.0",
+      "archive_sha256": "B813433007BCC1A516376D2C95E4911999B4B4B5A804BD5EE1329799280C40CA",
+      "change": "remove_positive_end_turn_authority_and_veto_unsafe_actions",
+      "red_selected_indexes": [2],
+      "green_selected_indexes": [1],
+      "scenarios": "26/26"
+    }
+  ],
+  "final": {
+    "package_id": "dev.beralee.v18.ogerpon-crustle-v523a",
+    "package_version": "1.3.0",
+    "archive_path": "work/ogerpon-crustle-supporter-r3/build/ogerpon-crustle-supporter-r3-1.3.0-checked.ptcgai",
+    "archive_sha256": "B813433007BCC1A516376D2C95E4911999B4B4B5A804BD5EE1329799280C40CA",
+    "adapter_sha256": "262FDF919620D86CD38395C3183DBBD46BD7E91C3317B1124DBDA5B072FFDD0D",
+    "scenario_suite_sha256": "766784D73D47C74B062405E1C0DB65DB25782B8346AF2334ADD1BBA4D7204365",
+    "score_rule_count": 65,
+    "count_rule_count": 6,
+    "positive_end_turn_rule_count": 0,
+    "double_build_deterministic": true,
+    "strict_scenarios": "26/26",
+    "policy_preflight": true,
+    "development_only": true,
+    "engine_witness": true,
+    "production_ready": false
+  },
+  "installation": {
+    "authorization": "user_explicitly_authorized_new_version_publication_on_2026_08_26",
+    "scope": "ptcgdap_windows_built_in_development_candidate",
+    "installed_path": "D:/ai/code/PtcgDAP/data/ptcgdap/author_strategy_packages/ogerpon-crustle-v523a-supporter-r3-1.3.0.ptcgai",
+    "installed_bytes": 83275,
+    "installed_sha256": "B813433007BCC1A516376D2C95E4911999B4B4B5A804BD5EE1329799280C40CA",
+    "exact_copy_verified": true,
+    "development_gate_registered": true,
+    "catalog_discoverable": true,
+    "battle_setup_selectable": true,
+    "battle_setup_start_allowed": true,
+    "real_host_frame_witness": true,
+    "production_published": false
+  },
+  "godot_red_green": {
+    "engine": "Godot 4.6.1.stable.official.14d19694e",
+    "red": {
+      "result": "16_pass_1_fail",
+      "failure": "1.3.0 candidate archive_sha256 was null before gate registration",
+      "log_sha256": "AFBA766C0670564A9A92D0E23A71D06F419D772F2E6C4C3FF75D8840B50DB355"
+    },
+    "green": {
+      "result": "17_pass_0_fail",
+      "log_sha256": "F7FAD55876D7C9410295AABD0761C9E53E87BA1C99C8C5FE77DB8FD328D7456D"
+    },
+    "known_warning": "existing Godot ObjectDB/resource leak warning at process exit"
+  },
+  "excluded_diagnostics": [
+    {
+      "purpose": "targeted_developer_trace_rerun",
+      "path": "D:/ai/code/PtcgDAP/artifacts/deck_training/ogerpon_supporter_1_3_0_marnie_seed72308_trace.json",
+      "sha256": "C0FCBF0A5E14982462EB775DBC6411681C09D0A596262CD6DE3796899325F8CD",
+      "executed_games": 0,
+      "error_code": "host_frame_contract_preflight:setup_option_missing",
+      "included_in_win_rate": false,
+      "resolution": "supporter execution was instead verified from 200 accepted public replays using card-serial discard transitions and public effect signatures"
+    }
+  ],
+  "benchmarks": {
+    "runtime": {
+      "engine_sha256": "D78E40E24D95B2407DA6E1BF171DFE86FDC58EA062F86B1D60948A9321D4CEE6",
+      "rules_sha256": "58AC8F82ECEED1874F516E5F78A3F73F4444891AFF04DF4D57797A5F7DF174D0",
+      "host_contract_sha256": "B642E704B92A8A76E0D15D02C20B8CC006C4AD2FEE90324FEEBD35114DF92262",
+      "card_catalog_sha256": "AB8CF10465F492A98DA8247A84572AECEE281D0726F7BB7B8E5DBC03A6AC70D4",
+      "runtime_manifest_sha256": "BB3BACC2F53CAFB5C192A031761FB57567931FF033D4209B13E97C56B5E3480B"
+    },
+    "same_seed_72300": {
+      "baseline_1_0_0": {
+        "wins": 75,
+        "losses": 25,
+        "matchups": [17, 16, 12, 11, 19],
+        "effect_confirmed_supporter_plays": {"judge": 3, "iono": 7, "total": 10}
+      },
+      "candidate_1_3_0": {
+        "wins": 77,
+        "losses": 23,
+        "matchups": [18, 15, 13, 12, 19],
+        "policy_calls": 4100,
+        "policy_successes": 4100,
+        "invalid_outputs": 0,
+        "policy_errors": 0,
+        "classic_fallbacks": 0,
+        "same_window_fallbacks": 0,
+        "engine_rejections": 0,
+        "accepted_replays": 100,
+        "validated_frames": 9366,
+        "replay_validation_mismatches": 0,
+        "effect_confirmed_supporter_plays": {"judge": 31, "iono": 4, "total": 35},
+        "report_path": "D:/ai/code/PtcgDAP/artifacts/deck_training/ogerpon_supporter_1_3_0_same_seed72300_20x5_clean.json",
+        "report_sha256": "C4DC7CE83F0AA50941B926B68ECBE7354249B50A778A64296237E90ECAEB5173",
+        "replay_root": "D:/ai/code/PtcgDAP/artifacts/deck_training/ogerpon_supporter_1_3_0_same_seed72300_replays"
+      },
+      "win_rate_delta_percentage_points": 2
+    },
+    "fresh_seed_82300": {
+      "wins": 74,
+      "losses": 26,
+      "matchups": [16, 12, 15, 11, 20],
+      "policy_calls": 3860,
+      "policy_successes": 3860,
+      "invalid_outputs": 0,
+      "policy_errors": 0,
+      "classic_fallbacks": 0,
+      "same_window_fallbacks": 0,
+      "engine_rejections": 0,
+      "accepted_replays": 100,
+      "validated_frames": 8819,
+      "replay_validation_mismatches": 0,
+      "effect_confirmed_supporter_plays": {"judge": 19, "iono": 2, "total": 21},
+      "report_path": "D:/ai/code/PtcgDAP/artifacts/deck_training/ogerpon_supporter_1_3_0_fresh_seed82300_20x5_clean.json",
+      "report_sha256": "430E73134FDCCB724754D2F707187BDAA1CD9CFE2924F64212A8AF71C28CC6BA",
+      "replay_root": "D:/ai/code/PtcgDAP/artifacts/deck_training/ogerpon_supporter_1_3_0_fresh_seed82300_replays"
+    },
+    "combined_candidate": {
+      "games": 200,
+      "wins": 151,
+      "losses": 49,
+      "win_rate_percent": 75.5,
+      "effect_confirmed_supporter_plays": {"judge": 50, "iono": 6, "total": 56},
+      "policy_calls": 7960,
+      "policy_successes": 7960,
+      "accepted_replays": 200,
+      "validated_frames": 18185,
+      "replay_validation_mismatches": 0
+    }
+  },
+  "pending": [],
+  "rollback": {
+    "package_version": "1.0.0",
+    "archive_sha256": "9531F683F2AB9E0138D8054D3E3813D7378F9F6E5F7F8CAF9C428C3FCAFF8D9F"
+  }
+}

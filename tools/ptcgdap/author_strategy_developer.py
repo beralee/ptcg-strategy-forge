@@ -45,6 +45,7 @@ from scripts.ai.ptcgdap.source_lock import (  # noqa: E402
     load_json_strict,
 )
 from scripts.ai.ptcgdap.strategic_context_v18 import StrategicContextCompiler  # noqa: E402
+from scripts.ai.ptcgdap.strategic_trace_v2 import RestrictedBaseGraphIRCompiler  # noqa: E402
 from tools.ptcgdap.build_author_strategy_package import (  # noqa: E402
     FIXED_PAYLOAD_KINDS,
     GENERATED_PATHS,
@@ -243,6 +244,7 @@ def _policy_preflight(package: Any, handle: Any) -> dict[str, object]:
             }
             invalid = {uid for uid in allowed if not is_valid_local_card_uid(uid)}
             adapter = load_json_bytes_strict(package.payload_bytes("policy/adapter.json"))
+            policy_ir = load_json_bytes_strict(package.payload_bytes("policy/policy_ir.json"))
             if type(adapter) is dict and type(adapter.get("rules")) is list:
                 for rule in adapter["rules"]:
                     predicate = rule.get("predicate") if type(rule) is dict else None
@@ -254,6 +256,14 @@ def _policy_preflight(package: Any, handle: Any) -> dict[str, object]:
                             invalid.add(uid)
             diagnostic["invalid_local_card_uids"] = sorted(invalid, key=str.encode)
             if type(adapter) is dict and adapter.get("schema_version") == 2:
+                diagnostic["owning_layer"] = "RestrictedBaseGraphIRCompiler.compile"
+                ir_outcome = RestrictedBaseGraphIRCompiler.compile(
+                    policy_ir,
+                    contract_root=CONTRACT_ROOT,
+                )
+                if not ir_outcome.accepted or ir_outcome.ir is None:
+                    diagnostic["error_code"] = ir_outcome.error_code or "package_policy_unsupported"
+                    _raise("package_policy_unsupported", diagnostic)
                 diagnostic["owning_layer"] = "CompetitivePolicyV2Compiler.compile_local_uid"
                 outcome = CompetitivePolicyV2Compiler.compile_local_uid(
                     adapter,
@@ -298,6 +308,10 @@ def _package_report(package_path: Path, *, status: str) -> dict[str, object]:
         "error_code": "",
         "package_id": package.package_id,
         "package_version": package.package_version,
+        "package_document_type": metadata.get("package_document_type", "strategy_package_v1"),
+        "policy_mode": metadata.get("policy_mode", "rules_only"),
+        "model_manifest_sha256": metadata.get("model_manifest_sha256"),
+        "model_artifact_sha256": metadata.get("model_artifact_sha256"),
         "archive_sha256": package.archive_sha256,
         "archive_bytes": package_path.stat().st_size,
         "author_display_name": metadata["author"]["display_name"],
@@ -373,23 +387,31 @@ def validate_development_package(package: Path) -> dict[str, object]:
     return _package_report(Path(package).resolve(strict=False), status="valid")
 
 
-def _fixed_godot_user_catalog_root(appdata_root: Path | None) -> Path:
-    if appdata_root is None:
-        raw_appdata = os.environ.get("APPDATA", "")
-        if not raw_appdata:
-            _raise("developer_user_data_unavailable")
-        base = Path(raw_appdata)
-    else:
+def _platform_godot_user_root(appdata_root: Path | None) -> tuple[Path, Path]:
+    if appdata_root is not None:
         base = Path(appdata_root)
+    elif sys.platform == "win32":
+        raw = os.environ.get("APPDATA", "")
+        if not raw:
+            _raise("developer_user_data_unavailable")
+        base = Path(raw)
+    elif sys.platform == "darwin":
+        base = Path.home() / "Library/Application Support"
+    else:
+        raw = os.environ.get("XDG_DATA_HOME", "")
+        base = Path(raw) if raw else Path.home() / ".local/share"
+    godot_name = "Godot" if sys.platform in {"win32", "darwin"} else "godot"
+    return base, Path(godot_name) / "app_userdata/PtcgDeckAgent"
+
+
+def _fixed_godot_user_catalog_root(appdata_root: Path | None) -> Path:
+    base, godot_relative = _platform_godot_user_root(appdata_root)
     try:
         base.mkdir(parents=True, exist_ok=True)
         resolved_base = base.resolve(strict=True)
         if base.is_symlink() or not resolved_base.is_dir():
             _raise("developer_user_data_invalid")
-        target = (
-            resolved_base
-            / "Godot/app_userdata/PtcgDeckAgent/ptcgdap/author_strategy_packages"
-        )
+        target = resolved_base / godot_relative / "ptcgdap/author_strategy_packages"
         target.mkdir(parents=True, exist_ok=True)
         resolved_target = target.resolve(strict=True)
     except DeveloperToolError:

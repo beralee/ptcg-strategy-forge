@@ -1,0 +1,42 @@
+{
+  "author": {
+    "author_id": "codex.example",
+    "display_name": "Codex Example"
+  },
+  "compatibility": {
+    "base_executor_sha256": "69D05747A9F91C19765D448B676C86E1D9DFA1BBAB108ED1374B854B34E48389",
+    "cabt_contract_sha256": "2CD02F54538985426EFDB057F3A6BDA4AD154DD171BCC03667D42D102982D294",
+    "card_catalog_sha256": "AB8CF10465F492A98DA8247A84572AECEE281D0726F7BB7B8E5DBC03A6AC70D4",
+    "minimum_game_api": "ptcgdap-author-host-v2",
+    "required_capabilities": [
+      "learned_policy_head_v1"
+    ]
+  },
+  "deck": {
+    "deck_path": "deck/deck.csv",
+    "display_name": "18.0 玛俐的长毛巨魔",
+    "manifest_path": "deck/deck_manifest.json"
+  },
+  "document_type": "strategy_package_v2",
+  "package_id": "dev.codex.minimal-bc-rl-marnie",
+  "package_version": "0.1.1",
+  "policy": {
+    "adapter_path": "policy/adapter.json",
+    "config_path": "policy/config.json",
+    "entry_kind": "restricted_policy_ir_v1",
+    "ir_path": "policy/policy_ir.json",
+    "model_artifact_path": "model/actor.ort",
+    "model_manifest_path": "model/model_manifest.json",
+    "policy_mode": "rules_with_model",
+    "weights_path": null
+  },
+  "presentation": {
+    "banner_path": null,
+    "icon_path": null
+  },
+  "schema_version": 2,
+  "strategy": {
+    "display_name": "Minimal BC RL Marnie",
+    "summary": "A minimal BC warm-start plus contextual-bandit RL actor with Competitive IR fallback."
+  }
+}

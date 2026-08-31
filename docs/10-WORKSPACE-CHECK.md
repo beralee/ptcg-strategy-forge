@@ -10,7 +10,20 @@
 → 全部通过后才写出最终包
 ```
 
-## 使用
+## 日常入口
+
+开发者工作区优先使用短命令：
+
+```powershell
+.\forge.ps1 workspace check work\my-strategy
+.\forge.ps1 workspace build work\my-strategy
+```
+
+`workspace check` 只返回验收报告，不保留临时归档；`workspace build` 在相同门通过后，按 package identity 写入默认 `.ptcgai` 和 `build/workspace-check.json`。默认路径可通过 `workspace status` 查看。
+
+## 底层兼容入口
+
+已有 CI 仍可显式控制路径：
 
 ```powershell
 .\forge.ps1 check `
@@ -19,7 +32,7 @@
   --report work\my-strategy\build\check-report.json
 ```
 
-工作区必须含 `package/` 和 `scenario-suite.json`。`--output` 可省略，此时只生成控制台或 `--report` 证据，不保留临时包。
+工作区必须含 `package/` 和 `scenario-suite.json`。底层 `check --output` 可省略，此时只生成控制台或 `--report` 证据，不保留临时包。它与 `workspace check/build` 共享同一个验收实现。
 
 为了保护证据：
 
@@ -49,4 +62,4 @@
 
 `check` 不替代新牌组卡效审核、Godot 真实引擎见证、官方 CABT 差分、设备 canary 或生产审批；这些仍是独立验收门。
 
-若 `ucis.accepted=false`，先运行 `forge ucis catalog`；若场景窗口不合法，运行 `forge ucis inspect --scenario <file>`。不要为了通过 `check` 修改或删除 vendored contract、qualification receipt 或 unsupported 清单。
+若 `ucis.accepted=false`，先运行 `forge ucis catalog`；若场景窗口不合法，优先运行 `forge workspace inspect <workspace> --scenario <relative-file>`。不要为了通过 `check` 修改或删除 vendored contract、qualification receipt 或 unsupported 清单。

@@ -22,17 +22,20 @@ Before changing behavior, read:
 
 1. `README.md`
 2. `TODO.md`
-3. `docs/01-QUICKSTART.md`
-4. `docs/02-PACKAGE-AND-POLICY.md`
-5. `docs/03-SCENARIO-TESTING.md`
-6. `docs/04-DEBUGGING-AND-OPTIMIZATION.md`
-7. `docs/06-SECURITY-AND-PRIVACY.md`
-8. `docs/08-ARCHITECTURE.md`
-9. `docs/09-STRATEGY-THINKING.md`
-10. `docs/10-WORKSPACE-CHECK.md`
-11. `docs/14-KAGGLE-STYLE-PTCGBOT-QUICKSTART.md`
-12. `docs/15-UCIS-SDK-DEVELOPER-GUIDE.md`
-13. `docs/LIMITATIONS.md`
+3. `docs/00-DEVELOPER-HUB.md`
+4. `docs/01-QUICKSTART.md`
+5. `docs/02-PACKAGE-AND-POLICY.md`
+6. `docs/03-SCENARIO-TESTING.md`
+7. `docs/04-DEBUGGING-AND-OPTIMIZATION.md`
+8. `docs/06-SECURITY-AND-PRIVACY.md`
+9. `docs/08-ARCHITECTURE.md`
+10. `docs/09-STRATEGY-THINKING.md`
+11. `docs/10-WORKSPACE-CHECK.md`
+12. `docs/14-KAGGLE-STYLE-PTCGBOT-QUICKSTART.md`
+13. `docs/15-UCIS-SDK-DEVELOPER-GUIDE.md`
+14. `docs/18-DEVELOPER-SDK-REFERENCE.md`
+15. `docs/19-SUPPORTED-CARDS.md`
+16. `docs/LIMITATIONS.md`
 
 Use `demo/marnie-forge` as the executable reference. The vendored SDK source,
 contract hashes, and provenance are locked by
@@ -42,12 +45,14 @@ and refresh source, not a runtime dependency.
 ## Repository map
 
 - `forge.py` / `forge.ps1`: stable developer entrypoints.
-- `src/ptcg_strategy_forge/`: Forge orchestration, scenario suites, and SDK
-  provenance checks.
+- `src/ptcg_strategy_forge/`: public workspace/current-window SDK, CLI
+  orchestration, scenario suites, and SDK provenance checks.
 - `tools/ptcgdap/`, `scripts/ai/ptcgdap/`: reviewed vendored PtcgDAP tooling
   and policy runtime snapshot.
 - `contracts/ptcgdap/`, `data/ptcgdap/`, `data/bundled_user/`: pinned contracts,
   catalog/deck sources, and the accepted template package.
+- `data/developer/supported-cards-v1.json`: generated developer-facing card UID
+  and interaction-support snapshot; never hand-edit it.
 - `demo/marnie-forge/`: RED→GREEN strategy example and strict scenario suite.
 - `tests/`: unit, security, determinism, documentation, and workflow tests.
 - `evidence/`: public-only reproducible acceptance receipts.

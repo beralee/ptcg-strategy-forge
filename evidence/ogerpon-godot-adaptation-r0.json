@@ -1,0 +1,76 @@
+{
+  "document_type": "ogerpon_godot_adaptation_r0_evidence_v1",
+  "schema_version": 1,
+  "recorded_at": "2026-08-25",
+  "status": "historical_red_blocked_godot_host_contract",
+  "superseded_by": "evidence/ogerpon-godot-adaptation-final.json",
+  "development_only": true,
+  "official_cabt_engine_parity": false,
+  "production_ready": false,
+  "source": {
+    "path": "D:\\ai\\code\\ptcgtrain-main\\deliverables\\ptcgabc_ogerpon_v523a_handoff_20260812",
+    "read_only": true,
+    "champion_sha256": "d6580b1a00f7609dee68053acb67f8de3d68bea440a90774677fa25b74313207",
+    "deck_sha256": "66b339a7ef8178dc0095c4369b685acb33a2d6e4fc16b452bb6fb4a5ff048b37",
+    "model_sha256": "d0e72d029d7ab9fd90537622d9d2a5139b7822bd23f049dede9d594b6cc677d3",
+    "archive_sha256": "e7eea5a7e6f753b62757151f5647e85a9ed99b83f196c98c6a2ca45d01a465cc",
+    "submission_id": 55435118,
+    "record": "33-22"
+  },
+  "forge": {
+    "package_id": "dev.beralee.v18.ogerpon-crustle-v523a",
+    "package_version": "0.1.0",
+    "archive_sha256": "6BA5D78C7790212692B821354623FE10A36EF0A6C222BA2C4D61B09261CC310E",
+    "source_deck_id": 800052301,
+    "card_count": 60,
+    "unique_printing_count": 19,
+    "adapter_schema_version": 2,
+    "score_rule_count": 62,
+    "count_rule_count": 6,
+    "scenario_passed": 10,
+    "scenario_total": 10,
+    "deterministic_build": true
+  },
+  "godot_smoke": {
+    "engine_version": "4.6.1-stable",
+    "seed_base": 52300,
+    "max_steps": 700,
+    "opponent_deck_ids": [800018501, 800017097, 800018499, 800018509, 800018502],
+    "games_started_per_matchup": 1,
+    "valid_strategy_games": 0,
+    "policy_calls": 29,
+    "policy_successes": 0,
+    "policy_errors": 29,
+    "same_window_fallbacks": 29,
+    "error_code": "invalid_public_frame",
+    "benchmark_halted": true,
+    "win_rate_claim_available": false
+  },
+  "host_contract_preflight": {
+    "report": "D:\\ai\\code\\PtcgDAP\\artifacts\\deck_training\\ogerpon_r0_contract_preflight.json",
+    "matchups_checked": 5,
+    "games_started": 0,
+    "policy_calls": 0,
+    "fallbacks": 0,
+    "error_code": "invalid_public_frame",
+    "unexpected_select_semantics_keys": [
+      "remain_damage_counter",
+      "remain_energy_cost"
+    ],
+    "unexpected_option_keys": [
+      "option_area_index",
+      "option_area_raw"
+    ],
+    "accepted_after_diagnostic_removal_of_unexpected_keys": true,
+    "engine_behavior_modified": false
+  },
+  "blockers": [
+    "GODOT-OGER-001",
+    "GODOT-OGER-002"
+  ],
+  "resolved_integration_findings": [
+    "GODOT-OGER-003",
+    "GODOT-OGER-004"
+  ],
+  "findings_document": "docs/16-OGERPON-GODOT-ADAPTATION-FINDINGS.md"
+}

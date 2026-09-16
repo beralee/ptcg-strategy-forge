@@ -1,5 +1,8 @@
 # 控制面与 Forge CLI（2026-09-16）
 
+本页记录首轮控制面。后续完整 CLI 补全和无需网页的逐步命令见
+[CLI 完整性审查](26-CLI-ONLY-DEVELOPMENT.md)，包含远端版本管理、资格等待和参赛操作。
+
 本次补齐账号、登记公钥、身份预检、本机签名、提交、接收对账和资格刷新。
 这些功能已连接正式 HTTP 合同并通过本地服务集成；2026-09-16 已部署到
 `https://api.ptcg.skillserver.cn`，线上能力发现与权限边界检查通过。
@@ -34,8 +37,9 @@ forge account logout
 
 Windows 凭据保存在当前用户的凭据管理器。配置 JSON 只存服务地址、完整作者 ID
 和 profile；凭据内部绑定相同元数据，修改地址或作者后不能带着原凭据发送请求。
-`logout` 删除本机 profile 和凭据，不撤销服务端 API Key；可在开发者中心撤销。
-当前持久凭据实现仅覆盖 Windows，其他系统明确返回 `account_credential_store_unavailable`。
+`logout` 删除本机 profile 和凭据，不撤销服务端 API Key；`account revoke-api-key` 撤销当前 API Key。
+持久凭据实现仅覆盖 Windows；自动化和其他系统可显式传 `--origin` 与
+`--api-key-stdin` 或 `--api-key-env NAME`，不调用持久凭据库。
 
 ## 提交与恢复
 

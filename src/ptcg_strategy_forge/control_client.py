@@ -40,7 +40,8 @@ class ControlClient:
             raise ValueError('account_credential_invalid')
         self.token = token
 
-    def request(self, path, *, method='GET', value=None, body=None, headers=None, response_headers=False):
+    def request(self, path, *, method='GET', value=None, body=None, headers=None, response_headers=False,
+                binary=False, max_bytes=4 * 1024**2):
         if not path.startswith('/v1/') or path.startswith('//') or '\\' in path:
             raise ValueError('service_path_invalid')
         request_headers = {'Accept': 'application/json', **(headers or {})}
@@ -61,8 +62,8 @@ class ControlClient:
                 except ValueError:
                     raise ControlError('service_redirect_forbidden') from None
                 with response:
-                    data = response.read(4 * 1024**2 + 1)
-                    if len(data) > 4 * 1024**2:
+                    data = response.read(max_bytes + 1)
+                    if len(data) > max_bytes:
                         raise ControlError('service_response_budget_exceeded')
                     if response.status >= 400 or 300 <= response.status < 400:
                         try:
@@ -72,7 +73,14 @@ class ControlClient:
                         if type(code) is not str or not re.fullmatch(r'(developer|release|ladder|api_key|signing_key|csrf|authentication|package)_[a-z_]{1,70}', code):
                             code = 'service_request_failed'
                         raise ControlError(code, response.status)
-                    document = json.loads(data) if data else {}
+                    if binary:
+                        if response.headers.get_content_type() != 'application/vnd.ptcgdap.ptcgai':
+                            raise ControlError('release_download_content_type_invalid')
+                        return data
+                    try:
+                        document = json.loads(data) if data else {}
+                    except ValueError:
+                        raise ControlError('service_response_invalid') from None
                     if type(document) is not dict:
                         raise ControlError('service_response_invalid')
                     return (document, dict(response.headers)) if response_headers else document
@@ -80,6 +88,39 @@ class ControlClient:
             raise ControlError('service_connection_unknown') from None
         finally:
             budget.unregister()
+
+    def download(self, path, output, digest, *, max_bytes=16 * 1024**2):
+        """Verify the owner archive before atomically creating a non-overwriting file."""
+        import os
+        import tempfile
+        output = Path(output)
+        if output.exists() or output.is_symlink():
+            raise ValueError('release_download_exists')
+        if type(digest) is not str or not re.fullmatch(r'[0-9a-fA-F]{64}', digest):
+            raise ValueError('release_archive_identity_invalid')
+        if type(max_bytes) is not int or not 1 <= max_bytes <= 16 * 1024**2:
+            raise ValueError('release_download_budget_invalid')
+        data = self.request(path, binary=True, max_bytes=max_bytes,
+                            headers={'Accept': 'application/vnd.ptcgdap.ptcgai'})
+        if hashlib.sha256(data).hexdigest() != digest.lower():
+            raise ValueError('release_download_hash_mismatch')
+        output.parent.mkdir(parents=True, exist_ok=True)
+        temporary = None
+        try:
+            with tempfile.NamedTemporaryFile(dir=output.parent, delete=False) as stream:
+                temporary = Path(stream.name)
+                stream.write(data)
+                stream.flush()
+                os.fsync(stream.fileno())
+            try:
+                os.link(temporary, output)
+            except FileExistsError:
+                raise ValueError('release_download_exists') from None
+        finally:
+            if temporary is not None:
+                temporary.unlink(missing_ok=True)
+        return {'status': 'downloaded', 'archive_sha256': digest.upper(),
+                'bytes': len(data), 'output': str(output.resolve()), 'production_authority': False}
 
     def me(self):
         value = self.request('/v1/developer/me')

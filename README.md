@@ -54,7 +54,7 @@ PTCG Strategy Forge 是独立的 `.ptcgai` 策略开发工具链。你可以从�
 
 ## 先跑起你的第一个策略
 
-当前作者工具链要求 Windows、PowerShell 7 和 Python 3.13。先在[开发者中心](https://ptcg.skillserver.cn/dist/developers.html)注册并复制完整开发者 ID，然后：
+当前作者工具链要求 Windows、PowerShell 7 和 Python 3.13。已有开发者 API Key 后，创建、迭代、签名上传和查询均可使用 CLI，无需打开网页：
 
 ```powershell
 git clone https://github.com/beralee/ptcg-strategy-forge.git
@@ -62,9 +62,10 @@ cd ptcg-strategy-forge
 .\setup.ps1
 .\forge.ps1 doctor
 
-$developerId = "<从开发者后台复制的完整 ID>"
+.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn
+# 在隐藏输入提示中输入 API Key，不把密钥写进命令。
 .\forge.ps1 workspace create work\my-strategy `
-  --author-id $developerId `
+  --account `
   --package-id dev.myname.my-strategy `
   --author-name "你的显示名称"
 
@@ -90,7 +91,7 @@ $developerId = "<从开发者后台复制的完整 ID>"
 
 `inspect` 把一次原始选择翻译成可读的公开事实和语义选项。`check` 会执行两次精确构建、比较字节与哈希、严格走 Host 路径并运行完整场景；全部通过后，`build` 才会写出 `.ptcgai` 和验收报告。
 
-完整的注册、创建、签名和上传步骤见[从注册到上传：完整开发者指南](https://ptcg.skillserver.cn/dist/developer-guide.html)。
+完整无网页流程、远端版本管理和 CI 用法见 [CLI 完整性审查与工作流](docs/26-CLI-ONLY-DEVELOPMENT.md)。API Key 用于账号认证，Ed25519 私钥用于本机签名，两者不能替代。首次注册与账号恢复不属于“已有 API Key”的前提。
 
 ## 选择你的开发方式
 

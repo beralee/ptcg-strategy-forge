@@ -21,7 +21,7 @@ from .ucis_runtime import (
 if TYPE_CHECKING:
     from .sdk import StrategyWorkspace, WorkspaceError, WorkspaceMode, WorkspaceModel
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 __all__ = [
     "AccountStore",

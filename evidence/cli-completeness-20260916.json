@@ -1,0 +1,193 @@
+{
+  "document_type": "forge_cli_completeness_acceptance_v1",
+  "date": "2026-09-16",
+  "sdk_version": "0.3.1",
+  "rollback_source_commit": "19745447af28ff037b693e48917c8f1a157c10c1",
+  "implemented": [
+    "authenticated_workspace_identity",
+    "ephemeral_stdin_or_named_environment_auth",
+    "owned_release_list_and_detail",
+    "bounded_qualification_wait_and_exit_codes",
+    "digest_verified_non_overwriting_download",
+    "owned_participation_pause_resume",
+    "signing_key_revocation",
+    "current_api_key_self_revocation"
+  ],
+  "tdd": {
+    "initial_missing_workflow_tests": 8,
+    "focused_workflow_tests_passed": 10,
+    "full_suite": {
+      "run": 180,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        [
+          "test_resource_gate.ResourceGateTests.test_kernel_mutex_blocks_second_process_without_launching_a_pool",
+          "Deferred: separate user research owns the global heavy-job mutex"
+        ]
+      ],
+      "success": true
+    },
+    "deferred_mutex_test": "passed_separately_after_research_finished",
+    "distinct_tests_passed": 180,
+    "final_staged_snapshot_tests_passed": 17
+  },
+  "workspace": {
+    "status": "passed",
+    "deterministic": true,
+    "scope": "public_window_host_and_scenarios"
+  },
+  "installed_wheel": {
+    "file": "ptcg_strategy_forge-0.3.1-py3-none-any.whl",
+    "sha256": "40b7f3b16cf43d44f09de77a20cdc1ff99f0163bb735f5ee87426b9766d936ba",
+    "bytes": 1948853,
+    "outside_checkout_import_cli_and_doctor": "passed"
+  },
+  "browser_free_cli_acceptance": {
+    "transport": "real_loopback_http",
+    "execution": "independent_cli_processes",
+    "identity": "temporary_developer_api_key",
+    "real_ed25519_signing": true,
+    "local_double_build_and_host_checks": true,
+    "credential_output_absent": true,
+    "profile_not_persisted": true,
+    "production_account_submission": false
+  },
+  "public_http_capabilities": {
+    "capabilities": {
+      "api_key_self_revocation": true,
+      "authentication": "developer_api_key_v1",
+      "cli_authentication": true,
+      "decision_trace": false,
+      "history_pagination": false,
+      "max_upload_bytes": 16777216,
+      "range_resume": false,
+      "recent_game_limit": 60,
+      "recent_games": true,
+      "release_idempotency": "archive_sha256_v1",
+      "release_participation": true,
+      "release_reconciliation": "archive_sha256_v1",
+      "signing_key_revocation": true,
+      "signing_keys": true,
+      "single_replay": true
+    },
+    "document_type": "forge_service_capabilities_v1",
+    "profile": "dojo",
+    "schema_version": 1,
+    "status": "available",
+    "origin": "https://api.ptcg.skillserver.cn",
+    "verification": "live_http_contract"
+  },
+  "security": {
+    "staged_gitleaks_findings": 0,
+    "real_keys_or_private_server_sources_in_commit": false
+  },
+  "github_ci": {
+    "prior_run": 35044047613,
+    "prior_result": "failed_missing_historical_python_3_11_13",
+    "fix": "explicit_uv_0_8_24_install_and_exact_version_assertion",
+    "new_remote_run": "pending_at_commit"
+  },
+  "known_gaps": [
+    "production_developer_upload_canary",
+    "complete_history_pagination",
+    "native_decision_attachment_service",
+    "native_trace_to_target_model_bc_projection",
+    "generic_engine_evaluator",
+    "detailed_runtime_qualification_failure_diagnostics"
+  ],
+  "source_files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "git_blob_sha256": "edc3c762b1a89f2de4933dc28257d54a2079207ed6a5b25fda02dca097586a28"
+    },
+    {
+      "path": ".gitignore",
+      "git_blob_sha256": "4523ff6b7b4365265a3c1c16a9f6dbad9869f3149f19d3bad0f2149d9e44589c"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "git_blob_sha256": "5110fbf73d89d859a12ec1a22ddfcf6b3cefb94714d0dec76b77c1c1812a4703"
+    },
+    {
+      "path": "README.md",
+      "git_blob_sha256": "c1d49689b8f238dcfa3132f48af4a0165ab34901d66f12b06f502696383d837d"
+    },
+    {
+      "path": "TODO.md",
+      "git_blob_sha256": "667d60e0e4b05107996a4092759a264c4b3989f65cfc476eef9fc989d2515309"
+    },
+    {
+      "path": "docs/00-DEVELOPER-HUB.md",
+      "git_blob_sha256": "684ac60244615e355f8d4b165004009c6c638dfc66683f82ffbfa51491a097a5"
+    },
+    {
+      "path": "docs/01-QUICKSTART.md",
+      "git_blob_sha256": "3a94050b7a9faf11a582cb8c310c29935559c511a4911bce7fdb671a3830529b"
+    },
+    {
+      "path": "docs/05-PUBLISHING.md",
+      "git_blob_sha256": "dd52c7dd0b258569c45c3dd093dd2bea89d58bae9a14592bfc05eaa449f09e03"
+    },
+    {
+      "path": "docs/06-SECURITY-AND-PRIVACY.md",
+      "git_blob_sha256": "d3068d249a3db3c98c7538aa5cdd06ccca217d98b3950f4d8ae86c29158ecb5e"
+    },
+    {
+      "path": "docs/08-ARCHITECTURE.md",
+      "git_blob_sha256": "e2824a77fcf508615d9f704c5267317a2300e6b4dffef876e209627d99621b51"
+    },
+    {
+      "path": "docs/18-DEVELOPER-SDK-REFERENCE.md",
+      "git_blob_sha256": "a410a18f5537029a69df08936507c14ff23d71ebc3b93f92a664d4e0a7eb419f"
+    },
+    {
+      "path": "docs/23-CONTROL-PLANE-CLI.md",
+      "git_blob_sha256": "6ae7018e6c933d35fb05b30d4af0dc46e15f3031b84a34de723452f3d3be3ba7"
+    },
+    {
+      "path": "docs/26-CLI-ONLY-DEVELOPMENT.md",
+      "git_blob_sha256": "4ec160885132d7e37b362946217b0ec7795c94e40fc2ee533fba1e376ae671e6"
+    },
+    {
+      "path": "pyproject.toml",
+      "git_blob_sha256": "6605e43febff00e430f757cd996ae95500f50427eafd627e307510e39e348c68"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/__init__.py",
+      "git_blob_sha256": "7279671c30cf4b3245ec14beef5515321fa6d7776956e963ea26e173829f0376"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/cli.py",
+      "git_blob_sha256": "f24deb9bd8d56d9f5ca7061e41f1d9a989a5d2672bed92af9398fbb0d9ebc6f8"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/control_client.py",
+      "git_blob_sha256": "4f9fe2b9ccfe2c55e1d64857e2e325c6d77ba2683ffa81d36cfb31ac915a1da6"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/control_workflow.py",
+      "git_blob_sha256": "1d867c0cd9ca6910c3579d563ad5a12a912f9fd60c21d78f87b4dc537e56cd2f"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/iteration_cli.py",
+      "git_blob_sha256": "e3fc234e23693feeea1725708098f2ed57c060ed13b3736253759ad5a4b79b85"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/services.py",
+      "git_blob_sha256": "c9a7c65dd677035e1a458b280a5d78360a52aee779e4222b01b8996ce6aca0b2"
+    },
+    {
+      "path": "tests/test_control_workflow.py",
+      "git_blob_sha256": "23e9ab26595b95fbf8c42fa7bd5a754ee0c6869cbd8fc5248b3aac93b8c86994"
+    }
+  ],
+  "public_local_log_sha256": {
+    "red.log": "e000f4ff13aa23ad6999fb40acee5785446ed3459acc2fdf485057800bc3ac58",
+    "workflow-green.log": "bb5ba4fcf08b12f215fdadbb42c23ab83dba3317d83bb7dd257bd3f6be5e1ac1",
+    "full-suite.log": "5ab5d3ca5847280f394e878e824d16b5b27d03eaf6669ff454d2b8f9eb4f6be0",
+    "mutex.log": "5c91282df2cc58f4307a2014f6740f8f55c13a1869ebfb1c4eca3d74e911aede",
+    "snapshot-tests.log": "8cd4d3029ee4d15ef2d75fbf938feadc0c42bd5bfbb96f3162efbee51b66ed4b",
+    "snapshot-workspace-check.json": "eb7ae0f93b7eed2258bfeb145cb16f22a35e92d846ada9c9a2694756de295ffe"
+  }
+}

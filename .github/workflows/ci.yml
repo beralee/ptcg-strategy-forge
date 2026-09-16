@@ -10,7 +10,7 @@ permissions:
 jobs:
   windows-python-313:
     runs-on: windows-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,6 +19,18 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: python -m pip install --disable-pip-version-check -r requirements.txt
+      - name: Provision the pinned historical audit runtime
+        shell: pwsh
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.8.24
+          if ($LASTEXITCODE -ne 0) { throw "uv installation failed" }
+          uv python install 3.11.13
+          if ($LASTEXITCODE -ne 0) { throw "historical runtime installation failed" }
+          $auditPython = uv python find 3.11.13
+          if ($LASTEXITCODE -ne 0) { throw "historical runtime missing" }
+          & $auditPython -I -c "import platform; assert platform.python_version() == '3.11.13'"
+          if ($LASTEXITCODE -ne 0) { throw "historical runtime version mismatch" }
+          "PTCGBOT_PYTHON=$auditPython" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Verify SDK and contracts
         run: python forge.py doctor --report evidence/ci-doctor.json
       - name: Run unit and security tests

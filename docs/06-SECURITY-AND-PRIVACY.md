@@ -30,11 +30,11 @@
 
 ## 凭据
 
-发布凭据只能通过环境变量提供。报告固定声明 `credential_persisted=false`，测试会递归扫描证据，禁止 token/password/secret 等键。不要把 `.env`、shell history 或服务器数据库提交到 Git。
+旧平台 `publish` 凭据从环境变量读取。开发者控制面支持隐藏交互输入、标准输入和显式命名环境变量；`account login` 使用 Windows 凭据管理器保存 API Key，配置 JSON 不含密钥。其他认证命令的 `--api-key-stdin` / `--api-key-env NAME` 只保存在当前进程，必须同时明确 `--origin`，不继承或改写保存的 profile。报告不回显密钥。不要把 `.env`、shell history 或服务器数据库提交到 Git。
 
 开发者发布私钥（例如 `*.ed25519`、PEM/P12/PFX 或其他私钥导出）必须位于仓库与策略工作区之外。Forge 的 `release-key` 拒绝覆盖已有文件，公开 JSON 只包含可登记的公钥、key ID 和指纹；它不是私钥，但也不需要随策略源码提交。仓库 `.gitignore` 防御性忽略常见私钥扩展、`.env*`、`work/`、构建包和本地 artifacts；提交前仍要人工检查 `git status` 与 staged 文件，因为 ignore 规则不能保护已经被 Git 跟踪的秘密。
 
-私钥泄漏时应立即在开发者后台撤销对应公钥，并生成、登记新密钥；仅修改密钥标签或文件名不会换钥。显示名称拼写错误不要求轮换密钥，作者身份以完整 `developer_id` 和包内 `author_id` 为准。
+私钥泄漏时应使用 `account revoke-signing-key --key-id ID` 撤销对应公钥，并生成、登记新密钥；仅修改密钥标签或文件名不会换钥。`account revoke-api-key` 撤销当前 HTTP 凭据，`account logout` 仅清除本机保存，两者不同。撤销 API Key 不需要上传或读取签名私钥。显示名称拼写错误不要求轮换密钥，作者身份以完整 `developer_id` 和包内 `author_id` 为准。
 
 ## 网络
 

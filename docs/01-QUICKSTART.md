@@ -4,7 +4,7 @@
 
 ## 先取得正式开发者 ID
 
-登录[线上开发者中心](https://ptcg.skillserver.cn/dist/developers.html)，复制账号页显示的完整开发者 ID。它通常以 `developer-` 开头；粘贴到 Forge 时必须逐字符保留，包括 `developer-` 前缀。显示名称、邮箱、密钥标签和后面的十六进制部分都不能单独代替它。
+已有 API Key 时，在下方安装完成后运行 `forge account login --origin https://api.ptcg.skillserver.cn`，按隐藏提示输入密钥。`forge account whoami` 返回完整身份，`workspace create --account` 自动绑定。离线创建仍支持 `--author-id`：必须逐字符保留完整 ID，包括 `developer-` 前缀。显示名称、邮箱和密钥标签不能替代它。
 
 完整开发者 ID 较长，而 `package_id` 还有独立长度限制。正式项目请另外选择一个简短、稳定且全局唯一的包 ID，例如 `dev.myname.my-strategy`，不要让工具从完整开发者 ID 自动拼接包名。
 
@@ -28,16 +28,16 @@ python -m venv .venv
 ## 创建第一个规则工作区
 
 ```powershell
-$developerId = "<从开发者后台复制的完整 ID>"
+.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn
 .\forge.ps1 workspace create work\my-strategy `
-  --author-id $developerId `
+  --account `
   --package-id dev.myname.my-strategy `
   --author-name "你的显示名称"
 ```
 
 这条命令使用约定默认值：
 
-- `author_id` 等于后台完整 `developer_id`；
+- `author_id` 自动等于认证账号的完整 `developer_id`；
 - `package_id=dev.myname.my-strategy`；
 - `package_version=0.1.0`；
 - `strategy_name=My Strategy`；

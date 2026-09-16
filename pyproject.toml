@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ptcg-strategy-forge"
-version = "0.3.0"
+version = "0.3.1"
 description = "Standalone data-only PtcgDAP strategy developer toolkit"
 requires-python = ">=3.13"
 dependencies = ["cryptography==46.0.7", "jsonschema==4.26.0"]

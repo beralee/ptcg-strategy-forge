@@ -1,5 +1,7 @@
 # PTCG Strategy Forge TODO 闭环
 
+2026-09-16 CLI 完整性复核：已补账号身份自动绑定、临时凭据、远端版本查询/下载/资格等待、参赛管理与本人密钥撤销。此前“可提交”不等于完整 CLI；准确流程及剩余服务/模型缺口见 [无网页开发工作流](docs/26-CLI-ONLY-DEVELOPMENT.md)。生产提交 canary 仍独立保留。
+
 2026-09-16 SDK 0.3.0 提交前验收：170 项测试、独立安装、来源锁和示例工作区通过；
 提交文件及历史密钥扫描无发现。见 [GitHub 提交验收](evidence/sdk-github-acceptance-20260916.json)。
 

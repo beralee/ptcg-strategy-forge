@@ -9,6 +9,16 @@ from .replays import NoRedirect
 
 
 def register(commands, workspace_commands):
+    from .control_workflow import add_auth_arguments
+    remote = commands.add_parser('releases', help='Manage your remote releases without a local workspace.')
+    remote.add_argument('operation', choices=('list', 'show', 'wait', 'download', 'pause', 'resume'))
+    remote.add_argument('--release-id')
+    remote.add_argument('--package-id')
+    remote.add_argument('--output', type=Path)
+    remote.add_argument('--timeout', type=float, default=300)
+    remote.add_argument('--interval', type=float, default=5)
+    add_auth_arguments(remote)
+    remote.set_defaults(iteration_handler=run)
     rules = workspace_commands.add_parser("rules")
     rules.add_argument("operation", choices=("compile", "lint"))
     rules.add_argument("path", type=Path)
@@ -27,7 +37,7 @@ def register(commands, workspace_commands):
     release.add_argument("--author-id")
     release.add_argument("--public-key", type=Path)
     release.add_argument("--submission")
-    release.add_argument("--profile", default="dojo")
+    add_auth_arguments(release)
     release.add_argument("--private-key", type=Path)
     release.add_argument("--retry-unaccepted", action="store_true")
     release.add_argument("--refresh", action="store_true")
@@ -106,13 +116,15 @@ def register(commands, workspace_commands):
     service.add_argument("--origin")
     service.set_defaults(iteration_handler=run)
     account = commands.add_parser("account")
-    account.add_argument("operation", choices=("login", "whoami", "logout", "signing-keys", "register-signing-key"))
+    account.add_argument("operation", choices=("login", "whoami", "logout", "signing-keys", "register-signing-key", "revoke-signing-key", "revoke-api-key"))
     account.add_argument("--profile", default="dojo")
     account.add_argument("--origin")
     login = account.add_mutually_exclusive_group()
     login.add_argument("--email")
     login.add_argument("--username")
     login.add_argument("--api-key-stdin", action="store_true")
+    login.add_argument("--api-key-env", metavar="NAME")
+    account.add_argument("--key-id")
     account.add_argument("--public-key", type=Path)
     account.add_argument("--label", default="Forge signing key")
     account.set_defaults(iteration_handler=run)
@@ -165,6 +177,23 @@ from .services import capabilities, matches
 
 def run(args):
     from .sdk import StrategyWorkspace, _ROOT
+    from .control_workflow import authenticated_client
+    if args.command == 'releases':
+        from .control_workflow import list_releases, release_detail, wait_release, download_release, set_participation
+        client = authenticated_client(args)
+        if args.operation == 'list':
+            return list_releases(client, package_id=args.package_id)
+        if not args.release_id:
+            raise ValueError('release_id_required')
+        if args.operation == 'show':
+            return {'status': 'completed', 'release': release_detail(client, args.release_id)}
+        if args.operation == 'wait':
+            return wait_release(client, args.release_id, timeout=args.timeout, interval=args.interval)
+        if args.operation == 'download':
+            if args.output is None:
+                raise ValueError('release_download_output_required')
+            return download_release(client, args.release_id, args.output)
+        return set_participation(client, args.release_id, 'paused' if args.operation == 'pause' else 'eligible')
     if args.command == "resources":
         from .resources_gate import windows_snapshot, validate_snapshot
         snapshot = windows_snapshot()
@@ -220,14 +249,22 @@ def run(args):
                 client = ControlClient(args.origin).login_password(args.username or args.email,
                     getpass.getpass("Account password: "), username=bool(args.username))
             else:
-                token = sys.stdin.readline(1024).strip() if args.api_key_stdin else getpass.getpass("API key: ")
-                client = ControlClient(args.origin, token)
+                if args.api_key_stdin or args.api_key_env:
+                    client = authenticated_client(args)
+                else:
+                    client = ControlClient(args.origin, getpass.getpass("API key: "))
             return store.login(args.profile, client)
-        client = store.client(args.profile)
+        client = authenticated_client(args)
         if args.operation == "whoami":
             return {"status": "authenticated", "profile": args.profile, "origin": client.origin, **client.me()}
         if args.operation == "signing-keys":
             return {"status": "completed", **client.request('/v1/developer/signing-keys')}
+        if args.operation == 'revoke-api-key':
+            from .control_workflow import revoke_current_api_key
+            return revoke_current_api_key(client)
+        if args.operation == 'revoke-signing-key':
+            from .control_workflow import revoke_signing_key
+            return revoke_signing_key(client, args.key_id)
         if not args.public_key:
             raise ValueError("release_public_key_required")
         from .control_client import register_public_key
@@ -253,7 +290,7 @@ def run(args):
                 raise ValueError("release_private_key_required")
             from .control_client import AccountStore
             from .control_release import submit_release
-            return submit_release(workspace, AccountStore().client(args.profile), args.private_key,
+            return submit_release(workspace, authenticated_client(args), args.private_key,
                                   retry_unaccepted=args.retry_unaccepted)
         if args.operation == "status":
             if not args.submission:
@@ -261,14 +298,14 @@ def run(args):
             if args.refresh:
                 from .control_client import AccountStore
                 from .control_release import refresh_release
-                return refresh_release(workspace, AccountStore().client(args.profile), args.submission)
+                return refresh_release(workspace, authenticated_client(args), args.submission)
             return ReleaseLedger(workspace.root).status(args.submission)
         if args.public_key is None:
             raise ValueError("release_preparation_inputs_required")
         if not args.author_id:
             from .control_client import AccountStore
             from .control_release import prepare_authenticated_release
-            return prepare_authenticated_release(workspace, AccountStore().client(args.profile), args.public_key)
+            return prepare_authenticated_release(workspace, authenticated_client(args), args.public_key)
         return prepare_release(workspace, args.author_id, args.public_key)
     if args.workspace_command == "explain":
         if args.baseline:

@@ -7,11 +7,12 @@ from .replays import NoRedirect
 
 
 def capabilities():
-    return {"document_type": "forge_service_capabilities_v1", "schema_version": 1, "status": "available",
-            "profile": "dojo", "verification": "reviewed_browser_contract_only",
+    return {"document_type": "forge_service_capabilities_v1", "schema_version": 1, "status": "unverified",
+            "profile": "dojo", "verification": "offline_contract_snapshot",
             "capabilities": {"recent_games": True, "recent_game_limit": 60, "single_replay": True,
-                             "history_pagination": False, "decision_trace": False, "cli_authentication": False,
-                             "range_resume": False, "release_idempotency": False},
+                             "history_pagination": False, "decision_trace": False, "cli_authentication": True,
+                             "range_resume": False, "release_idempotency": "archive_sha256_v1"},
+            "next_action": "forge service capabilities --origin https://api.ptcg.skillserver.cn",
             "scope": "finite_recent_query_not_complete_history"}
 
 

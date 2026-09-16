@@ -45,6 +45,7 @@ evidence/*
 !evidence/control-cli-20260915.json
 !evidence/control-api-live-20260916.json
 !evidence/sdk-github-acceptance-20260916.json
+!evidence/cli-completeness-20260916.json
 !evidence/ember-frost-source-restoration.json
 !evidence/ember-frost-local-iteration-20260916.json
 !evidence/ember-frost-complex-iteration-20260916.json

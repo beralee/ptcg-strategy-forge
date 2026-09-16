@@ -1,5 +1,15 @@
 # 安装与发布
 
+## 已有 API Key：全程 CLI
+
+日常发布优先使用 [无网页开发工作流](26-CLI-ONLY-DEVELOPMENT.md)：`account login` →
+`workspace create --account` → `workspace build` → `account register-signing-key` →
+`workspace release submit` → `releases wait`。`releases list/show/download/pause/resume`
+管理本人版本。上传自动在本机签名并保存精确回执；不需要手工重签后选择网页文件。
+
+API Key 与签名私钥分别负责 HTTP 身份和包签名。已有 API Key 不意味着已经有签名私钥；
+首次发布可用 `release-key` 在仓库外生成。以下手工发布章节保留为兼容路径，网页不是前置条件。
+
 ## 开发目录安装
 
 ```powershell

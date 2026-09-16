@@ -216,4 +216,4 @@ SDK 与 CLI 共享实现和报告，不需要维护两套工作流。
 
 `build()` 的结果新增不可覆盖 `record`，`status()` 新增 `acceptance.status`。模型状态使用摘要绑定缓存；状态查询不启动推理。默认安装拒绝与当前输入不符的已有包。
 
-扩展门面包括 `workspace.training.bc/evaluate/compare`、`workspace.native_traces.import_trace/inspect`、`workspace.debugging.explain/test/watch/generate/counterfactual/from_replay` 与 `workspace.matches(origin, release_id)`。BC 当前为显式夹具训练基线，原生录像会单独检查训练资格；真实引擎评估和正式账号发布尚未接通。完整参数、错误和能力边界见 [v0.3 实施说明](21-ITERATION-CLI-IMPLEMENTATION.md)。
+扩展门面包括 `workspace.training.bc/evaluate/compare`、`workspace.native_traces.import_trace/inspect`、`workspace.debugging.explain/test/watch/generate/counterfactual/from_replay` 与 `workspace.matches(origin, release_id)`。BC 当前为显式夹具训练基线，原生录像会单独检查训练资格；真实引擎评估仍未接通。正式账号发布使用 `AccountStore` / `ControlClient` 和 `workspace.submit_release`，见 [控制面 CLI](23-CONTROL-PLANE-CLI.md)；无网页操作见 [完整 CLI 流程](26-CLI-ONLY-DEVELOPMENT.md)。

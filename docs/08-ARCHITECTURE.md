@@ -83,7 +83,7 @@ Python 与 Godot 使用同一 CABT tree hash 固定 policy/audit；conformance v
 
 [下一阶段架构升级提案](20-DEVELOPER-ITERATION-ARCHITECTURE-AND-PLAN.md) 将 CLI/SDK 应用服务、产物记录、资源调度、服务适配、录像/BC 数据、可选本地训练、评估与发布反馈纳入同一工作区。首批纵向目标是从真实对局目录受控采集录像，并产出具备完整决策前输入与 accepted choice 的可重复 BC 数据集。
 
-该文档当前为待实施设计，不改变本文的现有模块实现或 `.ptcgai`/Base/Host 权威边界；外部服务、页面和引擎导出能力有独立 owner 与集成门。具体迁移、并发准入、标签映射、防泄漏分区、阶段计划和回滚口径由该提案统一记录。
+该提案已部分实施，不改变 `.ptcgai`/Base/Host 权威边界；外部服务、页面和引擎导出能力有独立 owner 与集成门。具体迁移、并发准入、标签映射、防泄漏分区、阶段计划和回滚口径由该提案统一记录，实际完成范围见实施说明和 [CLI 完整性审查](26-CLI-ONLY-DEVELOPMENT.md)。
 
 ### v0.3 已落地的应用层分离
 

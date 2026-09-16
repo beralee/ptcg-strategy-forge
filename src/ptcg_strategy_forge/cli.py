@@ -134,7 +134,11 @@ def main() -> int:
         "create", help="Create a workspace with convention-based identity defaults."
     )
     workspace_create.add_argument("path", type=Path, help="New workspace directory; it must not exist.")
-    workspace_create.add_argument("--author-id", required=True, help="Stable author identifier.")
+    identity = workspace_create.add_mutually_exclusive_group(required=True)
+    identity.add_argument("--author-id", help="Explicit identity for offline development.")
+    identity.add_argument("--account", action="store_true", help="Use the authenticated account identity.")
+    from .control_workflow import add_auth_arguments
+    add_auth_arguments(workspace_create)
     workspace_create.add_argument("--author-name", help="Display name; defaults to --author-id.")
     workspace_create.add_argument("--package-id", help="Defaults to dev.<author-id>.<workspace-name>.")
     workspace_create.add_argument("--package-version", default="0.1.0")
@@ -297,6 +301,11 @@ def main() -> int:
             report = args.iteration_handler(args)
         elif args.command == "workspace":
             if args.workspace_command == "create":
+                if args.account:
+                    from .control_workflow import authenticated_client
+                    account = authenticated_client(args).me()
+                    args.author_id = account['developer_id']
+                    args.author_name = args.author_name or account.get('display_name') or args.author_id
                 developer_workspace = StrategyWorkspace.create(
                     args.path,
                     author_id=args.author_id,
@@ -440,7 +449,9 @@ def main() -> int:
         else:
             report = {"document_type": "ptcg_strategy_forge_demo_generation_v1", "schema_version": 1, "status": "generated", **generate_demo_scenarios(ROOT / "demo/marnie-forge")}
         _emit(report, getattr(args, "report", None))
-        return 0 if report.get("status") not in {"failed", "error"} else 2
+        if report.get('document_type') == 'forge_release_wait_v1' and report.get('status') != 'passed':
+            return 2
+        return 0 if report.get("status") not in {"failed", "error", "timeout", "cancelled"} else 2
     except (
         DeveloperToolError,
         OrtActorError,

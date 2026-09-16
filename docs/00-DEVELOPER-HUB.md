@@ -1,6 +1,6 @@
 # 开发者中心
 
-这页是 PTCG Strategy Forge 的任务导航。日常开发围绕一个 `StrategyWorkspace` 展开；`.ptcgai` 包格式、UCIS、Base Graph 和 ORT 是工作区背后的合同，不需要先全部学会。要上传连续联赛，第一步是在[线上开发者中心](https://ptcg.skillserver.cn/dist/developers.html)注册并复制完整开发者 ID，包括 `developer-` 前缀。
+这页是 PTCG Strategy Forge 的任务导航。日常开发围绕一个 `StrategyWorkspace` 展开；`.ptcgai` 包格式、UCIS、Base Graph 和 ORT 是工作区背后的合同，不需要先全部学会。已有 API Key 后，`account login` 与 `workspace create --account` 自动绑定完整开发者 ID，包括 `developer-` 前缀；[无网页流程](26-CLI-ONLY-DEVELOPMENT.md) 覆盖后续开发和发布。
 
 ## 先选择你的目标
 
@@ -8,7 +8,7 @@
 
 | 我要做什么 | 第一条命令 | 接着读 |
 |---|---|---|
-| 从零写规则策略 | `forge workspace create PATH --author-id ID --package-id SHORT_ID` | [快速入门](01-QUICKSTART.md)、[策略思考](09-STRATEGY-THINKING.md) |
+| 从零写规则策略 | `forge workspace create PATH --account --package-id SHORT_ID` | [快速入门](01-QUICKSTART.md)、[策略思考](09-STRATEGY-THINKING.md) |
 | 接入 BC/RL Actor | 增加 `--mode model` | [快速入门的模型部分](01-QUICKSTART.md#接入-bcrl-actor)、[统一模型合同](17-UNIFIED-PTCGAI-RULE-AND-MODEL-DESIGN.md) |
 | 看懂一次选择 | `forge workspace inspect PATH` | [UCIS SDK](15-UCIS-SDK-DEVELOPER-GUIDE.md) |
 | 查询游戏支持卡牌 | 打开工作区 `SUPPORTED-CARDS.json` | [支持卡牌清单](19-SUPPORTED-CARDS.md) |
@@ -128,7 +128,7 @@ Forge 把以下声明分开：
 
 ## 下一阶段规划
 
-[完整开发迭代 CLI、录像数据与 BC 架构升级提案](20-DEVELOPER-ITERATION-ARCHITECTURE-AND-PLAN.md) 定义后续的受控录像采集、BC 数据资格、训练/评估、决策解释和发布反馈闭环，并覆盖 SDK 安装、产物新鲜度与控制面恢复。文中新增命令均待实施，不能作为当前命令参考；实际状态由根 TODO 的 T40–T48 和后续验收证据更新。
+[完整开发迭代 CLI、录像数据与 BC 架构升级提案](20-DEVELOPER-ITERATION-ARCHITECTURE-AND-PLAN.md) 定义受控录像采集、BC 数据资格、训练/评估、决策解释和发布反馈闭环，并覆盖 SDK 安装、产物新鲜度与控制面恢复。提案已部分实施；实际命令见实施说明与无网页流程，未关闭范围继续由根 TODO 的 T40–T48 和验收证据跟踪。
 
 受控录像与数据工具的新入口见 [v0.3 迭代 CLI](21-ITERATION-CLI-IMPLEMENTATION.md)，包含服务能力边界、任务恢复和 BC 夹具限制。
 

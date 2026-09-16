@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from .resources import resource_root
 import re
 import shutil
 import subprocess
@@ -22,7 +23,7 @@ from tools.ptcgdap.competition_bundle import (
 from tools.ptcgdap.competition_rights import CompetitionRightsGate, RightsMode
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = resource_root()
 PROBE = Path(__file__).with_name("competition_probe.py")
 UCIS_RUNTIME_SDK = Path(__file__).with_name("ucis_runtime.py")
 CONFIG_KEYS = {"project", "identity", "deck", "compatibility", "rights"}

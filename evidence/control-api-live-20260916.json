@@ -1,0 +1,70 @@
+{
+  "document_type": "forge_public_control_live_acceptance_v1",
+  "captured_at": "2026-09-15T16:53:44.321468+00:00",
+  "origin": "https://api.ptcg.skillserver.cn",
+  "status": "public_interfaces_verified",
+  "capabilities": {
+    "capabilities": {
+      "authentication": "developer_api_key_v1",
+      "cli_authentication": true,
+      "decision_trace": false,
+      "history_pagination": false,
+      "max_upload_bytes": 16777216,
+      "range_resume": false,
+      "recent_game_limit": 60,
+      "recent_games": true,
+      "release_idempotency": "archive_sha256_v1",
+      "release_reconciliation": "archive_sha256_v1",
+      "signing_keys": true,
+      "single_replay": true
+    },
+    "document_type": "forge_service_capabilities_v1",
+    "profile": "dojo",
+    "schema_version": 1,
+    "status": "available",
+    "origin": "https://api.ptcg.skillserver.cn",
+    "verification": "live_http_contract"
+  },
+  "checks": [
+    {
+      "path": "/healthz",
+      "status": 200,
+      "seconds": 0.076
+    },
+    {
+      "path": "/readyz",
+      "status": 200,
+      "seconds": 0.041
+    },
+    {
+      "path": "/v1/developer/me",
+      "status": 401,
+      "seconds": 0.054
+    },
+    {
+      "path": "/v1/developer/signing-keys",
+      "status": 401,
+      "seconds": 0.066
+    },
+    {
+      "path": "/v1/developer/releases/by-archive/0000000000000000000000000000000000000000000000000000000000000000",
+      "status": 401,
+      "seconds": 0.076
+    },
+    {
+      "path": "/v1/ladder/matches/ladder-series-2dcd5463289dbd1400b92c435f0cdf2f44fae5d6/replay",
+      "status": 200,
+      "seconds": 0.124,
+      "bytes": 74991,
+      "sha256": "8e25235ae9ffed976f0b105d1942ed07f58a90b274f42ab3ad065fe140f2e921",
+      "document_type": "godot_v18_public_series_replay_v1",
+      "bc_eligible": false
+    }
+  ],
+  "sdk_wheel_sha256": "ef4b68a828074bb87dc7368cedfed50c9ea51586b30a56767dbd2d4222f63da6",
+  "authenticated_developer_submission": "not_run",
+  "new_strategy_submitted": false,
+  "native_bc_accepted": false,
+  "engine_evaluation_accepted": false,
+  "private_operator_evidence_included": false
+}

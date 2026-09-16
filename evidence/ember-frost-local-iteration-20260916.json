@@ -1,0 +1,265 @@
+{
+  "document_type": "forge_ember_frost_local_iteration_v1",
+  "date": "2026-09-16",
+  "online_release_id": "release-3c2e232ba96dc34dfa138bd0e4c1d1418316bed6",
+  "package": {
+    "archive_bytes": 176484,
+    "archive_sha256": "AA58C233F601A88CF62D0E9F0F7869077B6E47AF051B86607F008EAC852370A1",
+    "deterministic": true,
+    "package_id": "dev.ember-frost",
+    "package_version": "0.2.0",
+    "second_archive_sha256": "AA58C233F601A88CF62D0E9F0F7869077B6E47AF051B86607F008EAC852370A1"
+  },
+  "package_path": "work\\ember-frost-20260916\\final\\build\\dev.ember-frost-0.2.0.ptcgai",
+  "deck_unchanged": true,
+  "selected_r6_policy_bytes_unchanged": true,
+  "adapter_sha256": "457260D6699D6DBCAD77D9CB510B70000E4362252741F1D7DB5ECB101A1FD054",
+  "rules": 168,
+  "count_rules": 9,
+  "scenarios": 322,
+  "repository_tests": 162,
+  "post_full_suite_bench_tests": 9,
+  "owned_process_tree_cleanup_witness": true,
+  "chosen_candidate": "r6",
+  "rejected_candidate": "r7",
+  "calibration": {
+    "games": 12,
+    "baseline_wins": 3,
+    "candidate_wins": 6,
+    "improved": 3,
+    "regressed": 0,
+    "paired_exact_p": 0.25,
+    "paired_exact_p_assumes_independent_rows": true,
+    "seed_cluster_count": 2,
+    "seed_cluster_sign_flip_p": 1.0,
+    "matchups": {
+      "dev.bodao-yongzhe.marnies-gift-box-5.13.0": {
+        "games": 4,
+        "baseline_wins": 1,
+        "candidate_wins": 2,
+        "baseline_wilson_95": [
+          0.04558726080970238,
+          0.6993581574175893
+        ],
+        "candidate_wilson_95": [
+          0.1500389891521544,
+          0.8499610108478456
+        ]
+      },
+      "dev.e719.marnies-gift-box-v2-0.3.0": {
+        "games": 4,
+        "baseline_wins": 1,
+        "candidate_wins": 2,
+        "baseline_wilson_95": [
+          0.04558726080970238,
+          0.6993581574175893
+        ],
+        "candidate_wilson_95": [
+          0.1500389891521544,
+          0.8499610108478456
+        ]
+      },
+      "dev.e719.marnies-gift-box-v2-0.4.0": {
+        "games": 4,
+        "baseline_wins": 1,
+        "candidate_wins": 2,
+        "baseline_wilson_95": [
+          0.04558726080970238,
+          0.6993581574175893
+        ],
+        "candidate_wilson_95": [
+          0.1500389891521544,
+          0.8499610108478456
+        ]
+      }
+    },
+    "scope": "local_Godot_paired_games_not_ladder_rank"
+  },
+  "final_lanes": {
+    "holdout": {
+      "games": 30,
+      "baseline_wins": 10,
+      "candidate_wins": 16,
+      "improved": 14,
+      "regressed": 8,
+      "paired_exact_p": 0.28627872467041016,
+      "paired_exact_p_assumes_independent_rows": true,
+      "seed_cluster_count": 5,
+      "seed_cluster_sign_flip_p": 0.625,
+      "matchups": {
+        "dev.bodao-yongzhe.marnies-gift-box-5.13.0": {
+          "games": 10,
+          "baseline_wins": 4,
+          "candidate_wins": 6,
+          "baseline_wilson_95": [
+            0.1681803297062402,
+            0.6873262302663353
+          ],
+          "candidate_wilson_95": [
+            0.31267376973366456,
+            0.8318196702937597
+          ]
+        },
+        "dev.e719.marnies-gift-box-v2-0.3.0": {
+          "games": 10,
+          "baseline_wins": 3,
+          "candidate_wins": 5,
+          "baseline_wilson_95": [
+            0.10779126740630399,
+            0.6032218525388472
+          ],
+          "candidate_wilson_95": [
+            0.23659309051256927,
+            0.7634069094874307
+          ]
+        },
+        "dev.e719.marnies-gift-box-v2-0.4.0": {
+          "games": 10,
+          "baseline_wins": 3,
+          "candidate_wins": 5,
+          "baseline_wilson_95": [
+            0.10779126740630399,
+            0.6032218525388472
+          ],
+          "candidate_wilson_95": [
+            0.23659309051256927,
+            0.7634069094874307
+          ]
+        }
+      },
+      "scope": "local_Godot_paired_games_not_ladder_rank"
+    },
+    "regression": {
+      "games": 8,
+      "baseline_wins": 8,
+      "candidate_wins": 8,
+      "improved": 0,
+      "regressed": 0,
+      "paired_exact_p": 1,
+      "paired_exact_p_assumes_independent_rows": true,
+      "seed_cluster_count": 1,
+      "seed_cluster_sign_flip_p": 1.0,
+      "matchups": {
+        "builtin-v18-800018509": {
+          "games": 2,
+          "baseline_wins": 2,
+          "candidate_wins": 2,
+          "baseline_wilson_95": [
+            0.34238022750666547,
+            1
+          ],
+          "candidate_wilson_95": [
+            0.34238022750666547,
+            1
+          ]
+        },
+        "builtin-v18-800018502": {
+          "games": 2,
+          "baseline_wins": 2,
+          "candidate_wins": 2,
+          "baseline_wilson_95": [
+            0.34238022750666547,
+            1
+          ],
+          "candidate_wilson_95": [
+            0.34238022750666547,
+            1
+          ]
+        },
+        "builtin-v18-800018498": {
+          "games": 2,
+          "baseline_wins": 2,
+          "candidate_wins": 2,
+          "baseline_wilson_95": [
+            0.34238022750666547,
+            1
+          ],
+          "candidate_wilson_95": [
+            0.34238022750666547,
+            1
+          ]
+        },
+        "builtin-v18-800018499": {
+          "games": 2,
+          "baseline_wins": 2,
+          "candidate_wins": 2,
+          "baseline_wilson_95": [
+            0.34238022750666547,
+            1
+          ],
+          "candidate_wilson_95": [
+            0.34238022750666547,
+            1
+          ]
+        }
+      },
+      "scope": "local_Godot_paired_games_not_ladder_rank"
+    },
+    "replication": {
+      "games": 20,
+      "baseline_wins": 9,
+      "candidate_wins": 12,
+      "improved": 3,
+      "regressed": 0,
+      "paired_exact_p": 0.25,
+      "paired_exact_p_assumes_independent_rows": true,
+      "seed_cluster_count": 10,
+      "seed_cluster_sign_flip_p": 0.25,
+      "matchups": {
+        "dev.bodao-yongzhe.marnies-gift-box-5.13.0": {
+          "games": 20,
+          "baseline_wins": 9,
+          "candidate_wins": 12,
+          "baseline_wilson_95": [
+            0.25819785825562847,
+            0.6579146575496526
+          ],
+          "candidate_wilson_95": [
+            0.3865815007622585,
+            0.7811934676271791
+          ]
+        }
+      },
+      "scope": "local_Godot_paired_games_not_ladder_rank"
+    }
+  },
+  "final_games": 116,
+  "policy_calls": 12858,
+  "error_and_fallback_counters": {
+    "policy_errors": 0,
+    "invalid_outputs": 0,
+    "same_window_fallbacks": 0,
+    "classic_fallbacks": 0,
+    "engine_rejections": 0,
+    "external_process_attempts": 0,
+    "developer_trace_dropped_records": 0
+  },
+  "remaining_gaps": "work/ember-frost-20260916/evidence/remaining-gaps.json",
+  "runtime_sha256": "53739F6368871869A4FCD5D71882EA936010CBE8B55759CE232E747376D73D17",
+  "harness_sha256": "6D8B334774CC2FECF6824C4F019F5E5498800B60E50D35B84EEE423C3953CDEB",
+  "sdk_manifest_sha256": "4B279C3D0E99135E6046E8B27DB6DACE021D93E94EBD50D95EB4D4C2B3632284",
+  "report_files": {
+    "work\\ember-frost-20260916\\bench\\baseline-holdout\\verified-report.json": "2BE6DBCCB9B047AE4A48036B75DA62B2CF9127AB89A4F3CDF7157F4DF1A08F23",
+    "work\\ember-frost-20260916\\bench\\candidate-holdout\\report.json": "A2BC924D134DA8FDFE92566F48C8CC3A16CAA1672C8B1C02345D1905C13DFB1C",
+    "work\\ember-frost-20260916\\bench\\baseline-regression-v2\\report.json": "B8C823E70191CAD9FEAD3ECB94BA593D14E0FC65C0D2C3D78E179D7B8DF87CEC",
+    "work\\ember-frost-20260916\\bench\\candidate-regression-v2\\report.json": "60529A018BB471612629517F3703827A5E15B411A825A661E316FDC97A8D6208",
+    "work\\ember-frost-20260916\\bench\\baseline-replication\\report.json": "5C018110501A1A7B87F511260F5D50F4B64EBA68F076932E665FE460A32AF960",
+    "work\\ember-frost-20260916\\bench\\candidate-replication\\report.json": "2B8A19F63C4B7519CD99084B3CE89F5B7E0DDAFAE1216881B22C9F4E445F74F6"
+  },
+  "source_restoration": "evidence/ember-frost-source-restoration.json",
+  "claims": {
+    "current_window_simulation": true,
+    "local_Godot_engine_witness": true,
+    "CABT_engine_parity": false,
+    "device_UI_acceptance": false,
+    "production_ready": false,
+    "ladder_first_place": false
+  },
+  "limitations": [
+    "Holdout A has five seed clusters across three versions of one deck. Replication B has ten new seed clusters against the exact leader; report the batches separately.",
+    "The four NPC regression opponents use platform-npc-rule-public-v1; this does not measure legacy DeckStrategy18 strength.",
+    "Original uses control-distributed admission; final uses exact test-fixture admission in a private copy. Both use the same Host/interpreter.",
+    "Online replay files lack full public decision frames; causal findings come from local engine traces.",
+    "New package was not uploaded, production-installed, committed or pushed."
+  ]
+}

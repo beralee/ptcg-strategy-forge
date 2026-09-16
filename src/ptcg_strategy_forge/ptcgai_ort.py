@@ -5,9 +5,6 @@ from pathlib import Path
 import time
 from typing import Any
 
-import numpy as np
-import onnx
-import onnxruntime as ort
 
 from scripts.ai.ptcgdap.ptcgai_model_actor import PublicActorTensors
 from scripts.ai.ptcgdap.ptcgai_model_package import (
@@ -45,6 +42,10 @@ def _expected_io() -> tuple[dict[str, tuple[str, tuple[int, ...]]], dict[str, tu
 
 
 def _onnx_shape(value_info: Any) -> tuple[str, tuple[int, ...]]:
+    try:
+        import onnx
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     tensor = value_info.type.tensor_type
     if tensor.elem_type != onnx.TensorProto.INT32:
         _raise("model_tensor_dtype_invalid")
@@ -57,6 +58,10 @@ def _onnx_shape(value_info: Any) -> tuple[str, tuple[int, ...]]:
 
 
 def inspect_onnx(path: Path) -> dict[str, Any]:
+    try:
+        import onnx
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     source = Path(path)
     try:
         if source.is_symlink() or not source.is_file() or source.stat().st_size > MODEL_MAX_BYTES:
@@ -99,6 +104,10 @@ def inspect_onnx(path: Path) -> dict[str, Any]:
 
 
 def write_linear_actor_onnx(output: Path, weights: list[int]) -> dict[str, Any]:
+    try:
+        import onnx
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     target = Path(output)
     if target.exists() or target.is_symlink():
         _raise("model_output_exists")
@@ -151,6 +160,10 @@ def write_linear_actor_onnx(output: Path, weights: list[int]) -> dict[str, Any]:
 
 
 def _session_options() -> ort.SessionOptions:
+    try:
+        import onnxruntime as ort
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     options = ort.SessionOptions()
     options.intra_op_num_threads = 1
     options.inter_op_num_threads = 1
@@ -162,6 +175,10 @@ def _session_options() -> ort.SessionOptions:
 
 
 def import_onnx_to_ort(source: Path, output: Path) -> dict[str, Any]:
+    try:
+        import onnxruntime as ort
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     source_path = Path(source)
     output_path = Path(output)
     inspection = inspect_onnx(source_path)
@@ -196,6 +213,10 @@ def import_onnx_to_ort(source: Path, output: Path) -> dict[str, Any]:
 
 
 def _runtime_io(session: ort.InferenceSession) -> tuple[dict[str, tuple[str, tuple[int, ...]]], dict[str, tuple[str, tuple[int, ...]]]]:
+    try:
+        import onnxruntime as ort
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     def convert(items: list[Any]) -> dict[str, tuple[str, tuple[int, ...]]]:
         result: dict[str, tuple[str, tuple[int, ...]]] = {}
         for item in items:
@@ -208,6 +229,10 @@ def _runtime_io(session: ort.InferenceSession) -> tuple[dict[str, tuple[str, tup
 
 
 def inspect_ort(path: Path) -> dict[str, Any]:
+    try:
+        import onnxruntime as ort
+    except ImportError as error:
+        raise OrtActorError("model_dependencies_missing_install_model_extra") from error
     source = Path(path)
     try:
         if source.is_symlink() or not source.is_file():
@@ -249,6 +274,10 @@ class OrtActor:
     __slots__ = ("_session", "_timeout_ms")
 
     def __init__(self, artifact: bytes | Path, *, timeout_ms: int = 25) -> None:
+        try:
+            import onnxruntime as ort
+        except ImportError as error:
+            raise OrtActorError("model_dependencies_missing_install_model_extra") from error
         if type(timeout_ms) is not int or not 1 <= timeout_ms <= 1000:
             _raise("model_timeout_profile_invalid")
         try:
@@ -272,6 +301,10 @@ class OrtActor:
         self._timeout_ms = timeout_ms
 
     def run(self, tensors: PublicActorTensors) -> tuple[list[int], list[int], float]:
+        try:
+            import numpy as np
+        except ImportError as error:
+            raise OrtActorError("model_dependencies_missing_install_model_extra") from error
         feeds = {
             "frame_i32": np.asarray([tensors.frame_i32], dtype=np.int32),
             "frame_presence_i32": np.asarray([tensors.frame_presence_i32], dtype=np.int32),

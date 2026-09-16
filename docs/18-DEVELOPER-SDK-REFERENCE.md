@@ -209,3 +209,11 @@ SDK 与 CLI 共享实现和报告，不需要维护两套工作流。
 ## 兼容与版本
 
 旧 `.ptcgai v1` 的运行字节兼容不因 SDK 门面改变。旧的 Forge CLI 低层命令继续保留；新 SDK 不导入或运行历史 `.ptcgbot`。当前 API 版本随 `ptcg_strategy_forge.__version__` 发布，新增字段可以向后兼容地出现在 JSON 报告中，调用方应读取需要的字段而不是断言完整键集合。
+
+## v0.3 增量接口
+
+`StrategyWorkspace.replays` 提供冻结目录同步、验证和检查；`StrategyWorkspace.dataset` 提供受限 BC 夹具转换、审计、统计、分组切分和导出。`bump_version(part="patch")` 保存旧 manifest 后更新版本；`upgrade(dry_run=True)` 预览 Forge 元数据迁移。
+
+`build()` 的结果新增不可覆盖 `record`，`status()` 新增 `acceptance.status`。模型状态使用摘要绑定缓存；状态查询不启动推理。默认安装拒绝与当前输入不符的已有包。
+
+扩展门面包括 `workspace.training.bc/evaluate/compare`、`workspace.native_traces.import_trace/inspect`、`workspace.debugging.explain/test/watch/generate/counterfactual/from_replay` 与 `workspace.matches(origin, release_id)`。BC 当前为显式夹具训练基线，原生录像会单独检查训练资格；真实引擎评估和正式账号发布尚未接通。完整参数、错误和能力边界见 [v0.3 实施说明](21-ITERATION-CLI-IMPLEMENTATION.md)。

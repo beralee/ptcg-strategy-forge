@@ -1,5 +1,23 @@
 # PTCG Strategy Forge TODO 闭环
 
+2026-09-16 SDK 0.3.0 提交前验收：170 项测试、独立安装、来源锁和示例工作区通过；
+提交文件及历史密钥扫描无发现。见 [GitHub 提交验收](evidence/sdk-github-acceptance-20260916.json)。
+
+2026-09-16 复杂决策续作：新增 [多窗口决策 bench](docs/25-COMPLEX-DECISION-BENCH.md)，52 场景、104 原序/重排变体，完整夹具清单绑定所有未执行后缀。余烬霜幕 0.2.1 修复暗能撤退、顶尖启动及己方实体目标绑定；复杂题库 90/104→104/104，完整链 8/14→14/14，367 工作区场景和两次一致构建通过。两条修复链已有 Godot 实战见证，新种子整局对照另行记录。通用后排动态伤害证明、对手响应树、全局转伤和生产/天梯资格仍未关闭；本轮记录位于 `work/ember-frost-complex-20260916/`。
+
+2026-09-16 余烬霜幕研究：新增可选串行 Godot 整局 bench，支持精确分发包/本机测试包、双座位配对、双方回退审计及当前窗口轨迹校验。使用说明见 [本地引擎 bench](docs/24-LOCAL-ENGINE-BENCH.md)。它仍需本机引擎快照，未关闭通用 engine evaluator、官方规则一致性或生产准入；策略实验记录位于 `work/ember-frost-20260916/`。
+
+本轮冻结 0.2.0：322/322 场景；留出 A 从 10/30 到 16/30，独立榜首复测 B 从 9/20 到 12/20（3 局改善、0 局回退），四类规则 NPC 回归均为 8/8。最终 116 局通过整局和轨迹审计。小样本尚不证明稳定天梯优势；暗能量撤退支付等剩余缺口单列。收据见 `evidence/ember-frost-local-iteration-20260916.json`，完整报告在 `work/ember-frost-20260916/RESULTS.md`。
+
+2026-09-16：正式 HTTP 账号/签名公钥/提交/接收对账接口已部署，公网能力发现、权限边界
+和录像读取通过。T47 保留真实开发者账号生产提交验收；原生 BC 与引擎评估仍独立保留。
+见 [控制面 CLI](docs/23-CONTROL-PLANE-CLI.md)。
+
+2026-09-09 跨仓库续作：双座位录像系列去重、网页精确资格状态与提交回执、
+Godot 模型输入诊断捕获已实现并通过针对性测试。私有控制面授权、公网录像 503、
+原生录像到 BC 的跨语言投影和真实引擎评估仍未关闭；详见
+[`docs/22-CROSS-REPOSITORY-UPGRADE-PROGRESS.md`](docs/22-CROSS-REPOSITORY-UPGRADE-PROGRESS.md)。
+
 本文只记录工具包建设过程中发现、且属于本项目可解决范围的缺口。产品方 production 私钥、审核批准、A5、Android 和任意新牌组规则一致性是明确的平台权限/产品范围，记录在 `docs/LIMITATIONS.md`，不伪装成本项目可自行关闭的 TODO。
 
 | ID | 发现的缺口 | 处理结果 | 状态 | 证据 |
@@ -43,5 +61,23 @@
 | T37 | 开发能力按 package/UCIS/model/check 等底层概念分散，创建参数冗长，公开 Python 包只暴露窗口 helper，文档把历史证据和首条成功路径混在一起 | 新增 `forge workspace create/status/inspect/check/build/install/model` 主生命周期、公开 `StrategyWorkspace`/`WorkspaceModel` SDK、约定默认身份和产物路径、工作区状态/下一步报告、安全 Actor 替换与场景 firewall 张量化；README、Quickstart、开发者中心、SDK 参考、架构/安全/排障/验收文档和生成工作区指南改用同一开发者语言，底层命令保持兼容 | DONE | `tests/test_developer_sdk.py`、`docs/00-DEVELOPER-HUB.md`、`docs/18-DEVELOPER-SDK-REFERENCE.md` |
 | T38 | 首次真实注册上传中，开发者容易把显示名或去掉 `developer-` 前缀的十六进制部分当作 `author_id`；完整 ID 又会让默认 `package_id` 超长，且服务端可能把身份查找失败表现为签名不可信 | 仓库与静态开发者文档统一为“复制完整 ID + 显式短 package ID + 仓库外私钥 + 只登记公钥 + resign + 上传回执”路径；增加联合排查、上传前清单、密钥忽略规则和文档回归，明确已接收与资格通过的状态边界 | DONE | `docs/05-PUBLISHING.md`、`docs/07-TROUBLESHOOTING.md`、`tests/test_forge.py` |
 | T39 | 开发者包没有一份可直接查询的“游戏当前支持哪些卡”文件，UCIS 原始合同过大且容易把交互可用误解为完整规则/模板支持 | 从 qualification-locked UCIS catalog 机械生成 `data/developer/supported-cards-v1.json`，新工作区复制为 `SUPPORTED-CARDS.json`；固定 797 条本地 UID、usable/status、effect/capability 和源 hash，doctor/测试拒绝缺失与漂移，并单独说明 identity、规则结果和平台 non-claim | DONE | `tools/build_developer_supported_cards.py`、`docs/19-SUPPORTED-CARDS.md`、`tests/test_forge.py` |
+
+## 下一阶段：完整开发迭代闭环
+
+以下条目来自 [下一阶段架构升级提案](docs/20-DEVELOPER-ITERATION-ARCHITECTURE-AND-PLAN.md)，已按下表逐项实施；PARTIAL 仍有未关闭验收门。提案链接是设计依据，不是可执行验收证据。涉及服务端、网页或引擎的部分需各自 owner 实施和提供集成回执；本仓库不以客户端 fixture 通过冒充现网完成。
+
+| ID | 待解决的缺口 | 计划交付 | 状态 | 设计依据 / 待补证据 |
+|---|---|---|---|---|
+| T40 | SDK 直接导入、仓库外使用、首次父目录创建与依赖安装尚未形成完整首条成功路径 | 标准 wheel、资源打包、规则/模型依赖拆分及纯核心依赖干净虚拟环境安装/doctor 已通过 | DONE | `docs/21-ITERATION-CLI-IMPLEMENTATION.md`、`evidence/iteration-cli-v0.3.json` |
+| T41 | 默认安装不能识别源码已变化，报告与版本关联不足，status 缺少证据新鲜度 | 输入摘要、不可覆盖回执、stale 安装阻断、模型缓存及版本/迁移已实现；完整产物事务与历史归档仍待扩展 | PARTIAL | `docs/21-ITERATION-CLI-IMPLEMENTATION.md`、`evidence/iteration-cli-v0.3.json` |
+| T42 | 多命令缺少共享任务状态、网络并发限额和重型运行准入 | 录像 jobs 历史、取消/恢复和共享 origin 限额已实现；已增加重型资源门和过期 attempt 隔离；跨进程实机门待补 | PARTIAL | `docs/21-ITERATION-CLI-IMPLEMENTATION.md`、`evidence/iteration-cli-v0.3.json` |
+| T43 | 录像仍以单场获取为主，Forge 缺少可恢复批量采集和决策数据能力识别 | 有限最近 60 场、冻结目录、预算/摘要/恢复已实现；两个真实系列按原失败任务恢复成功并校验，完整分页和决策附件仍缺失 | PARTIAL | `docs/23-CONTROL-PLANE-CLI.md`、`evidence/control-cli-20260915.json` |
+| T44 | 真实录像到 BC 缺少特征/标签、模型候选域、分片与防泄漏的统一数据合同 | 夹具 BC 特征/标签、候选域、多选、审计/切分/导出已实现；已增加原生录像资格检查和确定性分片；目标模型真实决策适配待完成 | PARTIAL | `docs/21-ITERATION-CLI-IMPLEMENTATION.md`、`evidence/iteration-cli-v0.3.json` |
+| T45 | 错误决策解释和录像到回归场景仍需人工串联低层工具 | 已实现 Host explain/规则定位、录像转场景和语义重排；已增加谓词明细、单事实反例、基线比较及 changed/watch；复杂路由解释/自动负例矩阵仍待补 | PARTIAL | docs/20：第 11 节，M3、G09 |
+| T46 | BC、Actor、工作区和受控对战之间缺少统一实验记录与命令 | 已实现 BC 基线、checkpoint/恢复、精确 ORT 导出等价与离线比较；真实引擎评估待接入 | PARTIAL | docs/20：第 12 节，M4、EXT06、G08、G11 |
+| T47 | 上传身份预检依赖人工，接收回执与后续刷新混杂，资格失败缺少可操作入口 | 正式 HTTP 账号、公钥登记、在线预检、签名提交和精确回执已通过本地服务/独立 CLI 集成并部署；公网能力/权限/录像验收通过，真实开发者账号生产提交 canary 待执行 | PARTIAL | `docs/23-CONTROL-PLANE-CLI.md`、`evidence/control-api-live-20260916.json` |
+| T48 | 作者需直接面对 raw 枚举/UID，能力说明在 SDK/CLI/网页重复维护 | 卡牌 UID 搜索/检查已实现；已增加 v1 命名化编译与枚举元数据；已提供编辑器 schema/compile/lint；控制面接入仍待补 | PARTIAL | `docs/21-ITERATION-CLI-IMPLEMENTATION.md`、`evidence/iteration-cli-v0.3.json` |
+
+2026-09-09 扩展验收见 [本地升级回执](evidence/architecture-upgrade-local-20260909.json)：149/149 测试、规则与 BC 模型候选两个工作区均通过双构建/Host/10 场景、独立 wheel 与纯核心依赖安装通过。真实录像 79 个窗口完成资格统计，但没有合格 BC 行；完整架构计划仍未关闭，不能把此回执当成跨仓库联调或 production 完成。
 
 完成规则：只有证据文件和外部状态都可复核时才能把 `PENDING` 改为 `DONE`；不能仅因代码已写就关闭。

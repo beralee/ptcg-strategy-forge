@@ -4,6 +4,8 @@
 
 ## 先选择你的目标
 
+账号登录、登记公钥和可恢复提交请读 [控制面与 Forge CLI](23-CONTROL-PLANE-CLI.md)。
+
 | 我要做什么 | 第一条命令 | 接着读 |
 |---|---|---|
 | 从零写规则策略 | `forge workspace create PATH --author-id ID --package-id SHORT_ID` | [快速入门](01-QUICKSTART.md)、[策略思考](09-STRATEGY-THINKING.md) |
@@ -123,3 +125,13 @@ Forge 把以下声明分开：
 5. [UCIS SDK](15-UCIS-SDK-DEVELOPER-GUIDE.md)：窗口和语义重绑定；
 6. [Python SDK](18-DEVELOPER-SDK-REFERENCE.md)：程序化工作区；
 7. `docs/11`–`17`：Competitive IR、历史架构、CABT/迁移和统一模型设计。
+
+## 下一阶段规划
+
+[完整开发迭代 CLI、录像数据与 BC 架构升级提案](20-DEVELOPER-ITERATION-ARCHITECTURE-AND-PLAN.md) 定义后续的受控录像采集、BC 数据资格、训练/评估、决策解释和发布反馈闭环，并覆盖 SDK 安装、产物新鲜度与控制面恢复。文中新增命令均待实施，不能作为当前命令参考；实际状态由根 TODO 的 T40–T48 和后续验收证据更新。
+
+受控录像与数据工具的新入口见 [v0.3 迭代 CLI](21-ITERATION-CLI-IMPLEMENTATION.md)，包含服务能力边界、任务恢复和 BC 夹具限制。
+
+精确策略包的串行 Godot 整局对照见 [本地引擎 bench](24-LOCAL-ENGINE-BENCH.md)。这是可选研究入口，需要独立本机引擎快照；不替代生产资格或通用 evaluate 服务。
+
+多窗口、资源冲突、条件变化和选项重排的公共决策考试见 [复杂决策链 bench](25-COMPLEX-DECISION-BENCH.md)。夹具链与真实引擎转移分别报告。

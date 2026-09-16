@@ -1,0 +1,12 @@
+include README.md
+include vendor/ptcgdap-sdk-manifest.json
+include tools/build_developer_supported_cards.py
+recursive-include scripts/ai/ptcgdap *.py
+recursive-include tools/ptcgdap *.py
+recursive-include contracts/ptcgdap *
+recursive-include data/ptcgdap *
+recursive-include data/bundled_user *
+recursive-include data/developer *.json
+recursive-include demo/marnie-forge *.json *.md *.py
+recursive-include docs *.md *.json
+global-exclude __pycache__ *.pyc

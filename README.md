@@ -273,7 +273,9 @@ agent(raw_observation) -> list[int]
 | 集成 Python SDK | [SDK 参考](docs/18-DEVELOPER-SDK-REFERENCE.md) |
 | 本地安装、签名和上传 | [安装与发布](docs/05-PUBLISHING.md) |
 | 核对双构建和验收报告 | [工作区验收](docs/10-WORKSPACE-CHECK.md) |
+| 检查多窗口攻击链、资源冲突和目标身份 | [复杂决策 bench](docs/25-COMPLEX-DECISION-BENCH.md) |
 | 了解安全与隐私保证 | [安全与隐私](docs/06-SECURITY-AND-PRIVACY.md) |
+| 查看下一阶段完整迭代 CLI、录像采集与 BC 规划 | [架构升级提案（待实施）](docs/20-DEVELOPER-ITERATION-ARCHITECTURE-AND-PLAN.md) |
 
 ## 参与建设
 
@@ -294,3 +296,5 @@ agent(raw_observation) -> list[int]
 vendored PtcgDAP SDK 的文件、合同 hash 和来源固定在 [`vendor/ptcgdap-sdk-manifest.json`](vendor/ptcgdap-sdk-manifest.json)，因此本仓库可以独立开发和复现，不依赖相邻游戏仓库。
 
 项目使用 [Apache License 2.0](LICENSE)；vendored 组件来源见 [NOTICE](NOTICE)。这是非官方、非商业的学习与研究项目，不代表 Pokemon、PTCG 或任何相关权利方的授权与背书。
+
+当前新增的安装包、构建追溯、受控录像采集与 BC 数据合同，见 [v0.3 迭代 CLI 实施说明](docs/21-ITERATION-CLI-IMPLEMENTATION.md)；真实录像到 BC 与完整训练/发布闭环仍有明确缺口。

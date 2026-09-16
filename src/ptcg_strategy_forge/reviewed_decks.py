@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 from pathlib import Path
+from .resources import resource_root
 from typing import Any
 
 from scripts.ai.ptcgdap.source_lock import canonical_json_v1_bytes
@@ -11,7 +12,7 @@ from scripts.ai.ptcgdap.source_lock import canonical_json_v1_bytes
 from .scenarios import generate_macro_scenarios, load_json, write_json
 
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = resource_root()
 
 
 def _predicate(

@@ -1,0 +1,219 @@
+{
+  "document_type": "ptcg_strategy_forge_competitive_scenario_v2",
+  "schema_version": 2,
+  "scenario_id": "frost-no-retreat_available",
+  "frame": {
+    "schema_version": 2,
+    "profile_id": "ptcgdap-competitive-public-frame-v2",
+    "sequence": 1,
+    "seat": 0,
+    "prompt_kind": "main",
+    "source": {
+      "public_observation_hash": "DC853F6E42165FE18AF7373C8CFFA4174C62A7B20DA65D431083B6EC4C22CFD7",
+      "window_id": "6C357CB54F10AAD58891551C728A51EDFA20A8E501CA8B16190427499EEABD44"
+    },
+    "public_state": {
+      "turn_number": 5,
+      "phase": "MAIN",
+      "self": {
+        "hand": [
+          {
+            "serial": 1000,
+            "local_card_uid": "CSVE1C_DAR"
+          }
+        ],
+        "active": [
+          {
+            "serial": 101,
+            "entity_serial": 100,
+            "local_card_uid": "CSV7C_059",
+            "remaining_hp": 90,
+            "max_hp": 90,
+            "damage_counters": 0,
+            "prize_value": 1,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV7C_059"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "bench": [
+          {
+            "serial": 111,
+            "entity_serial": 110,
+            "local_card_uid": "CSV10C_030",
+            "remaining_hp": 170,
+            "max_hp": 170,
+            "damage_counters": 0,
+            "prize_value": 1,
+            "attached_energy_count": 1,
+            "attached_energy_uids": [
+              "CSVE1C_FIR"
+            ],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV10C_030"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": true,
+            "energy_debt": 0
+          }
+        ],
+        "discard": [],
+        "deck_count": 30,
+        "prizes_remaining": 4,
+        "bench_capacity": 5,
+        "turn": {
+          "supporter_available": true,
+          "manual_attachment_available": true,
+          "retreat_available": false
+        }
+      },
+      "opponent": {
+        "hand_count": 5,
+        "active": [
+          {
+            "serial": 901,
+            "entity_serial": 900,
+            "local_card_uid": "CSV10C_148",
+            "remaining_hp": 320,
+            "max_hp": 320,
+            "damage_counters": 0,
+            "prize_value": 2,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV10C_148"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "bench": [
+          {
+            "serial": 911,
+            "entity_serial": 910,
+            "local_card_uid": "CSV8C_028",
+            "remaining_hp": 210,
+            "max_hp": 210,
+            "damage_counters": 0,
+            "prize_value": 2,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV8C_028"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "discard": [],
+        "deck_count": 28,
+        "prizes_remaining": 4
+      }
+    },
+    "select_semantics": {
+      "min_count": 1,
+      "max_count": 1,
+      "select_type_raw": 0,
+      "select_context_raw": 0
+    },
+    "options": [
+      {
+        "index": 0,
+        "kind": "end_turn",
+        "card_uid": null,
+        "card_serial": null,
+        "source_uid": null,
+        "source_serial": null,
+        "source_entity_serial": null,
+        "target_uid": null,
+        "target_serial": null,
+        "target_entity_serial": null,
+        "target_remaining_hp": null,
+        "target_prize_value": null,
+        "target_attached_energy_count": null,
+        "target_attached_energy_uids": null,
+        "target_minimum_attack_energy_count": null,
+        "target_attack_ready": null,
+        "target_energy_debt": null,
+        "projected_damage": null,
+        "projected_knockout": false,
+        "requires_interaction": false,
+        "attack_index": null,
+        "option_number": null,
+        "ability_index": null,
+        "energy_type_raw": null,
+        "energy_count": null,
+        "special_condition_type": null,
+        "pending_assignment_count": 0,
+        "tags": [],
+        "option_type_raw": 14,
+        "option_player_index": 0
+      },
+      {
+        "index": 1,
+        "kind": "attach_energy",
+        "card_uid": "CSVE1C_DAR",
+        "card_serial": 10001,
+        "source_uid": null,
+        "source_serial": null,
+        "source_entity_serial": null,
+        "target_uid": "CSV7C_059",
+        "target_serial": 30001,
+        "target_entity_serial": 100,
+        "target_remaining_hp": null,
+        "target_prize_value": null,
+        "target_attached_energy_count": 0,
+        "target_attached_energy_uids": [],
+        "target_minimum_attack_energy_count": null,
+        "target_attack_ready": null,
+        "target_energy_debt": null,
+        "projected_damage": null,
+        "projected_knockout": false,
+        "requires_interaction": false,
+        "attack_index": null,
+        "option_number": null,
+        "ability_index": null,
+        "energy_type_raw": null,
+        "energy_count": null,
+        "special_condition_type": null,
+        "pending_assignment_count": 0,
+        "tags": [],
+        "option_type_raw": 8,
+        "option_player_index": 0
+      }
+    ]
+  },
+  "base_authority": {
+    "mandatory_indexes": [],
+    "terminal_indexes": [],
+    "base_hard_tiers": [
+      {
+        "index": 0,
+        "tier": [
+          0
+        ]
+      },
+      {
+        "index": 1,
+        "tier": [
+          0
+        ]
+      }
+    ],
+    "base_vetoed_indexes": []
+  },
+  "expected_selected_indexes": [
+    0
+  ]
+}

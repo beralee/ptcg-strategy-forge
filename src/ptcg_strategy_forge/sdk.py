@@ -12,6 +12,7 @@ from dataclasses import dataclass
 import hashlib
 import os
 from pathlib import Path
+from .resources import resource_root
 import re
 import tempfile
 from typing import Any, Literal
@@ -44,6 +45,7 @@ from .ptcgai_ort import (
     inspect_ort,
 )
 from .reviewed_decks import customize_reviewed_workspace
+from . import lineage
 from .scenarios import generate_demo_scenarios, load_json, write_json
 
 
@@ -51,7 +53,7 @@ WorkspaceMode = Literal["rules", "model"]
 _SAFE_COMPONENT = re.compile(r"[^a-z0-9-]+")
 _PACKAGE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,47}$")
 _PACKAGE_VERSION = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._+-]{0,47}$")
-_ROOT = Path(__file__).resolve().parents[2]
+_ROOT = resource_root()
 
 
 class WorkspaceError(ValueError):
@@ -184,6 +186,7 @@ class StrategyWorkspace:
         try:
             if output.exists() or output.is_symlink():
                 _raise("developer_output_exists")
+            output.parent.mkdir(parents=True, exist_ok=True)
             parent = output.parent.resolve(strict=True)
             target = parent / output.name
             with tempfile.TemporaryDirectory(
@@ -195,7 +198,7 @@ class StrategyWorkspace:
                 # These helpers own the current package-template transformation.
                 # They are imported lazily so the public SDK stays independent from
                 # argparse and the CLI can itself delegate to this class.
-                from .cli import (  # pylint: disable=import-outside-toplevel
+                from .application import (  # pylint: disable=import-outside-toplevel
                     _configure_model_workspace,
                     _configure_rules_workspace,
                     _customize_workspace,
@@ -224,7 +227,9 @@ class StrategyWorkspace:
                     _configure_model_workspace(staging)
                 else:
                     _configure_rules_workspace(staging)
-                cls.open(staging)
+                created = cls.open(staging)
+                if mode == "model":
+                    created.model.conformance()
                 if target.exists() or target.is_symlink():
                     _raise("developer_output_exists")
                 os.replace(staging, target)
@@ -364,7 +369,7 @@ class StrategyWorkspace:
         model_status: dict[str, object] = {"required": False, "status": "not_applicable"}
         if self.policy_mode == "rules_with_model":
             try:
-                conformance = self.model.conformance()
+                conformance = self.model.cached_conformance()
                 model_status = {
                     "required": True,
                     "status": "ready" if conformance.get("status") == "passed" else "failed",
@@ -438,6 +443,7 @@ class StrategyWorkspace:
                 "artifact": _relative(self.root, self.default_artifact),
                 "report": _relative(self.root, self.default_report),
             },
+            "acceptance": lineage.acceptance(self.root, self.default_artifact, self.default_report),
             "issues": sorted(set(issues)),
             "next_actions": next_actions,
             "claims": {
@@ -446,10 +452,80 @@ class StrategyWorkspace:
             },
         }
 
+    @property
+    def replays(self):
+        from .replays import ReplayCollection
+        return ReplayCollection(self.root)
+
+    @property
+    def dataset(self):
+        from .datasets import DatasetStore
+        return DatasetStore(self.root)
+
+    @property
+    def training(self):
+        from .training import TrainingService
+        return TrainingService(self.root)
+
+    @property
+    def native_traces(self):
+        from .native_trace import NativeTraceStore
+        return NativeTraceStore(self.root)
+
+    @property
+    def debugging(self):
+        from .debugging import DebuggingService
+        return DebuggingService(self.root)
+
+    def matches(self, origin, release_id):
+        from .services import matches
+        return matches(origin, release_id)
+
+    def submit_release(self, client, private_key_path, *, retry_unaccepted=False):
+        from .control_release import submit_release
+        return submit_release(self, client, private_key_path, retry_unaccepted=retry_unaccepted)
+
+    def upgrade(self, *, dry_run=False):
+        from .replays import atomic_json
+        target = self.root / ".forge/workspace.json"
+        metadata = {"document_type": "forge_workspace_metadata_v1", "schema_version": 1}
+        if target.exists() and load_json(target) != metadata:
+            _raise("workspace_upgrade_schema_unsupported")
+        changes = [] if target.exists() else [".forge/workspace.json"]
+        if changes and not dry_run:
+            atomic_json(target, metadata)
+        return {"document_type": "forge_workspace_upgrade_v1", "status": "preview" if dry_run else "completed",
+                "changes": changes, "package_bytes_changed": False}
+
+    def bump_version(self, *, part="patch"):
+        from .replays import atomic_json
+        if part not in {"major", "minor", "patch"} or not re.fullmatch(r"\d+\.\d+\.\d+", self.package_version):
+            _raise("workspace_version_bump_invalid")
+        previous = self.package_version
+        version = list(map(int, previous.split(".")))
+        position = {"major": 0, "minor": 1, "patch": 2}[part]
+        version[position] += 1
+        version[position + 1:] = [0] * (2 - position)
+        updated = ".".join(map(str, version))
+        backup = self.root / ".forge/backups" / (lineage.digest(self.manifest_path) + ".json")
+        backup.parent.mkdir(parents=True, exist_ok=True)
+        original = self.manifest_path.read_bytes()
+        if backup.exists():
+            if backup.read_bytes() != original:
+                _raise("workspace_backup_conflict")
+        else:
+            with backup.open("xb") as stream:
+                stream.write(original)
+        manifest = self.manifest
+        manifest["package_version"] = updated
+        atomic_json(self.manifest_path, manifest)
+        return {"document_type": "forge_workspace_version_v1", "status": "completed", "previous_version": previous,
+                "package_version": updated, "backup": str(backup)}
+
     def inspect(self, scenario: str | Path | None = None) -> dict[str, object]:
         """Inspect one scenario through the public current-window SDK."""
 
-        from .cli import inspect_ucis_scenario  # pylint: disable=import-outside-toplevel
+        from .application import inspect_ucis_scenario  # pylint: disable=import-outside-toplevel
 
         if scenario is None:
             suite = load_json(self.root / "scenario-suite.json")
@@ -474,7 +550,7 @@ class StrategyWorkspace:
     def check(self) -> dict[str, object]:
         """Run all acceptance gates without writing an installable artifact."""
 
-        from .cli import check_workspace  # pylint: disable=import-outside-toplevel
+        from .application import check_workspace  # pylint: disable=import-outside-toplevel
 
         return check_workspace(self.root)
 
@@ -486,12 +562,43 @@ class StrategyWorkspace:
     ) -> dict[str, object]:
         """Run acceptance and write the exact accepted archive and report."""
 
-        from .cli import check_workspace  # pylint: disable=import-outside-toplevel
+        from .application import check_workspace  # pylint: disable=import-outside-toplevel
 
         artifact = Path(output) if output is not None else self.default_artifact
         report_path = Path(report) if report is not None else self.default_report
-        result = check_workspace(self.root, output=artifact)
-        write_json(report_path, result)
+        if artifact.resolve() == report_path.resolve():
+            _raise("workspace_check_paths_conflict")
+        for target in (artifact.resolve(), report_path.resolve()):
+            if (target.is_relative_to(self.root / "package") or target.is_relative_to(self.root / "scenarios")
+                    or target == self.root / "scenario-suite.json"):
+                _raise("workspace_check_paths_conflict")
+        from .application import _checked_artifact_target, _publish_checked_artifact
+        from .replays import atomic_json
+        if artifact.is_file() and lineage.acceptance(self.root, artifact, self.default_report)["status"] == "current":
+            latest = load_json(self.default_report)
+            if report_path.resolve() != self.default_report.resolve():
+                atomic_json(report_path, latest)
+            return latest
+        _checked_artifact_target(artifact)
+        before = lineage.source_identity(self.root)
+        with tempfile.TemporaryDirectory(prefix="forge-acceptance-") as temp:
+            staged = Path(temp) / "accepted.ptcgai"
+            result = check_workspace(self.root, output=staged)
+            if before != lineage.source_identity(self.root):
+                _raise("workspace_source_changed_during_build")
+            if result.get("status") == "passed" and staged.is_file():
+                _publish_checked_artifact(staged, artifact)
+                try:
+                    result["artifact"]["path"] = str(artifact.resolve())
+                    result["record"] = lineage.record(self.root, artifact, before, result)
+                    atomic_json(report_path, result)
+                    if report_path.resolve() != self.default_report.resolve():
+                        atomic_json(self.default_report, result)
+                except BaseException:
+                    artifact.unlink(missing_ok=True)
+                    raise
+            else:
+                atomic_json(report_path, result)
         return result
 
     def install(self, artifact: str | Path | None = None) -> dict[str, object]:
@@ -500,6 +607,8 @@ class StrategyWorkspace:
         package = Path(artifact) if artifact is not None else self.default_artifact
         if not package.is_file():
             self.build(package)
+        if artifact is None and lineage.acceptance(self.root, package, self.default_report)["status"] != "current":
+            _raise("workspace_artifact_stale")
         return install_development_package(package)
 
 
@@ -526,9 +635,27 @@ class WorkspaceModel:
 
     def conformance(self) -> dict[str, object]:
         try:
-            return model_conformance(self.artifact)
+            result = model_conformance(self.artifact)
+            self._cache_conformance(result)
+            return result
         except OrtActorError as error:
             _raise(error.code)
+
+    def _identity(self):
+        return [lineage.digest(self.artifact), lineage.digest(self.manifest), lineage.digest(Path(__file__).with_name("ptcgai_ort.py"))]
+
+    def _cache_conformance(self, result):
+        from .replays import atomic_json
+        atomic_json(self.workspace.root / ".forge/model-conformance.json", {"identity": self._identity(), "result": result})
+
+    def cached_conformance(self):
+        try:
+            cached = load_json(self.workspace.root / ".forge/model-conformance.json")
+            if cached["identity"] == self._identity():
+                return cached["result"]
+        except (OSError, ValueError, KeyError, TypeError):
+            pass
+        return {"status": "unchecked"}
 
     def tensorize(
         self,
@@ -655,6 +782,7 @@ class WorkspaceModel:
                     raise
         except OrtActorError as error:
             _raise(error.code)
+        self._cache_conformance(conformance)
         return {
             **report,
             "status": "imported",

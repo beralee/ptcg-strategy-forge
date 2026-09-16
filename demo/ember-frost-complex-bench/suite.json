@@ -1,0 +1,578 @@
+{
+  "document_type": "forge_complex_decision_bench_v1",
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "dark-pay-snow",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/dark-pay-snow.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-snow-mandatory",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-snow-mandatory.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-snow-terminal",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-snow-terminal.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-snow-tier",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-snow-tier.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-snow-veto",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-snow-veto.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-no-manual_attachment_available",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/snow-no-manual_attachment_available.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-no-retreat_available",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/snow-no-retreat_available.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-no-ready",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/snow-no-ready.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-wrong-target",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/snow-wrong-target.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-already-paid",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/snow-already-paid.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-preserve-dark-when-fire",
+      "family": "resource-choice",
+      "steps": [
+        {
+          "path": "cases/snow-preserve-dark-when-fire.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "snow-payment-to-attack",
+      "family": "attack-chain",
+      "steps": [
+        {
+          "path": "cases/snow-payment-to-attack-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/snow-payment-to-attack-2.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/snow-payment-to-attack-3.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/snow-payment-to-attack-4.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-frost",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/dark-pay-frost.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-frost-mandatory",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-frost-mandatory.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-frost-terminal",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-frost-terminal.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-frost-tier",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-frost-tier.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "dark-pay-frost-veto",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/dark-pay-frost-veto.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-no-manual_attachment_available",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/frost-no-manual_attachment_available.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-no-retreat_available",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/frost-no-retreat_available.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-no-ready",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/frost-no-ready.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-wrong-target",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/frost-wrong-target.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-already-paid",
+      "family": "retreat-payment",
+      "steps": [
+        {
+          "path": "cases/frost-already-paid.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-preserve-dark-when-fire",
+      "family": "resource-choice",
+      "steps": [
+        {
+          "path": "cases/frost-preserve-dark-when-fire.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "frost-payment-to-attack",
+      "family": "attack-chain",
+      "steps": [
+        {
+          "path": "cases/frost-payment-to-attack-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/frost-payment-to-attack-2.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/frost-payment-to-attack-3.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/frost-payment-to-attack-4.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-releases-attacker",
+      "family": "prime-entry",
+      "steps": [
+        {
+          "path": "cases/prime-releases-attacker.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-releases-attacker-mandatory",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-releases-attacker-mandatory.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-releases-attacker-terminal",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-releases-attacker-terminal.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-releases-attacker-tier",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-releases-attacker-tier.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-releases-attacker-veto",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-releases-attacker-veto.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-no-ready",
+      "family": "prime-entry",
+      "steps": [
+        {
+          "path": "cases/prime-no-ready.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-no-opponent-bench",
+      "family": "prime-entry",
+      "steps": [
+        {
+          "path": "cases/prime-no-opponent-bench.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-preserve-when-active-ready",
+      "family": "prime-entry",
+      "steps": [
+        {
+          "path": "cases/prime-preserve-when-active-ready.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-preserve-with-retreat",
+      "family": "resource-choice",
+      "steps": [
+        {
+          "path": "cases/prime-preserve-with-retreat.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-unknown-card",
+      "family": "identity",
+      "steps": [
+        {
+          "path": "cases/prime-unknown-card.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-hidden-hand",
+      "family": "privacy",
+      "steps": [
+        {
+          "path": "cases/prime-hidden-hand.json",
+          "expect_error": "invalid_public_frame"
+        }
+      ]
+    },
+    {
+      "id": "prime-do-not-abandon-ko",
+      "family": "terminal-pressure",
+      "steps": [
+        {
+          "path": "cases/prime-do-not-abandon-ko.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target",
+      "family": "prime-target-binding",
+      "steps": [
+        {
+          "path": "cases/prime-own-target.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-mandatory",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-mandatory.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-terminal",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-terminal.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-tier",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-tier.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-veto",
+      "family": "base-authority",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-veto.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-no-energy",
+      "family": "prime-target-binding",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-no-energy.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-wrong-source",
+      "family": "prime-target-binding",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-wrong-source.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-mirror-identity-not-own",
+      "family": "identity",
+      "steps": [
+        {
+          "path": "cases/prime-mirror-identity-not-own.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-unknown-uid",
+      "family": "identity",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-unknown-uid.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-own-target-private",
+      "family": "privacy",
+      "steps": [
+        {
+          "path": "cases/prime-own-target-private.json",
+          "expect_error": "invalid_public_frame"
+        }
+      ]
+    },
+    {
+      "id": "prime-opponent-mirror-target",
+      "family": "prime-target-binding",
+      "steps": [
+        {
+          "path": "cases/prime-opponent-mirror-target.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-full-mirror-safe-chain",
+      "family": "prime-chain",
+      "steps": [
+        {
+          "path": "cases/prime-full-mirror-safe-chain-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/prime-full-mirror-safe-chain-2.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/prime-full-mirror-safe-chain-3.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/prime-full-mirror-safe-chain-4.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-target-disappeared-checkpoint",
+      "family": "fresh-checkpoint",
+      "steps": [
+        {
+          "path": "cases/prime-target-disappeared-checkpoint-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/prime-target-disappeared-checkpoint-2.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "prime-target-lost-energy-checkpoint",
+      "family": "fresh-checkpoint",
+      "steps": [
+        {
+          "path": "cases/prime-target-lost-energy-checkpoint-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/prime-target-lost-energy-checkpoint-2.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "search-result-completes-bridge",
+      "family": "search-checkpoint",
+      "steps": [
+        {
+          "path": "cases/search-result-completes-bridge-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/search-result-completes-bridge-2.json",
+          "expect_error": ""
+        }
+      ]
+    },
+    {
+      "id": "search-result-missing-bridge",
+      "family": "search-checkpoint",
+      "steps": [
+        {
+          "path": "cases/search-result-missing-bridge-1.json",
+          "expect_error": ""
+        },
+        {
+          "path": "cases/search-result-missing-bridge-2.json",
+          "expect_error": ""
+        }
+      ]
+    }
+  ]
+}

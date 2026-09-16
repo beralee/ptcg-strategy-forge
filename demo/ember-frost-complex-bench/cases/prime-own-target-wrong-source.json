@@ -1,0 +1,232 @@
+{
+  "document_type": "ptcg_strategy_forge_competitive_scenario_v2",
+  "schema_version": 2,
+  "scenario_id": "prime-own-target-wrong-source",
+  "frame": {
+    "schema_version": 2,
+    "profile_id": "ptcgdap-competitive-public-frame-v2",
+    "sequence": 1,
+    "seat": 0,
+    "prompt_kind": "effect_target",
+    "source": {
+      "public_observation_hash": "9E59ADE9D9E0519EACBEEC077ED3A9E223DC9D1FC3D579C69107E3CDFDE759C8",
+      "window_id": "FBF1FCFFBA5473AD9601003772FCE3DDEA1070A0B8044A4602DFEDFDAD04D191"
+    },
+    "public_state": {
+      "turn_number": 5,
+      "phase": "MAIN",
+      "self": {
+        "hand": [],
+        "active": [
+          {
+            "serial": 101,
+            "entity_serial": 100,
+            "local_card_uid": "CSV10C_029",
+            "remaining_hp": 170,
+            "max_hp": 170,
+            "damage_counters": 0,
+            "prize_value": 1,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV10C_029"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "bench": [
+          {
+            "serial": 111,
+            "entity_serial": 110,
+            "local_card_uid": "CSV10C_030",
+            "remaining_hp": 170,
+            "max_hp": 170,
+            "damage_counters": 0,
+            "prize_value": 1,
+            "attached_energy_count": 1,
+            "attached_energy_uids": [
+              "CSVE1C_FIR"
+            ],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV10C_030"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": true,
+            "energy_debt": 0
+          },
+          {
+            "serial": 121,
+            "entity_serial": 120,
+            "local_card_uid": "CSV9.5C_043",
+            "remaining_hp": 170,
+            "max_hp": 170,
+            "damage_counters": 0,
+            "prize_value": 1,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV9.5C_043"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "discard": [],
+        "deck_count": 30,
+        "prizes_remaining": 4,
+        "bench_capacity": 5,
+        "turn": {
+          "supporter_available": true,
+          "manual_attachment_available": true,
+          "retreat_available": true
+        }
+      },
+      "opponent": {
+        "hand_count": 5,
+        "active": [
+          {
+            "serial": 901,
+            "entity_serial": 900,
+            "local_card_uid": "CSV10C_148",
+            "remaining_hp": 320,
+            "max_hp": 320,
+            "damage_counters": 0,
+            "prize_value": 2,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV10C_148"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "bench": [
+          {
+            "serial": 911,
+            "entity_serial": 910,
+            "local_card_uid": "CSV8C_028",
+            "remaining_hp": 210,
+            "max_hp": 210,
+            "damage_counters": 0,
+            "prize_value": 2,
+            "attached_energy_count": 0,
+            "attached_energy_uids": [],
+            "attached_tool_uid": null,
+            "pokemon_stack_uids": [
+              "CSV8C_028"
+            ],
+            "minimum_attack_energy_count": 1,
+            "attack_ready": false,
+            "energy_debt": 1
+          }
+        ],
+        "discard": [],
+        "deck_count": 28,
+        "prizes_remaining": 4
+      }
+    },
+    "select_semantics": {
+      "min_count": 1,
+      "max_count": 1,
+      "select_type_raw": 1,
+      "select_context_raw": 25
+    },
+    "options": [
+      {
+        "index": 0,
+        "kind": "effect_target",
+        "card_uid": "CSV9.5C_043",
+        "card_serial": 10000,
+        "source_uid": "CSVH1aC_023",
+        "source_serial": 20000,
+        "source_entity_serial": null,
+        "target_uid": "CSV9.5C_043",
+        "target_serial": 30000,
+        "target_entity_serial": 120,
+        "target_remaining_hp": 70,
+        "target_prize_value": 1,
+        "target_attached_energy_count": null,
+        "target_attached_energy_uids": null,
+        "target_minimum_attack_energy_count": null,
+        "target_attack_ready": false,
+        "target_energy_debt": null,
+        "projected_damage": null,
+        "projected_knockout": false,
+        "requires_interaction": false,
+        "attack_index": null,
+        "option_number": null,
+        "ability_index": null,
+        "energy_type_raw": null,
+        "energy_count": null,
+        "special_condition_type": null,
+        "pending_assignment_count": 0,
+        "tags": [],
+        "option_type_raw": 3,
+        "option_player_index": 0
+      },
+      {
+        "index": 1,
+        "kind": "effect_target",
+        "card_uid": "CSV10C_030",
+        "card_serial": 10001,
+        "source_uid": "CSVH1aC_023",
+        "source_serial": 20001,
+        "source_entity_serial": null,
+        "target_uid": "CSV10C_030",
+        "target_serial": 30001,
+        "target_entity_serial": 110,
+        "target_remaining_hp": 170,
+        "target_prize_value": 1,
+        "target_attached_energy_count": null,
+        "target_attached_energy_uids": null,
+        "target_minimum_attack_energy_count": null,
+        "target_attack_ready": true,
+        "target_energy_debt": null,
+        "projected_damage": null,
+        "projected_knockout": false,
+        "requires_interaction": false,
+        "attack_index": null,
+        "option_number": null,
+        "ability_index": null,
+        "energy_type_raw": null,
+        "energy_count": null,
+        "special_condition_type": null,
+        "pending_assignment_count": 0,
+        "tags": [],
+        "option_type_raw": 3,
+        "option_player_index": 0
+      }
+    ]
+  },
+  "base_authority": {
+    "mandatory_indexes": [],
+    "terminal_indexes": [],
+    "base_hard_tiers": [
+      {
+        "index": 0,
+        "tier": [
+          0
+        ]
+      },
+      {
+        "index": 1,
+        "tier": [
+          0
+        ]
+      }
+    ],
+    "base_vetoed_indexes": []
+  },
+  "expected_selected_indexes": [
+    0
+  ]
+}

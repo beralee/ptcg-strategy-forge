@@ -1,0 +1,225 @@
+{
+  "document_type": "forge_iteration_upgrade_acceptance_v1",
+  "schema_version": 1,
+  "date": "2026-09-08",
+  "status": "partial_delivery_verified",
+  "version": "0.3.0",
+  "base_commit": "8e47301ab8ef3401e9fdb698d3b4dc1cea54ade5",
+  "tdd": {
+    "initial_foundation_red": {
+      "tests": 6,
+      "failures": 3,
+      "errors": 3
+    },
+    "new_test_methods": 27,
+    "red_observations": [
+      "missing_nested_parent",
+      "sdk_import_requires_repository_cwd",
+      "sdk_depends_on_cli",
+      "stale_install_not_blocked",
+      "report_overwrites_artifact",
+      "missing_receipt",
+      "model_dependencies_eagerly_imported",
+      "source_mutation_publishes_artifact",
+      "shared_origin_limit_missing",
+      "frozen_manifest_tamper_not_detected",
+      "custom_report_loses_latest_pointer"
+    ]
+  },
+  "tests": {
+    "command": "python -B -m unittest discover -s tests -v",
+    "passed": 121,
+    "elapsed_seconds": 466.249,
+    "log_sha256": "6ece6362956a7d8141f22cb1540d6193e7e983481089964fcd1bf3202dec4363"
+  },
+  "workspace_acceptance": {
+    "status": "passed",
+    "deterministic": true,
+    "archive_sha256": "B8EF0BB172351BDAE825C0E1FED987D83CDD5D7ADE317144F1DAE30213462796",
+    "scenario_count": 10,
+    "passed_scenarios": 10,
+    "receipt_id": "67ad92a2287271ed441618b5ed01381d388db0f7c4c146aab0386bcaf4768020",
+    "source_sha256": "90c6c8f94909cea827bb0a4d04a3fc72f2a0f08e089d7ef8cd40ab7430807a3e"
+  },
+  "wheel": {
+    "filename": "ptcg_strategy_forge-0.3.0-py3-none-any.whl",
+    "sha256": "048da98554ff9c0be5cbf5297706e5105e4340aebefdf0f8c8cb29064669d740",
+    "bytes": 1891753,
+    "installed_verification": {
+      "document_type": "forge_installed_wheel_check_v1",
+      "status": "passed",
+      "snapshot_file_count": 412,
+      "rules_without_model_dependencies": true,
+      "doctor": "passed",
+      "scope": "checkout_independent_install_with_current_interpreter_core_dependencies"
+    },
+    "clean_core_venv": {
+      "status": "ready",
+      "doctor": "passed",
+      "model_dependencies_installed": false
+    }
+  },
+  "sdk_snapshot": {
+    "manifest_sha256": "2a2fd0ec89ccf723b25dc70f035de6e030ee1a4fbee759cdcecd67177e670217",
+    "vendored_bytes_modified": false,
+    "doctor_status": "passed"
+  },
+  "implemented": [
+    "standalone_wheel_and_core_model_dependency_split",
+    "sdk_application_service_separation",
+    "nested_creation",
+    "immutable_acceptance_receipts_and_stale_install_gate",
+    "cached_model_status",
+    "version_backup_and_metadata_upgrade",
+    "bounded_frozen_replay_collection",
+    "shared_origin_network_budget",
+    "replay_job_cancel_resume_attempt_history",
+    "fixture_bc_current_window_row_mapping_and_eligibility",
+    "dataset_audit_group_split_export",
+    "limited_dojo_profile_adapter",
+    "card_uid_search"
+  ],
+  "not_completed": [
+    "real_service_integration",
+    "native_decision_trace_adapter_and_real_replay_to_bc_acceptance",
+    "history_pagination",
+    "large_dataset_sharding",
+    "heavy_process_resource_gate",
+    "bc_training_and_engine_evaluation",
+    "unified_explain_and_replay_to_scenarios",
+    "named_rule_compilation",
+    "account_auth_and_release_reconciliation_and_control_plane_integration"
+  ],
+  "external_probe": {
+    "source": "local_browser_runtime_configuration",
+    "origin": "http://127.0.0.1:8765",
+    "route": "/v1/ladder/snapshot?match_limit=1",
+    "result": "unavailable",
+    "other_origins_not_inferred": true
+  },
+  "claims": {
+    "local_http_fixture_integration": true,
+    "public_window_simulation": true,
+    "real_replay_bc_qualified": false,
+    "new_godot_engine_witness": false,
+    "cabt_parity": false,
+    "production_approval": false,
+    "external_repository_modified": false,
+    "committed": false,
+    "published": false
+  },
+  "files": [
+    {
+      "path": "MANIFEST.in",
+      "sha256": "43a8d8f39a7bea8db1805347d3a8cd0f753dc9137d758668d4e4661cda0121c3"
+    },
+    {
+      "path": "pyproject.toml",
+      "sha256": "544c2dcf73446fc640b81f2b910806d25b712702d798190521420568ea0733f4"
+    },
+    {
+      "path": "setup.py",
+      "sha256": "ca728310c44350c4bd08adf5dad0e5c024ecc708ff1cab55a595e6bcc5eb9026"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/__init__.py",
+      "sha256": "fc141282ddf3202423267f4c9857ed4c36a630b0a5cbf6217b0497aa4963201e"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/application.py",
+      "sha256": "47d45474fc36be61440d14ee82ce4628931f94e351a360d59f59a17690aaad27"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/cli.py",
+      "sha256": "72a05f2df767241517a29174ecd7c7b4dd3ff21ca94b8666116f7ac0feb9f73e"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/competition.py",
+      "sha256": "e63d656541d6c1bb12820ce27df09b8e0973f7acac1a55044a7f9940630d5c5f"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/competition_probe.py",
+      "sha256": "e0ad9e8803c39973d6c360271d65326904f96794518560e91cd8947804725ca7"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/datasets.py",
+      "sha256": "fd60fcde9222a1a52ec7c654a2f0265b9dd744a0535ddfd87e50c781ce31f421"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/ethans_typhlosion.py",
+      "sha256": "03e03ce0cda116ae2d4655f08426a6da859d212c102f66c4ba45c0b27a06ba8c"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/iteration_cli.py",
+      "sha256": "0f98dbe26f0e1f65ff2a3d632a30f7eb355ff97dd18c0417a174436ab1cd7463"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/jobs.py",
+      "sha256": "1dfb798c665621a9b87585053404135bb26bdf1fc9309abdadd6d398c3cf6dd3"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/lineage.py",
+      "sha256": "e7c2b02fa47364bf95b499956501f7299ad0b9782cb06b3c37db18d85f2af2f1"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/provenance.py",
+      "sha256": "644cfedd9076658ee18b642c18a34b37eb3bd815b477deb2f66f672fe7e8ac6b"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/ptcgai_ort.py",
+      "sha256": "5ed508578087c07b50af449d1431c0a6f868ae32ed35747df11559f702542dab"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/release_signing.py",
+      "sha256": "80b641bdc02c58525899179e2e91614852be6966f2e272aa7646d900efab9d17"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/replays.py",
+      "sha256": "59efce39972b6188f533f086428b060be2075900d51a0fadc8297ad5d038c5fe"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/resources.py",
+      "sha256": "228bc7114193d6e80ff81d36f868a14f4926c3878e09812f6dd4c2598665426e"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/reviewed_decks.py",
+      "sha256": "f01726ff4a3d52f9abee3c70b4f6ae14c037ac859e0d5044b8da4d0cb2358d9e"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/scenarios.py",
+      "sha256": "2174bf59b5ee8403b02395eaea3eeb45afb27bc8bd6192c0ed62854ed8eb6791"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/sdk.py",
+      "sha256": "fe2dec9b8813892dec244c45022a616981014e206d38da980d56dd0e55172718"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/ucis_runtime.py",
+      "sha256": "90521bd0ef9270adcb854b63f7c331bfcc5c1098775ac9ea2ff5f81338e2e0d1"
+    },
+    {
+      "path": "tests/test_bc_dataset.py",
+      "sha256": "5eee7359925043e56c3c093b8b665670295fe0417ca9067698f4024f426a6cfa"
+    },
+    {
+      "path": "tests/test_iteration_cli.py",
+      "sha256": "e4020d5f1cd8a10c4c485727ab91d8906f2b4dcaf2b6e14864ed281f4a61f98c"
+    },
+    {
+      "path": "tests/test_iteration_foundation.py",
+      "sha256": "b7b1a402373d10f872b185445b78ce5623bc611dd39e83d7ae7e3f4e17615d8c"
+    },
+    {
+      "path": "tests/test_iteration_jobs.py",
+      "sha256": "83315ca26bf5778b2baced2c773699d91f2b95e35d0ebbede0ddcb0c0b5736de"
+    },
+    {
+      "path": "tests/test_replay_collection.py",
+      "sha256": "2bf1484223ac4ea4921a7e291d3df68e2ea2ff63a0b7a23371c540c53a326513"
+    },
+    {
+      "path": "tools/verify_forge_wheel.py",
+      "sha256": "ed1e9ed5473ff7510822f4e618a45daa280f2a8adf23ff821083ae46c2446560"
+    }
+  ]
+}

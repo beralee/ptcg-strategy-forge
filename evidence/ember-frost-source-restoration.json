@@ -1,0 +1,16 @@
+{
+  "document_type": "forge_reviewed_deck_source_restoration_v1",
+  "restored_on": "2026-09-16",
+  "path": "data/bundled_user/decks/2026090501.json",
+  "sha256": "EF85FFDF8EFD3CAC37AC4BAE4F9E1AD60D60F0DC3CEDB6364B074A77E93AAF27",
+  "reviewed_source": "reviewed local Ember Frost 0.1.2 author source; exact public archive and deck hashes below",
+  "online_release_id": "release-3c2e232ba96dc34dfa138bd0e4c1d1418316bed6",
+  "online_archive_sha256": "3C2E232BA96DC34DFA138BD0E4C1D1418316BED6EABC45F198BFF5372AC5396E",
+  "policy_bytes_match_original_source": true,
+  "deck_bytes_match_original_source": true,
+  "card_count": 60,
+  "unique_printing_count": 24,
+  "vendor_manifest_generated_by": "tools/build_sdk_snapshot.py",
+  "executable_sdk_refresh": false,
+  "production_authority": false
+}

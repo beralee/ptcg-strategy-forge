@@ -1047,10 +1047,10 @@ class ForgeTests(unittest.TestCase):
                 }
 
             with (
-                mock.patch("ptcg_strategy_forge.cli.build_development_package", side_effect=fake_build),
-                mock.patch("ptcg_strategy_forge.cli.validate_development_package", return_value={"status": "valid"}),
+                mock.patch("ptcg_strategy_forge.application.build_development_package", side_effect=fake_build),
+                mock.patch("ptcg_strategy_forge.application.validate_development_package", return_value={"status": "valid"}),
                 mock.patch(
-                    "ptcg_strategy_forge.cli.run_suite",
+                    "ptcg_strategy_forge.application.run_suite",
                     return_value={"status": "failed", "case_count": 1, "passed_count": 0, "cases": []},
                 ),
             ):
@@ -1069,7 +1069,7 @@ class ForgeTests(unittest.TestCase):
             artifact = root / "existing.ptcgai"
             artifact.write_bytes(b"preserve-me")
 
-            with mock.patch("ptcg_strategy_forge.cli.build_development_package") as build:
+            with mock.patch("ptcg_strategy_forge.application.build_development_package") as build:
                 with self.assertRaisesRegex(ValueError, "workspace_check_output_exists"):
                     check_workspace(workspace, output=artifact)
                 build.assert_not_called()

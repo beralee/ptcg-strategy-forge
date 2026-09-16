@@ -1,0 +1,121 @@
+{
+  "document_type": "forge_cross_repository_upgrade_evidence_v1",
+  "date": "2026-09-09",
+  "status": "partial_verified_full_architecture_not_complete",
+  "source_sha256": {
+    "forge": {
+      "src/ptcg_strategy_forge/__init__.py": "fc141282ddf3202423267f4c9857ed4c36a630b0a5cbf6217b0497aa4963201e",
+      "src/ptcg_strategy_forge/application.py": "33c0f4cc3cc85e6ee6d207d7491414b57d249116769611c22eda91dbba1e4cc0",
+      "src/ptcg_strategy_forge/authoring.py": "79139490044c76af67480cac303b082aae76605f30901c9845844eb73edcf7c4",
+      "src/ptcg_strategy_forge/cli.py": "72a05f2df767241517a29174ecd7c7b4dd3ff21ca94b8666116f7ac0feb9f73e",
+      "src/ptcg_strategy_forge/competition.py": "e63d656541d6c1bb12820ce27df09b8e0973f7acac1a55044a7f9940630d5c5f",
+      "src/ptcg_strategy_forge/competition_probe.py": "e0ad9e8803c39973d6c360271d65326904f96794518560e91cd8947804725ca7",
+      "src/ptcg_strategy_forge/datasets.py": "7b13acb400845fd0e947c62d100c64dff13bdeae3c7bb40dbc2d983aba0cfd61",
+      "src/ptcg_strategy_forge/debugging.py": "59fc925d80b7fb20672437ce87ba8866a8d571021eafa3ef0fdb198358446c2d",
+      "src/ptcg_strategy_forge/diagnostics.py": "13c21d6a41df4ce301370131d8e88b2e9c1f8058d9a935b92f2a945ee72aa1bf",
+      "src/ptcg_strategy_forge/ethans_typhlosion.py": "03e03ce0cda116ae2d4655f08426a6da859d212c102f66c4ba45c0b27a06ba8c",
+      "src/ptcg_strategy_forge/iteration_cli.py": "d2e07a6c1d0b4e1dc3aace3ca2213e9cb68b46ed9609f4e7c81ca3687c3086a0",
+      "src/ptcg_strategy_forge/jobs.py": "9c74564d79fb453af912557812154663903a193aa72763f86f03d8f508f19085",
+      "src/ptcg_strategy_forge/lineage.py": "2795c3d14b68cdbc53a66948faee36021840d6274d9d23c816d502d292ddae4a",
+      "src/ptcg_strategy_forge/native_trace.py": "e4381f1f8b8fcee15737e4e58c59f7daf7217ba30d3a89487ccc46af133d4ee5",
+      "src/ptcg_strategy_forge/provenance.py": "644cfedd9076658ee18b642c18a34b37eb3bd815b477deb2f66f672fe7e8ac6b",
+      "src/ptcg_strategy_forge/ptcgai_ort.py": "5ed508578087c07b50af449d1431c0a6f868ae32ed35747df11559f702542dab",
+      "src/ptcg_strategy_forge/release_signing.py": "80b641bdc02c58525899179e2e91614852be6966f2e272aa7646d900efab9d17",
+      "src/ptcg_strategy_forge/release_workflow.py": "0bc45e57cf78e9af6cd9eb975ae144c82ae0fdd46864b4286eb2896712c899df",
+      "src/ptcg_strategy_forge/replays.py": "59efce39972b6188f533f086428b060be2075900d51a0fadc8297ad5d038c5fe",
+      "src/ptcg_strategy_forge/resources.py": "228bc7114193d6e80ff81d36f868a14f4926c3878e09812f6dd4c2598665426e",
+      "src/ptcg_strategy_forge/resources_gate.py": "d0b37b80eef16c2eb05f2bb1eec5f0cffa898a6c68aa4f7c29b368ee48deae7c",
+      "src/ptcg_strategy_forge/reviewed_decks.py": "f01726ff4a3d52f9abee3c70b4f6ae14c037ac859e0d5044b8da4d0cb2358d9e",
+      "src/ptcg_strategy_forge/scenarios.py": "2174bf59b5ee8403b02395eaea3eeb45afb27bc8bd6192c0ed62854ed8eb6791",
+      "src/ptcg_strategy_forge/sdk.py": "63b5f9eddfdc548af405cdbae5c0b06e8f966520ca7b95cc15e4db8de357a599",
+      "src/ptcg_strategy_forge/services.py": "1380241e95d4e43d38971027e6958366f41e57b2774b77cf2be0d14b82835b3f",
+      "src/ptcg_strategy_forge/training.py": "97441a82921a2c7b56f6c3493cfadd935d3eef5efd1d308e95cbc75b27eb7545",
+      "src/ptcg_strategy_forge/ucis_runtime.py": "90521bd0ef9270adcb854b63f7c331bfcc5c1098775ac9ea2ff5f81338e2e0d1",
+      "tests/test_iteration_cli.py": "8e058d53afce02cf14c9d9f8bd77a98ae4663a68be2e94b242e315e3d0b67b2e"
+    },
+    "engine": {
+      "scripts/ai/ptcgdap/host/godot/PtcgDAPAuthorDevelopmentBattleOwner.gd": "ba25df2b23c6f0c277482e206937763b6027300cf766e3ed522e5acd0311b25b",
+      "tests/ptcgdap/godot/test_developer_model_trace.gd": "07d829e62cc86ec7ca9b33ab29e3f6725dafbfc3ead086bacfdd878ecc968379"
+    },
+    "dojo": {
+      "public/scripts/competition-platform.js": "d94d348ef598ed9111a0098b643fafc15b4b17066809128b7dc80542422769d5",
+      "tests/release-state.test.mjs": "263368a3f9b290c7090d14866f9b14c5eec2faf8acdf8ba5fb528a5e600b379a",
+      "src/pages/index.astro": "70fa50d6b2bf3f8f0c2df281a5d1177148ef8ed9ff4ce7c79c5207677a8f1d91",
+      "src/pages/competition.astro": "df57958781ed0f4dfb446e3ed96db67bd8b12fcebf904c39fc9b74716dc0f75f",
+      "src/pages/strategy.astro": "b3f5fd085bcbfa9013382469abdc7360785f0b609ab8e7e6c233c9a656786550",
+      "src/pages/developers.astro": "7592c21382079475c03d292804ea44cf4844a848aedb221b4a0ebe2fad5e9f21",
+      "src/pages/author.astro": "ef50394a73fad471a49dbf8a8bb4c4a695ef202b162b296e4d19c12cd35c7758"
+    }
+  },
+  "tests": {
+    "forge_full": {
+      "passed": 150,
+      "seconds": 488.398,
+      "log_sha256": "55920317223bfa938d0b1b4001b216a93347d705f9ff596b3e2bd88136630709"
+    },
+    "dojo_full": {
+      "passed": 34,
+      "log_sha256": "7475d716400c0c3d58e9069a3085e3bc1b6fb739e40e2c3c34fa611a29b41fac"
+    },
+    "engine_focused": {
+      "passed": 3,
+      "log_sha256": "d8e79e5c44dc27a5a410af691a5421c7bed13356a8050369d68a77e870fcf146"
+    },
+    "engine_existing_trace": {
+      "passed": 3,
+      "failed": 2,
+      "error_code": "package_integrity_invalid",
+      "log_sha256": "1d384a4573110be07917f9589559fae43831bd2ff07841c1af53e807f8dafc82"
+    }
+  },
+  "workspace_check": {
+    "status": "passed",
+    "build": {
+      "package_id": "dev.forge.upgrade",
+      "package_version": "0.1.2",
+      "archive_sha256": "D0A0C1895328F20A92033E0440E76FE991B73C7F649BF4581BA65595C546EB0A",
+      "archive_bytes": 20310,
+      "second_archive_sha256": "D0A0C1895328F20A92033E0440E76FE991B73C7F649BF4581BA65595C546EB0A",
+      "deterministic": true
+    },
+    "report_sha256": "f738225f0a44dc28ecffa7daed1be2a2a8537b562f7338905122b5527b9b24a5"
+  },
+  "wheel": {
+    "path": "dist/cross-repo-20260909/ptcg_strategy_forge-0.3.0-py3-none-any.whl",
+    "sha256": "0ab45c5c32f4523adac741eb2703327bbf9df6c46c1fda3788006a77d2cf9631",
+    "isolated_install": "passed",
+    "snapshot_files": 412
+  },
+  "live_replays": {
+    "collection_id": "bb8d2ed20fc0502b4246b9f44da08d6516c774c14a35fe5e8df28f284d5389e5",
+    "status": "failed",
+    "http_status": 503,
+    "series": 2,
+    "attempts_each": 3,
+    "downloaded_bytes": 0
+  },
+  "remaining_gates": [
+    "private_backend_authorization_and_implementation",
+    "real_replay_service_503",
+    "native_trace_cross_language_projection",
+    "native_bc_and_engine_evaluation",
+    "legacy_exact_package_integration",
+    "browser_receipt_download"
+  ],
+  "claims": {
+    "production_ready": false,
+    "cabt_engine_parity": false,
+    "real_native_bc_accepted": false,
+    "deployed": false
+  },
+  "rollback": {
+    "dojo-backup-20260909/hashes.json": "851324eef817eaa103d42ba9b10f76e15871fd143e409c3cfa0918ca5c3f7a0b",
+    "dojo-backup-20260909/public/scripts/competition-platform.js": "6520907ab04e38effd8e52a865f642521f22c9341c63ce74d179245630d8021e",
+    "dojo-backup-20260909/src/pages/author.astro": "7bce5d1b2c1607858fbdd7cf1e25af4e8853efb71ee322d54c6422c151d87721",
+    "dojo-backup-20260909/src/pages/competition.astro": "eed61ed2be7c6746a73815ec0ecbb6fb4b4d00ecbabee55d94f7790098ba681c",
+    "dojo-backup-20260909/src/pages/developers.astro": "d8005e78e487b2b393c5d9e10c7d02a58708e47029f67d683a02c13bb70ea0dd",
+    "dojo-backup-20260909/src/pages/index.astro": "5d8d094c2772eb71efa601fce68a9afa3a55bf0d13261e48bf85be457dfb22b1",
+    "dojo-backup-20260909/src/pages/strategy.astro": "f5b230655000dc71877487c50e142ddb63b9a34558b011cca4cb52743a7a9796",
+    "engine-backup-20260909/PtcgDAPAuthorDevelopmentBattleOwner.gd": "253135171224ff8946d16306455d9ee2e189ef09b45139b6fee130f6369c9a50"
+  }
+}

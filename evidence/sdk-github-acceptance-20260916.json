@@ -1,0 +1,125 @@
+{
+  "document_type": "forge_sdk_github_acceptance_v1",
+  "date": "2026-09-16",
+  "version": "0.3.0",
+  "base_commit": "8e47301ab8ef3401e9fdb698d3b4dc1cea54ade5",
+  "repository": "https://github.com/beralee/ptcg-strategy-forge",
+  "target_branch": "main",
+  "status": "local_publication_acceptance_passed",
+  "code_sha256": {
+    "setup.py": "ca728310c44350c4bd08adf5dad0e5c024ecc708ff1cab55a595e6bcc5eb9026",
+    "src/ptcg_strategy_forge/__init__.py": "a5431842ac10e19c9b5b270cc2f85bb6da6cfb325c35c8697be422280838845f",
+    "src/ptcg_strategy_forge/application.py": "929053f7fdc9299ddd36723b798815bb37225e09a0991e9d67a9dccf03e6aae5",
+    "src/ptcg_strategy_forge/authoring.py": "79139490044c76af67480cac303b082aae76605f30901c9845844eb73edcf7c4",
+    "src/ptcg_strategy_forge/cli.py": "779e23a052bfc3145587503c5eb632900d732b5994b2f1e92484c1dd114ced36",
+    "src/ptcg_strategy_forge/competition.py": "9759357853c0e28646b1af4e99537ab16e2ad9b6f578096387c6859fc822f474",
+    "src/ptcg_strategy_forge/control_client.py": "e3225be26808777863a8b3134bf913b04086076255a680433df0c94860555910",
+    "src/ptcg_strategy_forge/control_release.py": "a522a2f8bd2de1f35743723e57976da2f34e397688894cd5826ebe99ea32f806",
+    "src/ptcg_strategy_forge/datasets.py": "7b13acb400845fd0e947c62d100c64dff13bdeae3c7bb40dbc2d983aba0cfd61",
+    "src/ptcg_strategy_forge/debugging.py": "59fc925d80b7fb20672437ce87ba8866a8d571021eafa3ef0fdb198358446c2d",
+    "src/ptcg_strategy_forge/decision_bench.py": "17e4300793579da9c82016ce372b80eb5bf3c4b525fbe8575992a59f051ba24e",
+    "src/ptcg_strategy_forge/diagnostics.py": "13c21d6a41df4ce301370131d8e88b2e9c1f8058d9a935b92f2a945ee72aa1bf",
+    "src/ptcg_strategy_forge/iteration_cli.py": "806f6958b5758c2a85bcea6706cea62c04344322e3487878262b2f5537105b14",
+    "src/ptcg_strategy_forge/jobs.py": "9c74564d79fb453af912557812154663903a193aa72763f86f03d8f508f19085",
+    "src/ptcg_strategy_forge/lineage.py": "2795c3d14b68cdbc53a66948faee36021840d6274d9d23c816d502d292ddae4a",
+    "src/ptcg_strategy_forge/native_trace.py": "e4381f1f8b8fcee15737e4e58c59f7daf7217ba30d3a89487ccc46af133d4ee5",
+    "src/ptcg_strategy_forge/ptcgai_ort.py": "7c05c42df5799cfd70c072508c77c28b0391980aa37666fdea893c0e24aa8fb7",
+    "src/ptcg_strategy_forge/release_workflow.py": "0bc45e57cf78e9af6cd9eb975ae144c82ae0fdd46864b4286eb2896712c899df",
+    "src/ptcg_strategy_forge/replays.py": "59efce39972b6188f533f086428b060be2075900d51a0fadc8297ad5d038c5fe",
+    "src/ptcg_strategy_forge/resources.py": "228bc7114193d6e80ff81d36f868a14f4926c3878e09812f6dd4c2598665426e",
+    "src/ptcg_strategy_forge/resources_gate.py": "d0b37b80eef16c2eb05f2bb1eec5f0cffa898a6c68aa4f7c29b368ee48deae7c",
+    "src/ptcg_strategy_forge/reviewed_decks.py": "ab05e6fa528e788a597d535d2182e5e304c04173fd3b1a776dffb099a586eb41",
+    "src/ptcg_strategy_forge/sdk.py": "a83ce13408802f79f69e43c7633ea15a20f10d74fb2219b0d4693afc3cd00d20",
+    "src/ptcg_strategy_forge/services.py": "713bfa4e4ab5a02c90642090dc0120e60c992ebed7473bd705fd37644aaa0be6",
+    "src/ptcg_strategy_forge/training.py": "97441a82921a2c7b56f6c3493cfadd935d3eef5efd1d308e95cbc75b27eb7545",
+    "tests/test_authoring.py": "1a46207581823ca8dca1a32d66da14ef36a18e568e8bf8f7ce55b4dd67c38f1a",
+    "tests/test_bc_dataset.py": "e1079751d5ddebb18d31667bf3be09ba049cb588ba165478846e99d8c5420fed",
+    "tests/test_bc_training.py": "a21b120d2bea76f80446af63f7e37281ce83165675cf89691027cd433f889525",
+    "tests/test_complex_decision_bench.py": "6372c987fcf4f5f03dbfcec5d2330d8afbf9c227fb8c3733312023a633404850",
+    "tests/test_control_client.py": "4a11b29341b36c050919f9a94dea9a4bf082e01576d210845a6a545db937fe6b",
+    "tests/test_forge.py": "eb628e2985ba034b5472d074ba78c1bcc4213874dfbdab7a3d864997258e6219",
+    "tests/test_iteration_cli.py": "8e058d53afce02cf14c9d9f8bd77a98ae4663a68be2e94b242e315e3d0b67b2e",
+    "tests/test_iteration_debugging.py": "a2c8c9fdb647e32932e06c16c9629d159a2b6b25e0aebede1cc051ed5154a8b5",
+    "tests/test_iteration_foundation.py": "a0cc31162591c34166d7df3d2ab1a36f585081b953a4156590f2f0b99d604c61",
+    "tests/test_iteration_jobs.py": "8dedb03b65bb4b37bb68920f84b09765c301b4b3766d7b1957a291d932fb3113",
+    "tests/test_local_engine_bench.py": "ddfb612a7c961412b8f63cc0dce752ee8622d62d59b2caa78b4738db495ea5a7",
+    "tests/test_native_trace.py": "29af8ff4269074ccdf77d392b0cd84e59e0ea80d54ed71938386187640cc8f18",
+    "tests/test_release_workflow.py": "4f3fbb8677ca424e87d0bbc9c79f617c1ef5d8b3b6824e7c8b108878e1614e4f",
+    "tests/test_replay_collection.py": "2bf1484223ac4ea4921a7e291d3df68e2ea2ff63a0b7a23371c540c53a326513",
+    "tests/test_resource_gate.py": "8740adc5cd835f9a50c069710ffd0cc68809a417e939ca893c284f79a61cf7db",
+    "tools/complex_decision_bench.py": "c1b8a44597931df988755521915f1343e6b2d3b9d08b3fd23a3aea64089ef3ee",
+    "tools/local_engine_bench.gd": "58fd7b76c450e5d2266a5775012c9d86b78343670ef90131c97d165ab96ca4fa",
+    "tools/local_engine_bench.py": "9fd8e5d0c48a69d44d496fe759adf5c21f249544378c3b663c1c2e29087007b3",
+    "tools/verify_forge_wheel.py": "ed1e9ed5473ff7510822f4e618a45daa280f2a8adf23ff821083ae46c2446560",
+    "vendor/ptcgdap-sdk-manifest.json": "4b279c3d0e99135e6046e8b27db6dace021d93e94ebd50d95eb4d4c2b3632284"
+  },
+  "tests": {
+    "distinct_tests_passed": 170,
+    "initial_suite": {
+      "run": 169,
+      "passed": false,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "seconds": 549.804,
+      "deferred_test": "test_kernel_mutex_blocks_second_process_without_launching_a_pool",
+      "reason": "Existing engine benchmark owns the machine-wide mutex; run this probe serially afterwards."
+    },
+    "initial_failure": "Two public documentation receipts were ignored and missing from the isolated publication tree.",
+    "repair": "Reviewed and explicitly included the two referenced public receipts.",
+    "focused_retest": {
+      "passed": 2,
+      "log_sha256": "b927886883b4395e4d545a6e0b84d690115ff84bd7bf37cf6da3771e2a9e9754"
+    },
+    "kernel_mutex_probe": {
+      "run": 1,
+      "passed": true,
+      "failures": 0,
+      "errors": 0,
+      "resource_overrides": false,
+      "heavy_pool_launched": false
+    },
+    "unresolved_failures": 0,
+    "initial_log_sha256": "35df468eaa43d4463415f330e2f5af06410cddf3e51a10d61677f6a70df0385e"
+  },
+  "sdk_snapshot": {
+    "files": 413,
+    "verification": "passed"
+  },
+  "wheel": {
+    "sha256": "b3678e97bb82c9a24c454329fbb1bddd1fc153c909f3d4df5dc72b432ffaf00c",
+    "bytes": 1940920,
+    "checkout_independent_install": "passed",
+    "rules_without_model_dependencies": true
+  },
+  "workspace": {
+    "name": "demo/marnie-forge",
+    "status": "passed",
+    "build": {
+      "package_id": "dev.beralee.marnie-forge-demo",
+      "package_version": "1.0.0",
+      "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+      "archive_bytes": 31512,
+      "second_archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+      "deterministic": true
+    },
+    "report_sha256": "3266270fd5a8548b2eeef056565b7dcc37a1f70c8fb6f8938a4a0c9d326844f1"
+  },
+  "sensitive_content_review": {
+    "scanner": "gitleaks 8.30.1",
+    "staged_findings": 0,
+    "full_tree_findings": 0,
+    "prior_history_findings": 0,
+    "custom_api_key_literals": "Only versioned document types and explicitly synthetic test fixtures.",
+    "unnecessary_local_private_paths_removed": true,
+    "private_backend_materials_included": false,
+    "credentials_or_local_runtime_artifacts_included": false
+  },
+  "boundaries": {
+    "github_release_created": false,
+    "package_registry_published": false,
+    "new_native_bc_authority": false,
+    "new_engine_parity_authority": false,
+    "production_strategy_installed": false
+  }
+}

@@ -69,6 +69,14 @@ def register(commands, workspace_commands):
     native.add_argument("--source", type=Path)
     native.add_argument("--trace")
     native.set_defaults(iteration_handler=run)
+    traces = workspace_commands.add_parser('decision-traces', help='Download and verify your own ladder decision records.')
+    traces.add_argument('operation', choices=('pull',))
+    traces.add_argument('path', type=Path)
+    traces.add_argument('--release-id', required=True)
+    traces.add_argument('--max-games', type=int, default=20)
+    traces.add_argument('--max-bytes', type=int, default=256*1024**2)
+    add_auth_arguments(traces)
+    traces.set_defaults(iteration_handler=run)
     resource = commands.add_parser("resources")
     resource.add_argument("operation", choices=("status",))
     resource.set_defaults(iteration_handler=run)
@@ -319,6 +327,10 @@ def run(args):
         if not args.trace:
             raise ValueError("native_trace_identity_required")
         return workspace.native_traces.inspect(args.trace)
+    if args.workspace_command == 'decision-traces':
+        from .online_decision_traces import pull_decision_traces
+        return pull_decision_traces(workspace.root, authenticated_client(args), args.release_id,
+                                   max_games=args.max_games, max_bytes=args.max_bytes)
     if args.workspace_command == "scenario":
         if args.operation == "counterfactual":
             if not args.scenario or not args.field or args.value is None or args.expected is None:

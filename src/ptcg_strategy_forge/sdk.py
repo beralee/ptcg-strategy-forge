@@ -704,11 +704,21 @@ class WorkspaceModel:
                 }
             else:
                 context = document
-            tensors = PublicActorTensorizer.tensorize(
-                context,
-                local_option_uids=local_uids,
-                allowed_card_uids=allowed_uids,
-            )
+            if document.get('profile_id') == 'ptcgdap-competitive-public-frame-v2':
+                from scripts.ai.ptcgdap.semantic_model_profile import project_semantic_frame
+                deck = load_json(self.workspace.root / 'package/deck/deck_manifest.json')
+                try:
+                    tensors = project_semantic_frame(document, [row['local_card_uid'] for row in deck['cards']])
+                except ValueError as error:
+                    _raise(str(error))
+                except (KeyError, TypeError):
+                    _raise('workspace_scenario_invalid')
+            else:
+                tensors = PublicActorTensorizer.tensorize(
+                    context,
+                    local_option_uids=local_uids,
+                    allowed_card_uids=allowed_uids,
+                )
         except (ModelActorError, OrtActorError) as error:
             _raise(error.code)
         tensor_document = {
@@ -762,6 +772,7 @@ class WorkspaceModel:
                     card_catalog_sha256=CARD_CATALOG_SHA256,
                     training_method=training_method,
                     source_run_id=source_run_id,
+                    tensor_profile_id=report['tensor_profile_id'],
                 )
                 staged_manifest = Path(temp_name) / "model_manifest.json"
                 staged_manifest.write_bytes(canonical_bytes(document))

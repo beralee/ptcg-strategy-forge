@@ -1,0 +1,4 @@
+interface:
+  display_name: "PTCG 学习型策略研发流水线"
+  short_description: "基于真实决策录像、规则基线与小模型，构建可验证的 PTCG 策略"
+  default_prompt: "使用 $ptcg-learned-strategy-pipeline，在当前 Forge 中研发规则与学习模型结合的策略，先核对能力和基线，再完成当前阶段的训练与验收。"

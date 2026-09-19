@@ -28,8 +28,8 @@ def _sha(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest().upper()
 
 
-def _expected_io() -> tuple[dict[str, tuple[str, tuple[int, ...]]], dict[str, tuple[str, tuple[int, ...]]]]:
-    profile = tensor_profile_document()
+def _expected_io(profile_id='competitive_public_actor_i32_v1') -> tuple[dict[str, tuple[str, tuple[int, ...]]], dict[str, tuple[str, tuple[int, ...]]]]:
+    profile = tensor_profile_document(profile_id)
     inputs = {
         entry["name"]: (entry["dtype"], tuple(entry["shape"]))
         for entry in profile["inputs"]
@@ -39,6 +39,13 @@ def _expected_io() -> tuple[dict[str, tuple[str, tuple[int, ...]]], dict[str, tu
         for entry in profile["outputs"]
     }
     return inputs, outputs
+
+
+def _profile_for_io(inputs, outputs):
+    for profile_id in ('competitive_public_actor_i32_v1', 'ptcgdap_local_semantic_actor_i32_v1'):
+        if (inputs, outputs) == _expected_io(profile_id):
+            return tensor_profile_document(profile_id)
+    _raise('model_tensor_profile_invalid')
 
 
 def _onnx_shape(value_info: Any) -> tuple[str, tuple[int, ...]]:
@@ -80,11 +87,9 @@ def inspect_onnx(path: Path) -> dict[str, Any]:
     illegal = sorted(set(operators) - set(ALLOWED_ONNX_OPS))
     if illegal or any(node.domain not in {"", "ai.onnx"} for node in model.graph.node):
         _raise("model_operator_forbidden")
-    expected_inputs, expected_outputs = _expected_io()
     actual_inputs = {entry.name: _onnx_shape(entry) for entry in model.graph.input}
     actual_outputs = {entry.name: _onnx_shape(entry) for entry in model.graph.output}
-    if actual_inputs != expected_inputs or actual_outputs != expected_outputs:
-        _raise("model_tensor_profile_invalid")
+    profile = _profile_for_io(actual_inputs, actual_outputs)
     value = source.read_bytes()
     return {
         "document_type": "ptcgai_model_inspection_v1",
@@ -94,8 +99,9 @@ def inspect_onnx(path: Path) -> dict[str, Any]:
         "artifact_bytes": len(value),
         "opset": 18,
         "operators": operators,
-        "inputs": [entry for entry in tensor_profile_document()["inputs"]],
-        "outputs": [entry for entry in tensor_profile_document()["outputs"]],
+        "tensor_profile_id": profile['profile_id'],
+        "inputs": profile["inputs"],
+        "outputs": profile["outputs"],
         "external_data": False,
         "custom_ops": False,
         "fixed_shape": True,
@@ -250,9 +256,7 @@ def inspect_ort(path: Path) -> dict[str, Any]:
         raise
     except Exception as error:
         raise OrtActorError("model_ort_invalid") from error
-    expected_inputs, expected_outputs = _expected_io()
-    if inputs != expected_inputs or outputs != expected_outputs:
-        _raise("model_tensor_profile_invalid")
+    profile = _profile_for_io(inputs, outputs)
     if session.get_providers() != ["CPUExecutionProvider"]:
         _raise("model_execution_provider_invalid")
     return {
@@ -263,8 +267,9 @@ def inspect_ort(path: Path) -> dict[str, Any]:
         "artifact_bytes": len(value),
         "runtime_version": ort.__version__,
         "execution_providers": session.get_providers(),
-        "inputs": [entry for entry in tensor_profile_document()["inputs"]],
-        "outputs": [entry for entry in tensor_profile_document()["outputs"]],
+        "tensor_profile_id": profile['profile_id'],
+        "inputs": profile["inputs"],
+        "outputs": profile["outputs"],
         "fixed_shape": True,
         "cpu_only": True,
     }
@@ -290,9 +295,7 @@ class OrtActor:
                 providers=["CPUExecutionProvider"],
             )
             inputs, outputs = _runtime_io(session)
-            expected_inputs, expected_outputs = _expected_io()
-            if inputs != expected_inputs or outputs != expected_outputs:
-                _raise("model_tensor_profile_invalid")
+            _profile_for_io(inputs, outputs)
         except OrtActorError:
             raise
         except Exception as error:
@@ -328,7 +331,7 @@ class OrtActor:
 def conformance(path: Path) -> dict[str, Any]:
     inspection = inspect_ort(path)
     actor = OrtActor(path)
-    profile = tensor_profile_document()
+    profile = tensor_profile_document(inspection['tensor_profile_id'])
     zeros = PublicActorTensors(
         profile_id=profile["profile_id"],
         frame_i32=(0,) * profile["frame_width"],

@@ -1,5 +1,9 @@
 # PTCG Strategy Forge
 
+## 天梯完整决策录像
+
+使用已登录账号按版本下载本人视角，验证后导入本地复盘。见 [天梯决策录像](docs/27-ONLINE-DECISION-TRACES.md)。服务需要声明对应能力，旧摘要不能恢复完整窗口。
+
 <p align="center">
   <a href="https://ptcg.skillserver.cn/">
     <img src="https://ptcg.skillserver.cn/dist/assets/dojo-home-design.png" alt="PTCG Strategy Forge - PTCG AI Agent 策略开发工具链" width="100%" />

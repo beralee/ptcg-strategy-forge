@@ -16,6 +16,21 @@ The returned integers are indexes into the current immutable `select.option`
 window. An author package is data, not executable Python/GDScript and not an
 engine plugin.
 
+## Learned-strategy development entrypoint
+
+For new learned/hybrid strategies and their training pipeline, use
+`$ptcg-learned-strategy-pipeline` as the primary skill. Its maintained source is
+[skills/ptcg-learned-strategy-pipeline/SKILL.md](skills/ptcg-learned-strategy-pipeline/SKILL.md),
+with a local installation under the user's Codex skills directory.
+
+Follow the approved rule baseline → public features and qualified real traces
+→ BC/distillation → model-visited trajectory correction → conditional population PPO
+→ paired evaluation workflow. For this workflow, do not load or delegate to
+the previous `ptcg-strategy-lifecycle` or `deck-strategy-iteration` skills.
+Read current code and contracts directly. The new skill does not waive this
+charter, grant external-repository or production authority, or imply that
+planned training and Host interfaces already exist.
+
 ## Required reading order
 
 Before changing behavior, read:
@@ -164,6 +179,13 @@ Never hand-edit manifest hashes or silently add vendored files.
 - Queue heavy work serially across agents. A passing win-rate benchmark cannot
   waive invalid-action, stale-window, privacy, dirty-game, schema, package, or
   signature failures.
+- Learned runs must also use the supervised runner described in
+  `docs/30-TRAINING-MACHINE-STABILITY.md`: output/pagefile volumes need 20 GiB
+  before admission and stop below 10 GiB; record ongoing memory/disk pressure,
+  bound output/runtime, and stop only the owned child tree on failure.
+- Preserve interrupted or truncated outputs as failed evidence. Resume from
+  qualified artifacts after a short guarded trial; do not automatically retry
+  resource failures or infer that successful admission proves a safe whole run.
 
 ## Evidence and completion
 

@@ -32,6 +32,39 @@ def game(won=True, seed=1, seat=0):
 
 
 class LocalEngineBenchTests(unittest.TestCase):
+    def test_model_run_requires_at_least_one_native_inference(self):
+        from tools.local_engine_bench import audit_model_activity
+        row = game(); row['candidate_requires_model'] = True
+        row['candidate_audit'].update(model_inference_successes=0, model_fallbacks=0)
+        self.assertEqual(audit_model_activity([row]), ['candidate:model_never_called'])
+        called = copy.deepcopy(row); called['candidate_audit']['model_inference_successes'] = 1
+        self.assertEqual(audit_model_activity([row, called]), [])
+        self.assertEqual(audit_model_activity([game()]), [])
+
+    def test_model_bench_freezes_native_loader_and_binaries(self):
+        from tools.local_engine_bench import copy_model_runtime
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp); source = root / 'source'; target = root / 'runtime'
+            (source / '.godot').mkdir(parents=True)
+            (source / 'bin/ptcgai_ort').mkdir(parents=True)
+            (source / '.godot/extension_list.cfg').write_text('res://actor.gdextension\n')
+            binary = source / 'bin/ptcgai_ort/actor.dll'
+            binary.write_bytes(b'frozen-native')
+            copy_model_runtime(source, target)
+            binary.write_bytes(b'new-source')
+            self.assertEqual((target / 'bin/ptcgai_ort/actor.dll').read_bytes(), b'frozen-native')
+            self.assertEqual((target / '.godot/extension_list.cfg').read_text(), 'res://actor.gdextension\n')
+
+    def test_model_faults_are_not_hidden_by_legal_rule_fallback(self):
+        row = game(); row['candidate_requires_model'] = True
+        row['candidate_audit'].update(model_inference_successes=8, model_fallbacks=0)
+        self.assertEqual(audit_game(row, 'A'*64, 'B'*64), [])
+        row['candidate_audit']['model_fallbacks'] = 1
+        self.assertIn('candidate_audit:model_fallbacks', audit_game(row, 'A'*64, 'B'*64))
+        row['candidate_audit']['model_fallbacks'] = 0
+        del row['candidate_audit']['model_inference_successes']
+        self.assertIn('candidate_audit:model_accounting', audit_game(row, 'A'*64, 'B'*64))
+
     def test_clean_and_both_owners_enforced(self):
         row = game()
         self.assertEqual(audit_game(row, "A"*64, "B"*64), [])
@@ -101,6 +134,15 @@ class LocalEngineBenchTests(unittest.TestCase):
         result=compare_runs(base,candidate)
         self.assertEqual(result['seed_cluster_count'],1)
         self.assertEqual(result['seed_cluster_sign_flip_p'],1)
+
+    def test_runtime_identity_excludes_native_build_cache_but_not_runtime_bytes(self):
+        from tools.local_engine_bench import native_runtime_files
+        with tempfile.TemporaryDirectory() as temp:
+            root=Path(temp)
+            (root/'actor/build').mkdir(parents=True)
+            (root/'actor/build/compiler-cache.obj').write_bytes(b'unused')
+            (root/'actor/engine.dll').write_bytes(b'loaded')
+            self.assertEqual(list(native_runtime_files(root)), [root/'actor/engine.dll'])
 
     def test_cleanup_stops_only_the_owned_windows_process_tree(self):
         from tools.local_engine_bench import stop_process_tree

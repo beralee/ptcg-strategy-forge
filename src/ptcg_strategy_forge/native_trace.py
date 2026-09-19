@@ -90,6 +90,22 @@ def native_eligibility(decision, *, dirty=False):
     return "target_projection_not_verified"
 
 
+def _trace_frame_error(frame):
+    # Recorder-only compatibility: the deployed frame adds a public boolean.
+    # Keep the original for all hash checks; this does not extend policy inputs.
+    projected = copy.deepcopy(frame)
+    try:
+        for side in ('self', 'opponent'):
+            for zone in ('active', 'bench'):
+                for slot in projected['public_state'][side][zone]:
+                    if 'appeared_this_turn' in slot:
+                        if type(slot.pop('appeared_this_turn')) is not bool:
+                            return 'invalid_public_frame'
+    except (KeyError, TypeError, AttributeError):
+        return 'invalid_public_frame'
+    return _frame_error(projected)
+
+
 def _window(record):
     frame = copy.deepcopy(record["frame"])
     host = record["host"]
@@ -102,7 +118,7 @@ def _window(record):
         if fingerprint != expected:
             raise ValueError("native_trace_option_binding_invalid")
         fingerprints.append(fingerprint)
-    error = _frame_error(frame)
+    error = _trace_frame_error(frame)
     if error:
         raise ValueError("native_trace_" + error)
     observation = {"schema_version": frame["schema_version"], "sequence": frame["sequence"], "seat": frame["seat"],

@@ -19,6 +19,9 @@ PREFIXES = (
 # Explicitly reviewed files whose PtcgDAP locations differ from the standalone
 # Forge layout.  Refresh copies bytes only from these allow-listed sources.
 REFRESH_FILES = {
+    Path("scripts/ai/ptcgdap/semantic_model_profile.py"): Path("scripts/ai/ptcgdap/semantic_model_profile.py"),
+    Path("scripts/ai/ptcgdap/ptcgai_model_package.py"): Path("scripts/ai/ptcgdap/ptcgai_model_package.py"),
+    Path("contracts/ptcgdap/semantic_model_tensor_profile_v1.json"): Path("contracts/ptcgdap/semantic_model_tensor_profile_v1.json"),
 	Path("scripts/ai/ptcgdap/author_strategy_package.py"): Path(
 		"scripts/ai/ptcgdap/author_strategy_package.py"
 	),
@@ -212,7 +215,7 @@ def build() -> dict[str, object]:
             "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
             "captured_on": "2026-08-23",
             "scope": "author-strategy development, validation, simulation, and publishing",
-            "note": "Snapshot captured from the reviewed local PtcgDAP worktree; each distributed byte is pinned below.",
+            "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Each distributed byte is pinned below.",
         },
         "files": files,
     }

@@ -10,6 +10,23 @@ from scripts.ai.ptcgdap.cabt_tree_hash import jcs_canonical_json_bytes
 
 
 class NativeTraceTests(unittest.TestCase):
+    def test_recording_accepts_boolean_appearance_without_changing_policy_contract(self):
+        import copy
+        from tests.test_competitive_forge_v2 import _frame
+        from ptcg_strategy_forge.native_trace import _trace_frame_error
+        from scripts.ai.ptcgdap.competitive_policy_v2 import _frame_error
+        frame = _frame()
+        slot = frame['public_state']['self']['active'][0]
+        slot['appeared_this_turn'] = True
+        original = copy.deepcopy(frame)
+        self.assertIsNone(_trace_frame_error(frame))
+        self.assertEqual(original, frame)
+        self.assertIsNotNone(_frame_error(frame))
+        for key, value in [('appeared_this_turn', 1), ('unknown_slot_field', True), ('opponent_hand', [])]:
+            bad = copy.deepcopy(frame)
+            bad['public_state']['self']['active'][0][key] = value
+            self.assertIsNotNone(_trace_frame_error(bad))
+
     def test_import_is_immutable_and_reverified(self):
         from ptcg_strategy_forge.native_trace import NativeTraceStore
         with tempfile.TemporaryDirectory() as temp:

@@ -4,7 +4,12 @@
 
 ## 先选择你的目标
 
+本机学习实验启动或恢复前，先核对 [电脑稳定性与运行保护](30-TRAINING-MACHINE-STABILITY.md)：磁盘与内存门槛、持续监督、完整写盘和失败恢复。
+
+
 账号登录、登记公钥和可恢复提交请读 [控制面与 Forge CLI](23-CONTROL-PLANE-CLI.md)。
+
+规则与学习模型结合的新策略研发统一使用 [`$ptcg-learned-strategy-pipeline`](../skills/ptcg-learned-strategy-pipeline/SKILL.md)：冻结基线、公开特征、真实数据资格、BC、实战纠错、有条件的群体 PPO 和配对验收。该 skill 是研发流程入口；实际模型导出和工作区验收继续使用下表的既有工具。旧策略 skill 不参与这条流程。
 
 | 我要做什么 | 第一条命令 | 接着读 |
 |---|---|---|
@@ -115,6 +120,8 @@ Forge 把以下声明分开：
 `workspace check/build` 只自动关闭第一项以及包/模型合同门。当前 Windows 有独立 Godot 证据；macOS、Android 和 production 状态见[明确限制](LIMITATIONS.md)。
 
 ## 继续深入
+
+学习策略的真实数据资格、公开语义 profile、BC 训练、Godot 原生调用与配对验收见 [本地公开语义神经网络策略](28-LEARNED-SEMANTIC-ACTOR.md)。研发入口为独立 `ptcg-learned-strategy-pipeline` skill。
 
 建议按遇到的问题渐进阅读：
 

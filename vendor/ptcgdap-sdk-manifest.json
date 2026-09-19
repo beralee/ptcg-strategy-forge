@@ -7,7 +7,7 @@
     "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
     "captured_on": "2026-08-23",
     "scope": "author-strategy development, validation, simulation, and publishing",
-    "note": "Snapshot captured from the reviewed local PtcgDAP worktree; each distributed byte is pinned below."
+    "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Each distributed byte is pinned below."
   },
   "files": [
     {
@@ -82,8 +82,8 @@
     },
     {
       "path": "scripts/ai/ptcgdap/competitive_policy_v2.py",
-      "bytes": 103309,
-      "sha256": "935164D852A85B9FD926A513485A06E14D1CD3AA780C0173868A6C03B6992D8E"
+      "bytes": 103675,
+      "sha256": "6BB22D3B20BCAFE0140587B7DABC22CDCDFE46C05DCD05DD7301D46EAAF75424"
     },
     {
       "path": "scripts/ai/ptcgdap/competitive_strategy_evaluator.py",
@@ -197,8 +197,8 @@
     },
     {
       "path": "scripts/ai/ptcgdap/ptcgai_model_package.py",
-      "bytes": 11426,
-      "sha256": "2C56514143343B23000B9AF932BE0FA566121816A9054193D99E462997206B5B"
+      "bytes": 12123,
+      "sha256": "2E3266084C3F31523C23BE1E3F83A78ACD8B734BEB88A9C7E3F20C3B97C666F0"
     },
     {
       "path": "scripts/ai/ptcgdap/ptcgdap_session.py",
@@ -239,6 +239,11 @@
       "path": "scripts/ai/ptcgdap/restricted_base_graph_executor.py",
       "bytes": 17101,
       "sha256": "F0A21B9230C5413BC35D7E3B57EAE832915A17993CC1B8EB1B7E57BC3E43F59E"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/semantic_model_profile.py",
+      "bytes": 9873,
+      "sha256": "20B2F34B1AA683661FA60121953832F47B3906106F6E6626EFC1C3A4AA1096EB"
     },
     {
       "path": "scripts/ai/ptcgdap/shadow_engine_command_applier.py",
@@ -1104,6 +1109,11 @@
       "path": "contracts/ptcgdap/restricted_base_graph_executor_profile.json",
       "bytes": 1903,
       "sha256": "2B615249C21E26F026EB7D7EC9A7AEF56F59390BF2C01A6F7D1169894778FFB4"
+    },
+    {
+      "path": "contracts/ptcgdap/semantic_model_tensor_profile_v1.json",
+      "bytes": 825,
+      "sha256": "221D99190C608BD9A42B5CC8CD353DA31F226DD85C394F4ABEF766D9C0DF94B2"
     },
     {
       "path": "contracts/ptcgdap/shadow_engine_command_applier.schema.json",

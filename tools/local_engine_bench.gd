@@ -9,6 +9,7 @@ const Factory = preload("res://scripts/ui/battle/ai/BattleDecisionOwnerFactory.g
 const Bridge = preload("res://scripts/ai/HeadlessMatchBridge.gd")
 const NpcPort = preload("res://scripts/ai/ptcgdap/host/godot/PlatformNpcRuleDecisionPort.gd")
 const NpcOwner = preload("res://scripts/ai/ptcgdap/host/godot/PtcgDAPAuthorDevelopmentBattleOwner.gd")
+const ResearchIO = preload("res://research_io.gd")
 var config: Dictionary
 
 func _ready() -> void:
@@ -20,7 +21,10 @@ func run() -> void:
 	for spec: Dictionary in config["games"]:
 		var result := run_game(spec)
 		rows.append(result)
-		write_json(config["output"].path_join("engine-summary.json"), {"games": rows})
+		if not ResearchIO.write_json(config["output"].path_join("engine-summary.json"), {"games": rows}):
+			push_error("bench_summary_write_failed")
+			get_tree().quit(3)
+			return
 		print("BENCH_GAME=" + JSON.stringify(result))
 		if not result.get("failure_code", "").is_empty():
 			get_tree().quit(2)
@@ -50,6 +54,8 @@ func run_game(spec: Dictionary) -> Dictionary:
 	var candidate: Dictionary = config["candidate"]
 	var opponent: Dictionary = spec["opponent"]
 	var row := {"seed": spec["seed"], "candidate_seat": spec["seat"], "candidate_sha256": candidate["sha256"], "opponent_sha256": opponent["sha256"], "opponent_id": opponent["id"], "failure_code": "", "terminal": false}
+	row["candidate_requires_model"] = candidate.get("requires_model", false)
+	row["opponent_requires_model"] = opponent.get("requires_model", false)
 	var c := load_package(candidate)
 	var o := load_package(opponent) if opponent.has("path") else {"ok": true, "deck": get_tree().root.get_node("CardDatabase").call("get_ai_deck", int(opponent["npc"]))}
 	if not c.get("ok", false) or not o.get("ok", false):
@@ -82,6 +88,15 @@ func run_game(spec: Dictionary) -> Dictionary:
 	bridge.bootstrap_pending_setup()
 	var trace_name := match_id + ".jsonl"
 	var trace := FileAccess.open(config["output"].path_join(trace_name), FileAccess.WRITE)
+	if trace == null:
+		row["failure_code"] = "bench_trace_open_failed"
+		co.close_match()
+		oo.close_match()
+		bridge.bind(null)
+		bridge.free()
+		seed_owner.clear_forced_shuffle_seed()
+		gsm.prepare_for_disposal()
+		return row
 	var chain := "0".repeat(64)
 	var count := 0
 	var steps := 0
@@ -90,13 +105,22 @@ func run_game(spec: Dictionary) -> Dictionary:
 		if bridge.has_pending_prompt() and int(bridge.get_pending_prompt_owner()) in [0, 1]:
 			acting = int(bridge.get_pending_prompt_owner())
 		var owner: Variant = co if acting == seat else oo
+		var before: Dictionary = owner.audit_snapshot()
 		var progressed: bool = owner.run_single_step(bridge, gsm)
+		var after: Dictionary = owner.audit_snapshot()
 		var records: Array = owner.drain_developer_decision_records()
 		for record: Dictionary in records:
 			count += 1
-			var payload := JSON.stringify({"step": steps, "seat": acting, "decision": record})
+			var payload := JSON.stringify({"step": steps, "seat": acting, "decision": record,
+				"step_decision_count": records.size(),
+				"engine_commit_delta": int(after.get("engine_commits", 0)) - int(before.get("engine_commits", 0)),
+				"engine_rejection_delta": int(after.get("engine_rejections", 0)) - int(before.get("engine_rejections", 0))})
 			chain = (chain + "\n" + payload).sha256_text().to_upper()
-			trace.store_line(JSON.stringify({"payload": payload, "chain_sha256": chain}))
+			if not ResearchIO.append_line(trace, JSON.stringify({"payload": payload, "chain_sha256": chain})):
+				row["failure_code"] = "bench_trace_write_failed"
+				break
+		if not row["failure_code"].is_empty():
+			break
 		if not progressed:
 			row["failure_code"] = "no_progress:" + bridge.get_pending_prompt_type()
 			break
@@ -134,15 +158,15 @@ func compact(audit: Dictionary) -> Dictionary:
 	var result := {}
 	for key: String in ["policy_calls", "policy_successes", "policy_errors", "invalid_outputs", "same_window_fallbacks", "classic_fallbacks", "engine_commits", "engine_rejections", "external_process_attempts", "developer_trace_dropped_records"]:
 		result[key] = int(audit.get(key, -1))
+	for key: String in ["model_decision_windows", "model_inference_successes", "model_fallbacks", "model_changed_selections"]:
+		result[key] = int(audit.get(key, 0))
+	result["model_diagnostic_counts"] = audit.get("model_diagnostic_counts", {}).duplicate(true)
+	result["model_elapsed_usec"] = audit.get("model_elapsed_usec", []).duplicate()
 	return result
-
-func write_json(path: String, value: Variant) -> void:
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	file.store_string(JSON.stringify(value, "\t") + "\n")
-	file.close()
 
 func sha(bytes: PackedByteArray) -> String:
 	var context := HashingContext.new()
 	context.start(HashingContext.HASH_SHA256)
-	context.update(bytes)
+	if not bytes.is_empty():
+		context.update(bytes)
 	return context.finish().hex_encode().to_upper()

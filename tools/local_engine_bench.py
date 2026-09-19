@@ -23,6 +23,8 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT)]
 from ptcg_strategy_forge.resources_gate import heavy_job, check_pressure
+from ptcg_strategy_forge.run_safety import (atomic_json, monitor_process, child_environment,
+    child_creation_flags, sample_job, validate_sample, append_telemetry)
 
 COUNTERS = ("policy_errors", "invalid_outputs", "same_window_fallbacks", "classic_fallbacks",
             "engine_rejections", "external_process_attempts", "developer_trace_dropped_records")
@@ -38,7 +40,7 @@ def read(path):
 
 
 def write(path, data):
-    Path(path).write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    atomic_json(path, data)
 
 
 def wilson(wins, n):
@@ -70,6 +72,21 @@ def audit_game(row, candidate_sha, opponent_sha):
         for key in COUNTERS:
             if type(a.get(key)) is not int or a[key] != 0:
                 errors.append(owner+":"+key)
+        if row.get(owner.replace('_audit', '_requires_model')):
+            if type(a.get('model_inference_successes')) is not int or a['model_inference_successes'] < 0:
+                errors.append(owner+':model_accounting')
+            if type(a.get('model_fallbacks')) is not int or a['model_fallbacks'] != 0:
+                errors.append(owner+':model_fallbacks')
+    return errors
+
+
+def audit_model_activity(games):
+    errors = []
+    for owner in ('candidate', 'opponent'):
+        required = [g for g in games if g.get(owner + '_requires_model')]
+        if required and not any(type(g.get(owner + '_audit', {}).get('model_inference_successes')) is int
+                                and g[owner + '_audit']['model_inference_successes'] > 0 for g in required):
+            errors.append(owner + ':model_never_called')
     return errors
 
 
@@ -77,7 +94,7 @@ def compare_runs(baseline, candidate):
     if baseline.get("runtime_sha256") != candidate.get("runtime_sha256"):
         raise ValueError("bench_runtime_mismatch")
     def keyed(report):
-        if report.get('clean') is not True or report.get('errors'):
+        if report.get('clean') is not True or report.get('errors') or audit_model_activity(report['games']):
             raise ValueError('bench_dirty_run')
         result={}
         archives={row['candidate_sha256'] for row in report['games']}
@@ -123,6 +140,24 @@ def compare_runs(baseline, candidate):
                 matchups=matchups,scope="local_Godot_paired_games_not_ladder_rank")
 
 
+def copy_model_runtime(game, runtime):
+    """Freeze the native extension loader and binaries, including ORT itself."""
+    game, runtime = Path(game), Path(runtime)
+    loader = game / '.godot/extension_list.cfg'
+    if loader.is_file():
+        (runtime / '.godot').mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(loader, runtime / '.godot/extension_list.cfg')
+    if (game / 'bin/ptcgai_ort').is_dir():
+        shutil.copytree(game / 'bin/ptcgai_ort', runtime / 'bin/ptcgai_ort')
+
+
+def copy_native_runtime(game, runtime):
+    """Native loaders and source receipts must not drift with another task."""
+    source=Path(game)/'native'
+    if source.is_dir():
+        shutil.copytree(source,Path(runtime)/'native',ignore=shutil.ignore_patterns('build','.git','__pycache__'))
+
+
 def prepare(game, runtime):
     game=Path(game).resolve(); runtime=Path(runtime).resolve()
     if runtime.exists():
@@ -131,12 +166,14 @@ def prepare(game, runtime):
     # Freeze all rule-bearing inputs. Only presentation assets remain shared.
     for name in ("scripts", "contracts", "data"):
         shutil.copytree(game/name,runtime/name,ignore=shutil.ignore_patterns("__pycache__"))
-    for name in ("assets","native","scenes","addons","web"):
+    copy_native_runtime(game,runtime)
+    for name in ("assets","scenes","addons","web"):
         if (game/name).exists():
             subprocess.run(["powershell.exe","-NoProfile","-NonInteractive","-Command",
                             f"New-Item -ItemType Junction -Path '{str(runtime/name).replace(chr(39),chr(39)*2)}' -Target '{str(game/name).replace(chr(39),chr(39)*2)}' | Out-Null"],check=True,
                            creationflags=subprocess.CREATE_NO_WINDOW)
     (runtime/".godot").mkdir()
+    copy_model_runtime(game, runtime)
     for name in ("global_script_class_cache.cfg","uid_cache.bin"):
         if (game/".godot"/name).exists():shutil.copy2(game/".godot"/name,runtime/".godot"/name)
     # No editor/import process is run; runtime may read the source project's imported art.
@@ -155,6 +192,7 @@ def prepare(game, runtime):
     project=project.replace('[application]','[application]\nconfig/name="ForgeLocalBench"\nconfig/use_custom_user_dir=true\nconfig/custom_user_dir="'+user_name+'"',1)
     (runtime/"project.godot").write_text(project,encoding="utf-8")
     shutil.copy2(ROOT/"tools/local_engine_bench.gd",runtime/"bench.gd")
+    shutil.copy2(ROOT/"tools/research_io.gd",runtime/"research_io.gd")
     (runtime/"bench.tscn").write_text('[gd_scene load_steps=2 format=3]\n[ext_resource type="Script" path="res://bench.gd" id="1"]\n[node name="LocalBench" type="Node"]\nscript = ExtResource("1")\n',encoding="utf-8")
     original=game/'development-gate-original.txt'
     if original.is_file():(runtime/GATE).write_bytes(original.read_bytes())
@@ -171,10 +209,10 @@ def package_spec(path, expected=None):
         m=json.loads(z.read("strategy_package.json"));d=json.loads(z.read("deck/deck_manifest.json"))
         sig=json.loads(z.read("signature.json"));a=json.loads(z.read("policy/adapter.json"))
     fixture=sig["key_id"]=="ptcgdap-as-wp1-test-fixture-ed25519-v1"
-    spec=dict(path=str(path),sha256=sha,id=m["package_id"]+"-"+m["package_version"],
+    spec=dict(path=str(path),sha256=sha,id=m["package_id"]+"-"+m["package_version"],requires_model=m['policy'].get('policy_mode')=='rules_with_model',
               mode="development_exact_fixture" if fixture else "control_distributed_player")
     gate=None
-    if fixture:
+    if fixture and a.get('schema_version')==2:
         gate=dict(package_id=m["package_id"],package_version=m["package_version"],archive_sha256=sha,
                   install_source="built_in",source_deck_id=d["source_deck_id"],unique_printing_count=d["unique_card_count"],
                   adapter_rule_count=len(a["rules"]),strategy_id=m["package_id"]+".local-bench",
@@ -182,16 +220,31 @@ def package_spec(path, expected=None):
     return spec,gate
 
 
+def native_runtime_files(root):
+    # Build caches are neither loaded code nor runtime resources. The frozen
+    # native/ORT binaries in bin/ are separately covered in full below.
+    for directory, children, files in os.walk(root):
+        children[:] = sorted(c for c in children if c not in {'build', '.git', '__pycache__'})
+        for name in sorted(files):
+            yield Path(directory)/name
+
+
 def runtime_hash(runtime, godot):
     entries={}
     for top in ("scripts","contracts"):
         for path in sorted((runtime/top).rglob("*")):
             rel=path.relative_to(runtime).as_posix()
-            if path.is_file() and rel != GATE and path.suffix in (".gd",".json",".py"):
+            if path.is_file() and rel != GATE and path.suffix in (".gd",".json",".py", ".gdextension"):
                 entries[rel]=digest(path.read_bytes())
     for rel in ("bench.gd","project.godot","development-gate-original.txt"):
         entries[rel]=digest((runtime/rel).read_bytes())
+    if (runtime/'research_io.gd').is_file():
+        entries['research_io.gd']=digest((runtime/'research_io.gd').read_bytes())
     entries["godot_executable"]=digest(Path(godot).read_bytes())
+    loader = runtime / '.godot/extension_list.cfg'
+    if loader.is_file(): entries['.godot/extension_list.cfg'] = digest(loader.read_bytes())
+    for path in sorted((runtime / 'bin/ptcgai_ort').rglob('*')):
+        if path.is_file(): entries[path.relative_to(runtime).as_posix()] = digest(path.read_bytes())
     if (runtime/'sealed-inputs.json').is_file():
         seal=read(runtime/'sealed-inputs.json')
         binary=Path(godot)
@@ -200,7 +253,8 @@ def runtime_hash(runtime, godot):
         entries['godot_engine_binary']=digest(binary.read_bytes())
         entries['bench.tscn']=digest((runtime/'bench.tscn').read_bytes())
         for top in ('data','native'):
-            for path in sorted((runtime/top).rglob('*')):
+            paths = native_runtime_files(runtime/top) if top == 'native' else sorted((runtime/top).rglob('*'))
+            for path in paths:
                 if path.is_file():entries[path.relative_to(runtime).as_posix()]=digest(path.read_bytes())
         user=Path(seal['user_path'])
         for top in ('cards','decks','ai_decks'):
@@ -315,23 +369,46 @@ def verify_trace(path,row,validator=None):
             and seat_counts[1-seat]==row["opponent_audit"]["policy_calls"])
 
 
-def run(runtime,godot,plan_path,output):
-    runtime=Path(runtime).resolve();output=Path(output).resolve();godot=Path(godot).resolve()
-    if output.exists():raise ValueError("bench_output_exists")
-    plan=read(plan_path);candidate,gate=package_spec(plan["candidate"],plan.get("candidate_sha256"))
+def run(runtime,godot,plan_path,output,*,wait_ms=0):
+    target=Path(output)
+    existed=target.exists()
+    try:
+        return _run(runtime,godot,plan_path,output,wait_ms=wait_ms)
+    except BaseException as error:
+        if not existed and target.is_dir():
+            code=('bench_report_invalid' if isinstance(error,json.JSONDecodeError) else
+                  str(error) if isinstance(error,ValueError) else 'bench_interrupted_or_failed')
+            try:write(target/'failed-run.json',dict(clean=False,error_code=code,exception_type=type(error).__name__))
+            except (OSError,ValueError):pass
+        raise
+
+
+def build_match_schedule(runtime,plan):
+    candidate,gate=package_spec(plan['candidate'],plan.get('candidate_sha256'))
     # Only a private runtime copy gets an exact hash fixture declaration; product gates remain intact.
     original=(runtime/"development-gate-original.txt").read_text(encoding="utf-8")
-    if gate:original=original.replace("const CANDIDATES := [","const CANDIDATES := [\n"+json.dumps(gate)+",",1)
+    gates={gate['archive_sha256']:gate} if gate else {}
     games=[]
     for entry in plan["opponents"]:
         if "path" in entry:
-            opponent,_=package_spec(entry["path"],entry["sha256"])
+            opponent,opponent_gate=package_spec(entry["path"],entry["sha256"])
+            if opponent_gate:gates[opponent_gate['archive_sha256']]=opponent_gate
         else:
             path=runtime/"scripts/ai/v18_cpg/profiles/generated_semantic_manifests"/(str(entry["npc"])+".json")
             opponent=dict(npc=str(entry["npc"]),id="builtin-v18-"+str(entry["npc"]),sha256=digest(path.read_bytes()))
         for seed in plan["seeds"]:
             for seat in (0,1):games.append(dict(seed=seed,seat=seat,opponent=opponent))
-    with heavy_job(workers=1) as resource:
+    if gates:
+        if original.count('const CANDIDATES := [')!=1:raise ValueError('bench_development_gate_shape')
+        original=original.replace('const CANDIDATES := [','const CANDIDATES := [\n'+',\n'.join(json.dumps(g) for _,g in sorted(gates.items()))+',',1)
+    return candidate,games,original
+
+
+def _run(runtime,godot,plan_path,output,*,wait_ms=0):
+    runtime=Path(runtime).resolve();output=Path(output).resolve();godot=Path(godot).resolve()
+    if output.exists():raise ValueError("bench_output_exists")
+    plan=read(plan_path);candidate,games,original=build_match_schedule(runtime,plan)
+    with heavy_job(workers=1, output_path=output, wait_ms=wait_ms) as resource:
         (runtime/GATE).write_text(original,encoding="utf-8")
         output.mkdir(parents=True)
         identity,entries=runtime_hash(runtime,godot)
@@ -339,25 +416,24 @@ def run(runtime,godot,plan_path,output):
         write(output/"config.json",config);write(output/"runtime-files.json",entries)
         write(output/"resource-admission.json",resource)
         with (output/"godot.log").open("wb") as log:
-            process=subprocess.Popen([str(godot),"--headless","--path",str(runtime),"res://bench.tscn","--",str(output/"config.json")],stdout=log,stderr=subprocess.STDOUT,creationflags=subprocess.CREATE_NO_WINDOW)
-            deadline=time.monotonic()+plan.get('max_seconds',max(300,len(games)*180))
-            try:
-                while True:
-                    try:code=process.wait(timeout=30);break
-                    except subprocess.TimeoutExpired:
-                        check_pressure()
-                        if time.monotonic()>deadline:raise ValueError('bench_wall_time_cap')
-            except BaseException:
-                stop_process_tree(process);raise
+            process=subprocess.Popen([str(godot),"--headless","--path",str(runtime),"res://bench.tscn","--",str(output/"config.json")],stdout=log,stderr=subprocess.STDOUT,
+                                     creationflags=child_creation_flags(),env=child_environment())
+            code=monitor_process(process,output,storage_targets=resource['storage_targets'],
+                                 max_seconds=plan.get('max_seconds',min(5400,max(300,len(games)*180))),
+                                 output_limit_bytes=plan.get('max_output_bytes',2*1024**3),stop=stop_process_tree)
         if not (output/"engine-summary.json").exists():raise ValueError("bench_engine_no_report")
         write(output/'execution-receipt.json',dict(engine_exit_code=code,runtime_sha256=identity,planned_games=len(games),candidate_sha256=candidate['sha256']))
         report=read(output/"engine-summary.json");errors=[]
         if len(report["games"])!=len(games):errors.append("bench_game_count")
         for row,spec in zip(report["games"],games):
+            sample=sample_job(root_pid=os.getpid(),output=output,storage_targets=resource['storage_targets'])
+            append_telemetry(output/'resource-telemetry.jsonl',dict(phase='trace_verification',**sample))
+            validate_sample(sample,output_limit_bytes=plan.get('max_output_bytes',2*1024**3))
             row["trace_verified"]=verify_trace(output/row["trace_path"],row,engine_frame_validator(runtime)) if "trace_path" in row else False
             row["errors"]=audit_game(row,candidate["sha256"],spec["opponent"]["sha256"])
             if (row["seed"],row["candidate_seat"])!=(spec["seed"],spec["seat"]):row["errors"].append("bench_schedule_mismatch")
             errors.extend(row["errors"])
+        errors.extend(audit_model_activity(report['games']))
         if runtime_hash(runtime,godot)[0]!=identity:errors.append("bench_runtime_changed")
         report.update(runtime_sha256=identity,admission_sha256=digest((runtime/GATE).read_bytes()),
                       errors=errors,clean=not errors and code==0,scope="local_Godot_engine_only",production_ready=False)

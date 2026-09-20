@@ -1,5 +1,9 @@
 # PTCG Strategy Forge TODO 闭环
 
+2026-09-20：新增可直接交给 Codex、WorkBuddy 的完整任务书，README 与开发者入口优先链接环境→开发→验收→签名→提交→资格闭环。
+
+2026-09-20：自定义牌组直接按包内清单与 SDK 卡源校验，不再要求预装同名内置牌组。保留逐卡 raw/canonical 摘要、效果身份、60 张、基本宝可梦与数量限制；新卡自定义牌组加入回归。
+
 2026-09-20：完整卡库同步为 1,011 张，1,010 张声明可用；全部卡源随 SDK 分发，新增专用刷新与缺失/摘要/UID/效果身份检查。保留唯一明确不支持的动态效果。服务器部署和单个策略资格独立验收。
 
 2026-09-19 SDK 更新：已实现本人决策录像下载与严格导入、公开语义模型 profile、Base 授权候选域、真实教师数据资格、BC/ORT 工具、受监督运行与资源排队保护。工作流程见 [录像下载](docs/27-ONLINE-DECISION-TRACES.md)、[语义模型](docs/28-LEARNED-SEMANTIC-ACTOR.md)、[运行稳定性](docs/30-TRAINING-MACHINE-STABILITY.md) 和 [学习型研发入口](skills/ptcg-learned-strategy-pipeline/SKILL.md)。

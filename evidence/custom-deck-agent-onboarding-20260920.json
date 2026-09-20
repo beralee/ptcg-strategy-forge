@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "scope": "developer-local custom-deck mapping and agent onboarding",
+  "reviewed_public_source": "PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c AuthorStrategyExactDeckGate.map_windows_local_rows; strict raw hash retained",
+  "red": "custom source_deck_id absent from SDK failed with package_deck_unmapped",
+  "green": {
+    "focused_tests": 4,
+    "sdk_tests": 7,
+    "ucis_tests": 6,
+    "forge_tests": 44,
+    "doctor": "passed",
+    "custom_new_card_workspace_check": "passed",
+    "custom_new_card_scenarios": 10,
+    "sdk_deck_install_required": false
+  },
+  "negative_gates": [
+    "raw hash",
+    "canonical hash",
+    "effect identity",
+    "four copy limit",
+    "60-card total"
+  ],
+  "claims": {
+    "engine_witness": false,
+    "production_qualification": false
+  },
+  "rollback_commit": "9b478438c038aae21b9a134e9ad97950618acadf"
+}

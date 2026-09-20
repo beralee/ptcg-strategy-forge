@@ -17,7 +17,7 @@
 - `publish` 只提交 release，不自动批准或晋升。
 - UCIS 目录资格证明每个声明可用的私有卡牌 effect 使用同一 CABT-shaped current-window 操作合同；它不证明全部卡牌规则结果、官方完整卡池或官方 CABT engine parity。
 - 九类双引擎 whole-battle operation 回执只证明当前窗口入参、ordered semantic options 和双方接受的 indexes；不声明提交后的 state/log、伤害、KO、随机或终局一致。
-- 当前 730 个 effect 中有 1 个动态未登记能力显式 unsupported，不进入 729 个可用 effect；Search capability 仍为 `none`。
+- 当前 888 个 effect 中有 1 个动态未登记能力显式 unsupported，不进入 887 个可用 effect；Search capability 仍为 `none`。
 - Python 是开发工具依赖，不是 PtcgDAP 玩家设备运行时依赖。
 - `StrategyWorkspace.status=ready` 只证明工作区结构与可选 Actor conformance 可进入开发，不等于 `check`、Godot 实战、设备门或 production 通过；Python SDK 也不增加包的运行 authority。
 - OS 级断网证据不由本项目声明；本地开发流程本身除发布外不发起网络请求。

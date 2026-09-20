@@ -1,5 +1,9 @@
 # 开发者中心
 
+## 让 Codex、WorkBuddy 带你完成第一次提交
+
+把[Agent 任务书](31-AGENT-START.md)交给编程助手，并告诉它你的牌组或策略想法。它会检查环境、开发和测试策略、完成本机签名、提交并跟进资格结果；你只需完成必要的账号验证和本机凭据输入。已有工作区也可以从当前进度继续。
+
 这页是 PTCG Strategy Forge 的任务导航。日常开发围绕一个 `StrategyWorkspace` 展开；`.ptcgai` 包格式、UCIS、Base Graph 和 ORT 是工作区背后的合同，不需要先全部学会。已有 API Key 后，`account login` 与 `workspace create --account` 自动绑定完整开发者 ID，包括 `developer-` 前缀；[无网页流程](26-CLI-ONLY-DEVELOPMENT.md) 覆盖后续开发和发布。
 
 ## 先选择你的目标

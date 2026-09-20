@@ -42,7 +42,7 @@ current-window 实现分两层且共用同一 registry hash：
 
 运行 helper 内嵌 `UCIS_GENERATION / CONTRACT_GENERATION / REGISTRY_SHA256`，回归测试要求它与 vendored registry 完全相等。它只保存当前窗口不可变 view；`SemanticOptionKey` 可表达跨 callback 的公开目标，但每次必须在 fresh `SelectionWindow.parse()` 结果上 `rebind()`。`audit_fingerprint` 只用于本窗口审计，不能成为跨窗口 authority。
 
-目录资格将 797 张卡/730 个 effect 完整分区为 compiled、automatic 或 explicit unsupported，并要求未登记、silent fallback、author-visible legacy 和 dual authority 全为零。Forge 同时固定 catalog、runtime attestation、coverage/legacy ledger、性能回执和代表性 whole-battle operation input/index 回执；任一 hash 漂移会让 `doctor`/`check` 在策略执行前失败。
+目录资格将 1,011 张卡/888 个 effect 完整分区为 compiled、automatic 或 explicit unsupported，并要求未登记、silent fallback、author-visible legacy 和 dual authority 全为零。Forge 同时固定 catalog、runtime attestation、coverage/legacy ledger、性能回执和代表性 whole-battle operation input/index 回执；任一 hash 漂移会让 `doctor`/`check` 在策略执行前失败。
 
 `check` 只编排已有权威入口：构建仍由固定 package builder 拥有，严格校验仍走 `PtcgDAPAuthorMatchHost.create`，场景仍走公开 firewall/current-window/Base Graph 链路。Forge 不实现第二套策略解释器。
 

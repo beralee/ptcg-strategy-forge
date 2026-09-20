@@ -62,6 +62,12 @@ print(card["usable"], card["interaction_status"], card["capability_ids"])
 
 因此开发新牌组时要依次确认：清单中的本地 UID 可用、精确 60 张与 printing 来源正确、目标策略能在当前 IR 表达、场景通过，最后再走 Godot 与发布资格门。
 
+## 自定义牌组
+
+自定义牌组只保存在自己的工作区，不需要向 SDK 的 `data/bundled_user/decks` 添加文件，也不要修改 SDK 来源锁。Agent 根据清单中的精确 UID 组出 60 张牌，从 SDK 中对应的卡源生成 `package/deck/deck.csv` 和 `deck_manifest.json`，同步 `policy/config.json` 的 `source_deck_id` 与牌组清单摘要，再运行 `workspace check`。
+
+Host 逐张核对 raw/canonical SHA-256、UID、效果、类型和数量，要求至少一张基本宝可梦；普通卡最多四张，基本能量可超过四张。`source_deck_id` 及来源摘要用于记录牌组出处，不要求同名模板预装在 SDK 中。修改牌表后还要调整策略蓝图、规则和场景；原模板的场景通过不等于新牌组已有实战强度。
+
 ## 更新规则
 
 清单不能手工编辑。卡表/UCIS 合同升级后运行：

@@ -7,7 +7,7 @@
     "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
     "captured_on": "2026-08-23",
     "scope": "author-strategy development, validation, simulation, and publishing",
-    "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Card catalog refresh on 2026-09-20: all 1011 qualified public card sources and matching UCIS metadata from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c plus the reviewed EffectRegistry resource-identity fix and CSV6C_032 registration. The policy interpreter remains at this SDK baseline. Each distributed byte is pinned below."
+    "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Card catalog refresh on 2026-09-20: all 1011 qualified public card sources and matching UCIS metadata from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c plus the reviewed EffectRegistry resource-identity fix and CSV6C_032 registration. Custom deck mapping uses the reviewed public map_windows_local_rows method from the same source, retaining strict per-card raw hashes and removing the SDK-local deck-template dependency. The policy interpreter remains at this SDK baseline. Each distributed byte is pinned below."
   },
   "files": [
     {
@@ -22,8 +22,8 @@
     },
     {
       "path": "scripts/ai/ptcgdap/author_strategy_match_host.py",
-      "bytes": 39457,
-      "sha256": "860A8340BE49E45AF590302292C9A403D0FAC93FA994CD57D61FC7DA838486E4"
+      "bytes": 37957,
+      "sha256": "A40FAD8361384EE6D69C47E65F3E30F652287C4730606542AEA7415D485B8CAA"
     },
     {
       "path": "scripts/ai/ptcgdap/author_strategy_package.py",

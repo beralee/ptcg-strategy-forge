@@ -311,35 +311,13 @@ class AuthorStrategyExactDeckGate:
             or type(manifest.get("cards")) is not list
         ):
             raise AuthorStrategyMatchError("package_deck_unmapped")
-        source_path = repository_root / "data/bundled_user/decks" / f"{manifest.get('source_deck_id')}.json"
-        try:
-            source_bytes = source_path.read_bytes()
-            source_deck = load_json_strict(source_path)
-        except (OSError, UnicodeDecodeError, ValueError) as exc:
-            raise AuthorStrategyMatchError("package_deck_unmapped") from exc
-        if (
-            _sha(source_bytes) != manifest.get("source_deck_raw_sha256")
-            or _sha(_json_bytes(source_deck)) != manifest.get("source_deck_canonical_sha256")
-            or source_deck.get("id") != manifest.get("source_deck_id")
-            or source_deck.get("total_cards") != 60
-            or type(source_deck.get("cards")) is not list
-        ):
-            raise AuthorStrategyMatchError("package_deck_unmapped")
-        source_entries: dict[str, dict[str, object]] = {}
-        for entry in source_deck["cards"]:
-            if type(entry) is not dict:
-                raise AuthorStrategyMatchError("package_deck_unmapped")
-            uid = f"{entry.get('set_code')}_{entry.get('card_index')}"
-            if uid in source_entries:
-                raise AuthorStrategyMatchError("package_deck_unmapped")
-            source_entries[uid] = entry
         cards = manifest["cards"]
         expected_rows = [
             {"local_card_uid": entry.get("local_card_uid"), "count": entry.get("count")}
             for entry in cards
             if type(entry) is dict
         ]
-        if rows != expected_rows or len(cards) != manifest.get("unique_card_count") or len(source_entries) != len(cards):
+        if rows != expected_rows or len(cards) != manifest.get("unique_card_count"):
             raise AuthorStrategyMatchError("package_deck_unmapped")
         mapped: list[dict[str, object]] = []
         total = 0
@@ -349,11 +327,8 @@ class AuthorStrategyExactDeckGate:
             if type(uid) is not str or type(count) is not int or type(entry) is not dict:
                 raise AuthorStrategyMatchError("package_deck_unmapped")
             set_code, card_index = uid.split("_", 1)
-            source_entry = source_entries.get(uid)
             if (
-                type(source_entry) is not dict
-                or source_entry.get("count") != count
-                or entry.get("set_code") != set_code
+                entry.get("set_code") != set_code
                 or entry.get("card_index") != card_index
                 or entry.get("count") != count
             ):
@@ -375,7 +350,6 @@ class AuthorStrategyExactDeckGate:
                 or card_type != entry.get("card_type")
                 or stage != entry.get("stage")
                 or effect_id != entry.get("effect_id")
-                or source_entry.get("effect_id") != effect_id
                 or (count > 4 and card_type != "Basic Energy")
             ):
                 raise AuthorStrategyMatchError("package_deck_unmapped")

@@ -39,7 +39,7 @@ class ForgeUcisSdkTests(unittest.TestCase):
         catalog = self.sdk.capability_catalog()
         self.assertEqual(catalog["ucis_generation"], 1)
         self.assertEqual(len(catalog["primitives"]), 16)
-        self.assertEqual(catalog["closure"]["total_cards"], 797)
+        self.assertEqual(catalog["closure"]["total_cards"], len(list((ROOT / "data/bundled_user/cards").glob("*.json"))))
         for key in (
             "unregistered",
             "legacy_author_visible",
@@ -59,7 +59,8 @@ class ForgeUcisSdkTests(unittest.TestCase):
         catalog = ucis_catalog_report()
         self.assertEqual("passed", catalog["status"])
         self.assertEqual(16, catalog["primitive_count"])
-        self.assertEqual(729, catalog["usable_effects"])
+        closure = self.sdk.capability_catalog()["closure"]
+        self.assertEqual(closure["compiled"] + closure["automatic"], catalog["usable_effects"])
         self.assertEqual(1, catalog["unsupported_effects"])
 
         inspection = inspect_ucis_scenario(
@@ -116,7 +117,8 @@ class ForgeUcisSdkTests(unittest.TestCase):
             )
         )
         self.assertEqual(qualification["qualification_status"], "passed")
-        self.assertEqual(qualification["scope"]["declared_usable"], 729)
+        closure = self.sdk.capability_catalog()["closure"]
+        self.assertEqual(qualification["scope"]["declared_usable"], closure["compiled"] + closure["automatic"])
         self.assertEqual(qualification["scope"]["explicit_unsupported"], 1)
         self.assertIn(
             "not_post_selection_state_damage_ko_rng_or_terminal_a3",

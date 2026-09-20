@@ -1,5 +1,7 @@
 # PTCG Strategy Forge TODO 闭环
 
+2026-09-20：完整卡库同步为 1,011 张，1,010 张声明可用；全部卡源随 SDK 分发，新增专用刷新与缺失/摘要/UID/效果身份检查。保留唯一明确不支持的动态效果。服务器部署和单个策略资格独立验收。
+
 2026-09-19 SDK 更新：已实现本人决策录像下载与严格导入、公开语义模型 profile、Base 授权候选域、真实教师数据资格、BC/ORT 工具、受监督运行与资源排队保护。工作流程见 [录像下载](docs/27-ONLINE-DECISION-TRACES.md)、[语义模型](docs/28-LEARNED-SEMANTIC-ACTOR.md)、[运行稳定性](docs/30-TRAINING-MACHINE-STABILITY.md) 和 [学习型研发入口](skills/ptcg-learned-strategy-pipeline/SKILL.md)。
 
 本次仅提交通用 SDK 与回归测试，不发布策略、训练数据、模型权重或密钥。强度提升、PPO、完整 CABT 对齐及生产验收仍需要独立证据，不能由 SDK 提交宣称完成。

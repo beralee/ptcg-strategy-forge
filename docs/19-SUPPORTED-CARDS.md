@@ -6,7 +6,7 @@ Forge 在开发者交付中固定一份机器可读清单：
 - 新建工作区：`SUPPORTED-CARDS.json`，与仓库文件 exact bytes 相同；
 - 静态开发者页面：提供同一快照的下载入口。
 
-该文件由 `contracts/ptcgdap/ucis_card_catalog_v1.json` 和已通过的 `ucis_catalog_qualification_v1.json` 机械生成。当前有 797 个 `godot_local_card_uid_v1` 条目：796 个 `usable=true`，1 个明确 `unsupported`。运行以下命令可验证文件没有落后于锁定合同：
+该文件由 `contracts/ptcgdap/ucis_card_catalog_v1.json` 和已通过的 `ucis_catalog_qualification_v1.json` 机械生成。当前有 1,011 个 `godot_local_card_uid_v1` 条目：1,010 个 `usable=true`，1 个明确 `unsupported`。全部卡源随 SDK 提供；生成器和 doctor 检查文件存在、精确字节、UID 和效果身份。运行以下命令可验证文件没有落后于锁定合同：
 
 ```powershell
 .\.venv\Scripts\python.exe tools\build_developer_supported_cards.py --check
@@ -72,3 +72,5 @@ print(card["usable"], card["interaction_status"], card["capability_ids"])
 ```
 
 生成器固定源文件 raw SHA-256、资格 evidence、条目顺序和状态计数；`doctor` 会在创建工作区前拒绝缺失或过期的交付文件。
+
+维护者使用 `python tools/refresh_card_catalog.py --source <已验收的公共游戏目录>` 同步。刷新只复制公开卡源与 UCIS 证据，先检查游戏资格，再重建清单和 SDK 来源锁。包含两个周年系列与雪童子 CSV6C_032；服务器运行仍须核对其独立发布身份。

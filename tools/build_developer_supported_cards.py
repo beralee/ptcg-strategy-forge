@@ -27,6 +27,25 @@ def _raw_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
 
+def validate_card_sources(root: Path, catalog: dict[str, Any]) -> None:
+    """A published UID must also be constructible by an offline developer."""
+    for row in catalog["cards"]:
+        relative = row.get("source_path")
+        parts = relative.split("/") if isinstance(relative, str) else []
+        if (len(parts) != 4 or parts[:3] != ["data", "bundled_user", "cards"]
+                or not parts[3].endswith(".json") or "\\" in parts[3] or ":" in parts[3]):
+            raise ValueError("supported_cards_source_path_invalid")
+        path = root / relative
+        if path.is_symlink() or not path.is_file():
+            raise ValueError(f"supported_cards_source_missing:{relative}")
+        if _raw_sha256(path) != row.get("source_sha256"):
+            raise ValueError(f"supported_cards_source_hash_mismatch:{relative}")
+        card = json.loads(path.read_text(encoding="utf-8-sig"))
+        if (f"{card.get('set_code')}_{card.get('card_index')}" != row.get("card_uid")
+                or card.get("effect_id") != row.get("effect_id")):
+            raise ValueError(f"supported_cards_source_identity_mismatch:{relative}")
+
+
 def build_document() -> dict[str, Any]:
     catalog = _read_json(CATALOG_PATH)
     qualification = _read_json(QUALIFICATION_PATH)
@@ -38,6 +57,7 @@ def build_document() -> dict[str, Any]:
     raw_cards = catalog.get("cards")
     if not isinstance(raw_cards, list):
         raise ValueError("supported_cards_catalog_invalid")
+    validate_card_sources(ROOT, catalog)
     cards: list[dict[str, Any]] = []
     seen: set[str] = set()
     status_counts: Counter[str] = Counter()

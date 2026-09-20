@@ -6,12 +6,12 @@
   "qualification_status": "passed",
   "claim": "ptcgdap_card_interactions_use_ucis_for_declared_usable_catalog_v1",
   "counts": {
-    "total_cards": 797,
-    "usable_cards": 796,
+    "total_cards": 1011,
+    "usable_cards": 1010,
     "explicit_unsupported_cards": 1,
     "by_interaction_status": {
-      "automatic": 510,
-      "compiled": 286,
+      "automatic": 695,
+      "compiled": 315,
       "unsupported": 1
     }
   },
@@ -22,10 +22,10 @@
   },
   "sources": {
     "catalog_path": "contracts/ptcgdap/ucis_card_catalog_v1.json",
-    "catalog_raw_sha256": "7D463A2E3F49BB37F51C6D9DB0A1E93DF668FB52E7FE1B1C5B9573913D457EBA",
+    "catalog_raw_sha256": "629F304693F6B5AED21E67C70A1DC1B7FFD69B5859298DFAA05964E88E012E4C",
     "qualification_path": "contracts/ptcgdap/ucis_catalog_qualification_v1.json",
-    "qualification_raw_sha256": "A01D3C5C2882D3D465BBB55F06C711BF3BAA55EE01FD43C16931E76C1F6AF59D",
-    "qualification_evidence_sha256": "CA6A1FAA4A197FB020F977B627037BDE465E6B5ECE93BE796A399DFA26574785"
+    "qualification_raw_sha256": "A3B2EB6FF69A39AF6EB8F8122167004C573BFD7608B4B7DFB6FDEC4D066946E6",
+    "qualification_evidence_sha256": "30C27B80B6BFE3A1385ECF4AFA7E1EBA0A63F8EE469AF98EF4EA1E3611B7DD48"
   },
   "limitations": [
     "Local card UID identity only; this is not official CABT Card ID equality.",
@@ -200,6 +200,1764 @@
       ],
       "source_path": "data/bundled_user/cards/151C_151.json",
       "source_sha256": "1CD90C4CF89CFE10269520501679C920D23797578C097EDD55374A09DC7BE705"
+    },
+    {
+      "card_uid": "30THC_057",
+      "effect_id": "9256615fd387482e220b7e2630343eb7",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ActivateOrPlay",
+        "AttackAndTarget",
+        "ChooseAttack",
+        "RetreatOrSwitch"
+      ],
+      "source_path": "data/bundled_user/cards/30THC_057.json",
+      "source_sha256": "B57C6626465B50D94E86AAF3CEC7509031E47FD358E2EE893283ED4584F5ABB0"
+    },
+    {
+      "card_uid": "30thC_001",
+      "effect_id": "d1f3b4174792a4a51d66a96108302713",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_001.json",
+      "source_sha256": "A54D87BB4BE0809C7FD9FF43762146CF3D19ACBF774AD49E2E5B2623CAE83059"
+    },
+    {
+      "card_uid": "30thC_002",
+      "effect_id": "c77d3be6b3f3347323cd1b3df86dde1d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_002.json",
+      "source_sha256": "4C490AF7140BB214D3584513EEFE372F958BBCD3EC39D672ACB8C781B5CB8026"
+    },
+    {
+      "card_uid": "30thC_003",
+      "effect_id": "e47c3acd5fdeb66f6535ab4daca5ab28",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_003.json",
+      "source_sha256": "37910E34C3FAFB912ED804ED51DD89496CFF16A1D947BE63870539680E5503EA"
+    },
+    {
+      "card_uid": "30thC_004",
+      "effect_id": "392dd3f185cc878a05428f48fa76c736",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_004.json",
+      "source_sha256": "58AF4CDF39EEB8AE43ECBA2427D71EC136904257ED610D46EBD253D1216C09AE"
+    },
+    {
+      "card_uid": "30thC_005",
+      "effect_id": "48e8990e5652874688fcd2ce0b8cf9e4",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_005.json",
+      "source_sha256": "F2096ECBC21D24A331C2430677D48F52F433C28275B0D98E09EFD9ABF926DDCA"
+    },
+    {
+      "card_uid": "30thC_006",
+      "effect_id": "efa2faba61d1b2cd26c7371fe79c23b0",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_006.json",
+      "source_sha256": "BD3594F4CFCA1DD751403B4647088BB6C116B07FEA287E7CA349F8EFD10A2A8D"
+    },
+    {
+      "card_uid": "30thC_007",
+      "effect_id": "040aed788238e1f99d1278fa1ea1a7e7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_007.json",
+      "source_sha256": "5E38299DDA2F06E7C4DB07AB8A2ED22DA4B40BA190C6521333544D98477312A6"
+    },
+    {
+      "card_uid": "30thC_008",
+      "effect_id": "eca20db642e6e7ab1af841dc90d9b347",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_008.json",
+      "source_sha256": "AA8C6E54B26A3210FAA25D5C1BCF2477B4F783F4BE536C160E93014FB9D291A7"
+    },
+    {
+      "card_uid": "30thC_009",
+      "effect_id": "4c6d5da418dfa92f148946c38e0227c6",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_009.json",
+      "source_sha256": "DBD0C99228D82982CACD034C856AC6F9E455A8FACE37054401DDEF39A311E8AC"
+    },
+    {
+      "card_uid": "30thC_010",
+      "effect_id": "2240b955de9bb9bf1339f846e023f1e7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_010.json",
+      "source_sha256": "BF56A767017F2144C882EC6BA6EF2C6B51AB5C213D00ADE631B884F4A59CE330"
+    },
+    {
+      "card_uid": "30thC_011",
+      "effect_id": "fcdfdf2c053d45b97f98ac821dbdf7a8",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_011.json",
+      "source_sha256": "351796B6C51645038C1D03EC41D0EFE78AA8140E3A524530A3EFD72FCDF87B2C"
+    },
+    {
+      "card_uid": "30thC_012",
+      "effect_id": "831872607eca83307cb94cfa8afc7730",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_012.json",
+      "source_sha256": "1D44EAFCF3DB29B78572454BC0F6EAD9506A28C0CFDF0BD72CFD429BB7456EB6"
+    },
+    {
+      "card_uid": "30thC_013",
+      "effect_id": "35da9bccad39223d970a5dcaade97abf",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_013.json",
+      "source_sha256": "56C25081F41A40D084105B3C64A3851FF8E6B495777DDC347D797C0B5CDA7F45"
+    },
+    {
+      "card_uid": "30thC_014",
+      "effect_id": "1bb5d4a79e97af758bb961e3501b26a7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_014.json",
+      "source_sha256": "D562B3FD069AD5BC9B4774B7C6B1E218EE22F2C683FF033F92A1FB3C2802CA80"
+    },
+    {
+      "card_uid": "30thC_015",
+      "effect_id": "de1d3ab0a4a8f5e15498e7a5413c039c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_015.json",
+      "source_sha256": "F5FFBAF5EB0785D3C0EE60080D638E89BABAA5A14652D760C888DBB58CB290A7"
+    },
+    {
+      "card_uid": "30thC_016",
+      "effect_id": "2b88722cf752d07c0234a9dd2da0ca39",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_016.json",
+      "source_sha256": "246279320A36EFC87E3718CB985C6B70F05D7CAF5154B805464E441155C0FA3D"
+    },
+    {
+      "card_uid": "30thC_017",
+      "effect_id": "b67eb0b4a33026c81e8347de890f489f",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_017.json",
+      "source_sha256": "45ECFDF0D3F638395550F3B5734D7CEA3676D7E80187BE4B765D4C22EAB9B8BB"
+    },
+    {
+      "card_uid": "30thC_018",
+      "effect_id": "0cce96ae9a96da81a435b8bc6b616d40",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_018.json",
+      "source_sha256": "35118381184BF8693C5311BFF8F92E00CC99062A58B7052CE68CADC7F24D396E"
+    },
+    {
+      "card_uid": "30thC_019",
+      "effect_id": "b4cd2c7e5bd5040d5b3809105f8411be",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_019.json",
+      "source_sha256": "4D748837CAAE7EB9BF1691EDE7CE65C8B4E47A13BDEEEE949370EEC2619A7795"
+    },
+    {
+      "card_uid": "30thC_020",
+      "effect_id": "c24ad9eb6576efbeed0ac25016a926d7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_020.json",
+      "source_sha256": "A73BC51CCB54C1C88DB3E43E7A810FCD9041C9E7ED0E79BB0FDCA2352D61A29C"
+    },
+    {
+      "card_uid": "30thC_021",
+      "effect_id": "728e4471a1c8d8d5ce730a31051f31a3",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_021.json",
+      "source_sha256": "D9BEABE3F0B61AE7836D7BD117D85C20073DE0B1415ACDB0642326AEF77EAF24"
+    },
+    {
+      "card_uid": "30thC_022",
+      "effect_id": "cf9419068cb1df6aec5ad050d16039fb",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_022.json",
+      "source_sha256": "99E7262A2B041A19942E80312A66F882064E0E5CDF97EB0DBCC998D47A2190D7"
+    },
+    {
+      "card_uid": "30thC_023",
+      "effect_id": "87dc2fa8cddd65cd238e462f2238e000",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_023.json",
+      "source_sha256": "0A8A3F3004939975AE576E56136F783458E9E41455DB0DEEEE077D2F89F8E146"
+    },
+    {
+      "card_uid": "30thC_024",
+      "effect_id": "3d2fc8522ca3ddac6c4db2801923e5b5",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_024.json",
+      "source_sha256": "67BB2AD6DB2C0088C800823304AA5484815FA5E3022E71278D430AF4AE650B5E"
+    },
+    {
+      "card_uid": "30thC_025",
+      "effect_id": "eaeb8eb1ce00137885bc19a7a1eef109",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_025.json",
+      "source_sha256": "A4F635789581A6A2DEE0D71DD2FA86D297CA17D24BEFE205579AD99FD32B7FAC"
+    },
+    {
+      "card_uid": "30thC_026",
+      "effect_id": "5caef03379545b126b26ba32fa3900d8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_026.json",
+      "source_sha256": "2A038196550FDEFD540EB6F3089DAB44B536F8888E531858B62DE343873A8B77"
+    },
+    {
+      "card_uid": "30thC_027",
+      "effect_id": "6198144fca9bc57c5ffa06bcac4c1933",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_027.json",
+      "source_sha256": "DD36BB387B35D59175B7FE720ECE54EAD6A86D83C17778D6DF1A2CA27A841C25"
+    },
+    {
+      "card_uid": "30thC_028",
+      "effect_id": "b16f2a48835dd0ee4f9b7a5718feb46f",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_028.json",
+      "source_sha256": "4BAE6DAC65703CF8E4A4ACDDB47BB066D060CADACCCBDDEF965AA8249E472D73"
+    },
+    {
+      "card_uid": "30thC_029",
+      "effect_id": "22ce184c779135e052d5b450abfd9e8c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_029.json",
+      "source_sha256": "D2551143D5531BF0A196C9A034EDA4081695148E9C47FA1990CB1E1D1E18AE18"
+    },
+    {
+      "card_uid": "30thC_030",
+      "effect_id": "e744c180a78847f1fb4c25eadc3c08dd",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_030.json",
+      "source_sha256": "7E436A58689F14D370817D0A42D61F58ECD552DBCA5AC989834F413C26C0C4ED"
+    },
+    {
+      "card_uid": "30thC_031",
+      "effect_id": "8466088fd32e6b7496ce3462a6e65aff",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_031.json",
+      "source_sha256": "95595949E28612BE52623564E432FA211622ABD7FA09709ABB69F71077ED3FD4"
+    },
+    {
+      "card_uid": "30thC_032",
+      "effect_id": "ed842de73ebe6fb24ce3236e371fa49d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_032.json",
+      "source_sha256": "654A081B6FEBB3FA6E248A4F6C39009F723733949CD0B1E3BECD52B79B24E955"
+    },
+    {
+      "card_uid": "30thC_033",
+      "effect_id": "6299b6e51aaec31bb5b709b318f9c956",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_033.json",
+      "source_sha256": "6FC7EDC5C16D67DFAB6CC7BCBE58C9CC1BC5E6B9269B08159093478933FABE85"
+    },
+    {
+      "card_uid": "30thC_034",
+      "effect_id": "602b93b1b8f83af2c2ed08ed93715884",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_034.json",
+      "source_sha256": "3F870250CB3E37C77B12408B33F5A37776F006BD9D68D65F193FDAC5A9CAD562"
+    },
+    {
+      "card_uid": "30thC_035",
+      "effect_id": "d7eb6471145eeef2d692563c27b91367",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_035.json",
+      "source_sha256": "BBAB3A7A3C0AB06D647CD97D99D1C4459C9BE548C7ACC49B65915FE4CB5C797C"
+    },
+    {
+      "card_uid": "30thC_036",
+      "effect_id": "7753f583491e6aae491e9774e2a778de",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_036.json",
+      "source_sha256": "CD08C44626EA590E97A5F3B5C1D17E41CEBB3001DB98711DB73497FB9E88A6E9"
+    },
+    {
+      "card_uid": "30thC_037",
+      "effect_id": "707f8f3d4ef85eb5f679761bd0f89fa9",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_037.json",
+      "source_sha256": "D577B1047EEC54BF1AB786510F9CBE366A1A42993552FAA4AA96B83866019564"
+    },
+    {
+      "card_uid": "30thC_038",
+      "effect_id": "215450d0afa5da811b5be9f24b779ad7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_038.json",
+      "source_sha256": "D8370B6FDBFEAD0A93CE7D005D2081120C87F1E6516DBB6B84CAAC1A42D3E7D1"
+    },
+    {
+      "card_uid": "30thC_039",
+      "effect_id": "86c2e2cd7c5443dd1ad6e3a0b7bcf6cc",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_039.json",
+      "source_sha256": "3535113C174453241DF92EFB31DE379ADDECB1F794D825143828CA265CC5FCA2"
+    },
+    {
+      "card_uid": "30thC_040",
+      "effect_id": "b53b2abedf7bf024e0b886b1e64c7e8e",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_040.json",
+      "source_sha256": "EA780758F29836475C216EF83B5BA1EB11B902FA219DB65371ED08A54A8FA2CD"
+    },
+    {
+      "card_uid": "30thC_041",
+      "effect_id": "eca0671907dac835ac5b50bb62c630c3",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_041.json",
+      "source_sha256": "3549EE6CC9EAF3E95E3441E2B8901D32257639AA24AC92B928F96767FCD46420"
+    },
+    {
+      "card_uid": "30thC_042",
+      "effect_id": "2abf73288ff5b3acd4652dcf84641f96",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_042.json",
+      "source_sha256": "F7E570326ACEC5ED4832A5007D1B228C0033F986F2D37AC42800F41577DEEDB3"
+    },
+    {
+      "card_uid": "30thC_043",
+      "effect_id": "53f077cda92c302a72e7f6ab5e57798b",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_043.json",
+      "source_sha256": "A9FA6427AA1C38495C0B614EA52610FA72B193A8C5FAE6DAA3AB02D0162FCF30"
+    },
+    {
+      "card_uid": "30thC_044",
+      "effect_id": "48eaa3fb9a0ead744c6c4cb75e08c2c9",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_044.json",
+      "source_sha256": "F1A4F7337522FCBF5272A95E25D498D36F03F19C050362324209A813C1421BCD"
+    },
+    {
+      "card_uid": "30thC_045",
+      "effect_id": "ae37c5bd0e12492200c33c025fd686cb",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_045.json",
+      "source_sha256": "64FEAA5C7D1E468D557EF36913B093ABB8CD3797D01EAA0C9262308904B63095"
+    },
+    {
+      "card_uid": "30thC_046",
+      "effect_id": "df07c7c9e66ddd482c9f94cd9015ba3c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_046.json",
+      "source_sha256": "09FAB112A16F8B07F8D5920ABB4FB9E3497FAC7EA9246F941FB86C207EC5BAB0"
+    },
+    {
+      "card_uid": "30thC_047",
+      "effect_id": "2418309668a6102d250f4bdb4fd89742",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_047.json",
+      "source_sha256": "7542A7E5FFA3711A70BF3FC9E37131380CC983554B59657552E2D6A176B1F59A"
+    },
+    {
+      "card_uid": "30thC_048",
+      "effect_id": "a15ad334101499f5283f47631736ee1c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_048.json",
+      "source_sha256": "177B08D32D79794201301121BB846A3F43EB0071C854CB9BC8AAA1AE83869EBB"
+    },
+    {
+      "card_uid": "30thC_049",
+      "effect_id": "23a00b18e1944b72ea1e1598affc5fe4",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_049.json",
+      "source_sha256": "6032CD3DFFD34C54B9266D892784F22E387FC38E989C0D5660EB879C8ECEF4EA"
+    },
+    {
+      "card_uid": "30thC_050",
+      "effect_id": "67895895dd26e7d68e8854f48ff88e37",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_050.json",
+      "source_sha256": "82CADB977E44899698300A25272BA6B466128DAE33B18F09BA37F4F0F9805D88"
+    },
+    {
+      "card_uid": "30thC_051",
+      "effect_id": "2210e38ce299e07646e3a1a67fc1b258",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_051.json",
+      "source_sha256": "91C57DCEA865EF4F13533788B5518541B83BB63ECE14DC01638566A4E8BA5090"
+    },
+    {
+      "card_uid": "30thC_052",
+      "effect_id": "508470eb99327c31713a9a0543dbb5bc",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_052.json",
+      "source_sha256": "6E82F4E9F96982588C3E081EA52890C73D6D1865616FE0F0AD3B950C8035C783"
+    },
+    {
+      "card_uid": "30thC_053",
+      "effect_id": "ab01ac05b94cfa923001e55a1dfde220",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_053.json",
+      "source_sha256": "4194D2E0EFAF4E6C8B470DBBF87EE705E9808F58621DF559E9AC91642B80D1E1"
+    },
+    {
+      "card_uid": "30thC_054",
+      "effect_id": "41d19b25408b67ee69dd56dc60f094f8",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AssignOrDistribute",
+        "AttackAndTarget",
+        "ChooseAttachedCardSet",
+        "ChooseAttack",
+        "PayCost"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_054.json",
+      "source_sha256": "FF1B239327CFEDB2D669509EF035CE9A3233AFE7EF47663F70D3ACF7DF7EA0FC"
+    },
+    {
+      "card_uid": "30thC_055",
+      "effect_id": "11641ee70b056fe9c3ef8d2e04ef6dd7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_055.json",
+      "source_sha256": "E62ABECD5074ABCB6F3A109A6E5E33770DE01C0D771123520077A441D5C5DF38"
+    },
+    {
+      "card_uid": "30thC_056",
+      "effect_id": "91e47d789c8f695b74e59253913e15d2",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_056.json",
+      "source_sha256": "0CA69A78468E6002EAD288D6985CE54E154871762D3346295A5FD42F3FEF673E"
+    },
+    {
+      "card_uid": "30thC_058",
+      "effect_id": "4e8f2003856715ec3ae5e5b65ebe2e75",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_058.json",
+      "source_sha256": "6AD26D0241AAF10F1FDBE122050CE397605FC994AEFF3F792319F22D6588AC90"
+    },
+    {
+      "card_uid": "30thC_059",
+      "effect_id": "c1adb66087005031a31ed27fb30dcd96",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_059.json",
+      "source_sha256": "F293E017A7AECE067D2D4B64115B152C2FB46E30D4FC66B9CEA43A844FE38142"
+    },
+    {
+      "card_uid": "30thC_060",
+      "effect_id": "20f3bd0141978828bc0e191ce5090b98",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_060.json",
+      "source_sha256": "22D6A0E07E7B3F57707CC4DEBC1ACECEA4CA8197C28E4F474F0336E953FB47FF"
+    },
+    {
+      "card_uid": "30thC_061",
+      "effect_id": "b813a0097cf2b40184888c03f51832fd",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_061.json",
+      "source_sha256": "913A58E89B504F5C47E9E8F98B2969C4AC7C66A1EC3CD69AE7F1BE953567D06E"
+    },
+    {
+      "card_uid": "30thC_062",
+      "effect_id": "035ac595564a924d0d2563f374e4adb9",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_062.json",
+      "source_sha256": "3681D3A488C44FA62A8D2099AC2849E5091A319E78FF4D25C571EB04DCBA13CC"
+    },
+    {
+      "card_uid": "30thC_063",
+      "effect_id": "7b1750e79eb2adf1fc8cc4ba79e713a3",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_063.json",
+      "source_sha256": "BCE91F86D1F779DEE40B34106D00B08D27B0F44269CC00DE52F183F5D9E7F76E"
+    },
+    {
+      "card_uid": "30thC_064",
+      "effect_id": "17c900feba1de0e2290e2310bb79731f",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_064.json",
+      "source_sha256": "1A1444C2B2A2DE89B6CAC862D3F1D4C45FAB0B4D42D1A94C771D4E5BA32D66B5"
+    },
+    {
+      "card_uid": "30thC_065",
+      "effect_id": "9163fc34feb6948638166d7d08e215a1",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_065.json",
+      "source_sha256": "31DBE30CC117AF9D6F71DC048DF6C0E6CE7085881ED0E445A792756EC3204529"
+    },
+    {
+      "card_uid": "30thC_066",
+      "effect_id": "c8015fd4179304101ddb870edfffc872",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_066.json",
+      "source_sha256": "BAE98DE145DB8A725661DBC82653FDA4FE87FBCCE934F3CD781343DB6B1CA1F7"
+    },
+    {
+      "card_uid": "30thC_067",
+      "effect_id": "9b7a3e1691f97e2d30d8437093c3500c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_067.json",
+      "source_sha256": "92A1386B928326F1C4B36B9F84E1469D28556FD5BBCACBE509995A2C40B8F350"
+    },
+    {
+      "card_uid": "30thC_068",
+      "effect_id": "262402030e46715de21eb138e520134f",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_068.json",
+      "source_sha256": "3CF2B9BE03AF124C7CBE28B0276915B3EBF63394782F4A068563277D35AA32FA"
+    },
+    {
+      "card_uid": "30thC_069",
+      "effect_id": "00265a9c83b1196e14f44c7e6ce90bac",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_069.json",
+      "source_sha256": "7B871BA8870AD811C18D7F604DF0CCB287083ECDC8B969828ED494468A5D3A7C"
+    },
+    {
+      "card_uid": "30thC_070",
+      "effect_id": "5e8f8e53cc52507e705900387a3be87a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_070.json",
+      "source_sha256": "596EE7C6825701E948165896478D293807F5435B05528BD350534A64E4FA6D7B"
+    },
+    {
+      "card_uid": "30thC_071",
+      "effect_id": "e9c95aca720c468d19bc2c9b4f0e90a8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_071.json",
+      "source_sha256": "0F1464B76EE18BB4050CB9BF7D9ECE46108EAF2ADE4207878A2FEBAEA4081294"
+    },
+    {
+      "card_uid": "30thC_072",
+      "effect_id": "7deaab75aeac8b6a9f1a4c6182ee0485",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_072.json",
+      "source_sha256": "D9374DC09A43A569CC7C632F4AD43EF2C12517753BDCADF704C6487605A2F75E"
+    },
+    {
+      "card_uid": "30thC_073",
+      "effect_id": "adc2b7eef45640632f3c67ec02aed83b",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_073.json",
+      "source_sha256": "D76FD67146FC56C620B444DE020459A521063D3B60E9A27B5DE26DF3CB4EC946"
+    },
+    {
+      "card_uid": "30thC_074",
+      "effect_id": "2212a16966600c8c707bcfbfcce7cd1a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_074.json",
+      "source_sha256": "BC8829104FC372245459911B53492A0E08597C0C16B00C1E8FCD85DF56CDEE48"
+    },
+    {
+      "card_uid": "30thC_075",
+      "effect_id": "a4813d15f7f218c519135b8fa6e6b34d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_075.json",
+      "source_sha256": "DDF9704BA169DBAF1AA09BAC379237EC83C95184643DD36A329541FEACD0AB7A"
+    },
+    {
+      "card_uid": "30thC_076",
+      "effect_id": "3aa3c4269d9f1a5cd5dcbb52a16a9c1d",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ActivateOrPlay",
+        "AttackAndTarget",
+        "ChooseAttack"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_076.json",
+      "source_sha256": "494651B1C36CC0EF2CB9CE1169CD6ABB6CEAB7751097D8633099ACEB3BCFCA75"
+    },
+    {
+      "card_uid": "30thC_077",
+      "effect_id": "3860e7c78ea98edb870cdd58b5001170",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_077.json",
+      "source_sha256": "87D1EB41A04AFAE3E24AB27873E800153C74E889053D8306E8726CFB5EECEE71"
+    },
+    {
+      "card_uid": "30thC_078",
+      "effect_id": "3dd4bd773322d8d5040badce1f880c61",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_078.json",
+      "source_sha256": "3325BA2E409BD81A646ACAC7A7C9B38859BC828D5EB1A77B8D72FB29311763A3"
+    },
+    {
+      "card_uid": "30thC_079",
+      "effect_id": "d39da7a78d3666d00e84860f5d122649",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_079.json",
+      "source_sha256": "C7C3C9B421B1039AB98029275899DFE2B9ABF27DFCA64451DAB2FBB7B36ACC55"
+    },
+    {
+      "card_uid": "30thC_080",
+      "effect_id": "2b9a93502964323c8ee21715e1b9d1ff",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_080.json",
+      "source_sha256": "1CD35629DFE7EEEF82B89DFA82D1A9B3D4DB6394C16C615A00E8270E029D19A8"
+    },
+    {
+      "card_uid": "30thC_081",
+      "effect_id": "b64c857949b418dc7c83e2d803fa5f60",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_081.json",
+      "source_sha256": "A7F919DEFA2B91DB44BB99F18C2662E28BD5DD6B559869CA4C811F7C6853E719"
+    },
+    {
+      "card_uid": "30thC_082",
+      "effect_id": "3ab33883e0c28b50994d0369caf2a261",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_082.json",
+      "source_sha256": "F8D3A2E678D6447484772160B5F6008FAE2C489BE707E311B9A55335DB33700C"
+    },
+    {
+      "card_uid": "30thC_083",
+      "effect_id": "e94c582847c08c302ce02aa2f4e3ed55",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_083.json",
+      "source_sha256": "B27D339F996F43AACACB9F6F8320411CBABB9FAFF94AC2243868577B0566D501"
+    },
+    {
+      "card_uid": "30thC_084",
+      "effect_id": "caeed4efe12242b3c0177cf125d42f12",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_084.json",
+      "source_sha256": "CC4C9B58EC0F3EDC154A0267B2EFEAEA56F5C8D4796AB2109DB5C9C1C516708E"
+    },
+    {
+      "card_uid": "30thC_085",
+      "effect_id": "0b1754ca815d6f06b3ae1dcf7565fc73",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_085.json",
+      "source_sha256": "6111C845172ACFCCA824E2D2FEB926E2FA863FAA893213E815B32FBC53E87711"
+    },
+    {
+      "card_uid": "30thC_086",
+      "effect_id": "a4dd7f1126ac49fc7ec08efe43097cf8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_086.json",
+      "source_sha256": "68F0D4E2BE1B0117977ADAFB1DBA39D3196EF76DD3EAC93B4082C937898933C2"
+    },
+    {
+      "card_uid": "30thC_087",
+      "effect_id": "fecc124734bc8d0b3d50e6915d4958ee",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_087.json",
+      "source_sha256": "695D6E9E148F71D32F7E08056A0E7BA03AF986E1B438E4E19797F841D812C9C6"
+    },
+    {
+      "card_uid": "30thC_088",
+      "effect_id": "8b1f439835db2ae1688662a68d3ac62c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_088.json",
+      "source_sha256": "F48A65308F63287A13F1AAFD1245790345830E78AE898D72A8399E35403E82F4"
+    },
+    {
+      "card_uid": "30thC_089",
+      "effect_id": "f9ce260f2d33fd863626d289736c0cc6",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_089.json",
+      "source_sha256": "1754E80EEA283C59B4D219B60AEE631374EF4155E5BB95231FB7B6BEB5B15216"
+    },
+    {
+      "card_uid": "30thC_090",
+      "effect_id": "3d3f2ec431904d54a364a75002a7b8c5",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_090.json",
+      "source_sha256": "EBA680FC52617B003C81C83BA3477365F7EECBB5C985DB15D02948C8D9678B34"
+    },
+    {
+      "card_uid": "30thC_091",
+      "effect_id": "8860030a26a0467a1fb55e5132c9a479",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_091.json",
+      "source_sha256": "1695BCF0A4D3A308AA69C731D8B25F5F4166528BD8F985A60B0B331EF31AD6BD"
+    },
+    {
+      "card_uid": "30thC_092",
+      "effect_id": "ae8b67067d78d9ed2768fcb38a2f18d4",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_092.json",
+      "source_sha256": "79B32E8B1CE627577D212979F98DE7D3F3FF1A0E83218DE6BD63819E267EDBB4"
+    },
+    {
+      "card_uid": "30thC_093",
+      "effect_id": "06a0c72fadedf66b5169678d05d53132",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_093.json",
+      "source_sha256": "A5402E5185DD5CB72ED6ED36080CA1B70076748934D622F2D37E086B62CF9BA0"
+    },
+    {
+      "card_uid": "30thC_094",
+      "effect_id": "010b6a244ea472834e1384bc4efb7634",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_094.json",
+      "source_sha256": "2DCE2B97AE0B01F928313C9C55B49E5DB3EC28D68E353AECE5B982F2031575A2"
+    },
+    {
+      "card_uid": "30thC_095",
+      "effect_id": "c580b384fb944d40c09ebdcda9c6d94f",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_095.json",
+      "source_sha256": "793D72869F60714D6DD36383937560CD4018E66760A69A63F225EE0E07D4CAA3"
+    },
+    {
+      "card_uid": "30thC_096",
+      "effect_id": "0718f0d8e41f74fee27dd895fab2a9bf",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_096.json",
+      "source_sha256": "4F0D94E1A84C915D403FE2EA4E17A2B042A76716BBA8F0092578D57A41D859DA"
+    },
+    {
+      "card_uid": "30thC_097",
+      "effect_id": "cb21f414f39c7d17fc3f47144ed2c342",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_097.json",
+      "source_sha256": "F8946A71D5725E70E4921D190E76705FF77A1C632E7EC05B3CB0AB386D4B1B98"
+    },
+    {
+      "card_uid": "30thC_098",
+      "effect_id": "3ca5cce2de4b9bb9b92726424408d2e9",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_098.json",
+      "source_sha256": "CF72D3C6DE9AB604AD68BA7588025AC91C8F1C8B12FC11736F142DB751BAEC25"
+    },
+    {
+      "card_uid": "30thC_099",
+      "effect_id": "1aacf3bfb76bd000769bddef339474fe",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_099.json",
+      "source_sha256": "977B46FC353E6BE4931B35F12FD5DAC995E3F6D9297DE0527381AC8246E57997"
+    },
+    {
+      "card_uid": "30thC_100",
+      "effect_id": "4482a5c8b104aa74ad1a4f488e5bdb17",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_100.json",
+      "source_sha256": "CC1E475CA47143BF83CFA5168E7C6D267F3284C842A97AE5CCF31EF76D65F5BE"
+    },
+    {
+      "card_uid": "30thC_101",
+      "effect_id": "a337ed34a45e63c6d21d98c3d8e0cb6e",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "PayCost",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_101.json",
+      "source_sha256": "6FC235638A83325E949FD277945A1C9F703057C05E9B7D19B5E225ECD19F4F92"
+    },
+    {
+      "card_uid": "30thC_102",
+      "effect_id": "b0754293ea1611bb9f931f02060ceb3b",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_102.json",
+      "source_sha256": "3FC6261DA90FF5BCE77B134DBB64ABC53D05CAEA54F601DF7BD325F34C96BB15"
+    },
+    {
+      "card_uid": "30thC_103",
+      "effect_id": "7c0b20e121c9d0e0d2d8a43524f7494e",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "RetreatOrSwitch"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_103.json",
+      "source_sha256": "39CC0F44B842FBAA63C3CFBD5A15F137C8A370B88D4FFEC76FD86BF15427ED05"
+    },
+    {
+      "card_uid": "30thC_104",
+      "effect_id": "c77d3be6b3f3347323cd1b3df86dde1d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_104.json",
+      "source_sha256": "E163ABD4990DF1B90590E38B82E271DABCDCB87F7FC1F43ABFABA7314A482DB3"
+    },
+    {
+      "card_uid": "30thC_105",
+      "effect_id": "efa2faba61d1b2cd26c7371fe79c23b0",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_105.json",
+      "source_sha256": "6A1021DB0861DBEAAD18108C6D025AA83FCB55F020567A439E38DCBA084F1CF2"
+    },
+    {
+      "card_uid": "30thC_106",
+      "effect_id": "fcdfdf2c053d45b97f98ac821dbdf7a8",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_106.json",
+      "source_sha256": "7B9559CCF3DE2049BB5FCBF1FBA47173753819712A91061D121813FF3FD209EA"
+    },
+    {
+      "card_uid": "30thC_107",
+      "effect_id": "831872607eca83307cb94cfa8afc7730",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_107.json",
+      "source_sha256": "3A982E0DDA2E4D724948FE69CFDFC1E3E827CCF27DBD964865C3B7E7D53F5D6C"
+    },
+    {
+      "card_uid": "30thC_108",
+      "effect_id": "23a00b18e1944b72ea1e1598affc5fe4",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_108.json",
+      "source_sha256": "B9EF684D5F8EBCE8100F5096C891EA41447A713B0D1E43C3E24AD81A1377CAA5"
+    },
+    {
+      "card_uid": "30thC_109",
+      "effect_id": "2210e38ce299e07646e3a1a67fc1b258",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_109.json",
+      "source_sha256": "5C63F30A9D4AF96E8B0B09C52ADA0DFAFF61EBB642FEE9F34FD9FBDB6F0E326E"
+    },
+    {
+      "card_uid": "30thC_110",
+      "effect_id": "508470eb99327c31713a9a0543dbb5bc",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_110.json",
+      "source_sha256": "350304EBDDD303AA8952814CB37DE023189B7DB70849D315AB42C8368177AB91"
+    },
+    {
+      "card_uid": "30thC_111",
+      "effect_id": "b813a0097cf2b40184888c03f51832fd",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_111.json",
+      "source_sha256": "6BD4CF77CE6E3D9F267795119D0759EAAAE47351F12F40178066FA3CA7472BE1"
+    },
+    {
+      "card_uid": "30thC_112",
+      "effect_id": "035ac595564a924d0d2563f374e4adb9",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_112.json",
+      "source_sha256": "999C565BFBE48AC8092F12E78D2B152652D1950A685E879A898DFDDE5FA8A5EE"
+    },
+    {
+      "card_uid": "30thC_113",
+      "effect_id": "e9c95aca720c468d19bc2c9b4f0e90a8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_113.json",
+      "source_sha256": "7D81CE0332B356641717B150D454444611A48058EDEA7997EC8691F534F4A1EA"
+    },
+    {
+      "card_uid": "30thC_114",
+      "effect_id": "2212a16966600c8c707bcfbfcce7cd1a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_114.json",
+      "source_sha256": "7111A83989EEFCC1FCC2AA2EA6F6F04085FB26597345ADB5EA401B76B70468F8"
+    },
+    {
+      "card_uid": "30thC_115",
+      "effect_id": "a4813d15f7f218c519135b8fa6e6b34d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_115.json",
+      "source_sha256": "3F1E7C75267D2FA581CB7160B41B7E2207117043756EA85D91DB7B5E500B6234"
+    },
+    {
+      "card_uid": "30thC_116",
+      "effect_id": "3dd4bd773322d8d5040badce1f880c61",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_116.json",
+      "source_sha256": "7A5085D8E782A0CCD3C2E14CAFAFE5A5EAD74F16911D1C25AE31AEEAADC60AB5"
+    },
+    {
+      "card_uid": "30thC_117",
+      "effect_id": "2b9a93502964323c8ee21715e1b9d1ff",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_117.json",
+      "source_sha256": "A50F172B25F4D56B98665DE8686DAAF73B3AA46BA83865E2AB65B722C6036DE6"
+    },
+    {
+      "card_uid": "30thC_118",
+      "effect_id": "fecc124734bc8d0b3d50e6915d4958ee",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_118.json",
+      "source_sha256": "735B45A05A08C5AA6BBEF32FFA60EA1DC704E1840F23DB9328899E4AC7B8BC5B"
+    },
+    {
+      "card_uid": "30thC_120",
+      "effect_id": "ae8b67067d78d9ed2768fcb38a2f18d4",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_120.json",
+      "source_sha256": "010C247D508A932DE21B2027643E5F47EE4BB5403C8BE7CBBB06FFB96DAAE998"
+    },
+    {
+      "card_uid": "30thC_121",
+      "effect_id": "06a0c72fadedf66b5169678d05d53132",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_121.json",
+      "source_sha256": "FDD94332BFF85133AAB4541E7E198DFC9E701551F23BDCDD3E315D63F1C9EF0C"
+    },
+    {
+      "card_uid": "30thC_122",
+      "effect_id": "3ca5cce2de4b9bb9b92726424408d2e9",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_122.json",
+      "source_sha256": "D52BEDEB39F0F94852BEC83E70FDA5062426483B7A1806EC84C695FF9DBCDB6B"
+    },
+    {
+      "card_uid": "30thC_123",
+      "effect_id": "4482a5c8b104aa74ad1a4f488e5bdb17",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_123.json",
+      "source_sha256": "72992BF3806AB90BCDB91A75A93191A58C29E5598FDA8A5BE09CEC9E63397F13"
+    },
+    {
+      "card_uid": "30thC_124",
+      "effect_id": "4c6d5da418dfa92f148946c38e0227c6",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_124.json",
+      "source_sha256": "AB8B829C0CD299FF961E50231F20C112505038D19EA2328F938640D7CD464D5C"
+    },
+    {
+      "card_uid": "30thC_125",
+      "effect_id": "de1d3ab0a4a8f5e15498e7a5413c039c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_125.json",
+      "source_sha256": "B34165D1BFA0C10BCC6CDCAFBF13AEAB6838C4A3F820178923C42E12A0ABC044"
+    },
+    {
+      "card_uid": "30thC_126",
+      "effect_id": "2418309668a6102d250f4bdb4fd89742",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_126.json",
+      "source_sha256": "A4ABC69E11D58F504DCD46D83ED162F0D088307DE15B93F0EB843AE60C208D8B"
+    },
+    {
+      "card_uid": "30thC_127",
+      "effect_id": "a15ad334101499f5283f47631736ee1c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_127.json",
+      "source_sha256": "24649809ADF47CAF22182DA6F72F1FC59135E7867400B9B5F818E5F1B5D57B5F"
+    },
+    {
+      "card_uid": "30thC_130",
+      "effect_id": "c1adb66087005031a31ed27fb30dcd96",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_130.json",
+      "source_sha256": "A14A2241B05BBDD2B633DA802E924F464EA15D1F9917ED4A93A301C969CDF01B"
+    },
+    {
+      "card_uid": "30thC_132",
+      "effect_id": "b64c857949b418dc7c83e2d803fa5f60",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_132.json",
+      "source_sha256": "658054A0B651260A0EBA0312A900DA2D8A4AB7D9DA990DF2F736BE997B09B83E"
+    },
+    {
+      "card_uid": "30thC_133",
+      "effect_id": "8b1f439835db2ae1688662a68d3ac62c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_133.json",
+      "source_sha256": "790B159E5F73C8549C3D4A901A5238256E87DB32EAE366F26112BDAA79BC7FB2"
+    },
+    {
+      "card_uid": "30thC_134",
+      "effect_id": "11641ee70b056fe9c3ef8d2e04ef6dd7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_134.json",
+      "source_sha256": "555FB4E3C023BDF21A3036B98ACBD01C98C48BB9B9F48E13E27370A953E78A5A"
+    },
+    {
+      "card_uid": "30thC_135",
+      "effect_id": "dd6e658057478ff1eb223c71000b08a2",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ActivateOrPlay",
+        "AttackAndTarget",
+        "ChooseAttack",
+        "RetreatOrSwitch"
+      ],
+      "source_path": "data/bundled_user/cards/30thC_135.json",
+      "source_sha256": "F5927E8A2E57154DE4ADCFB86E425CAF8A750CF2FA2B730450CA66C3165182B3"
+    },
+    {
+      "card_uid": "30thC_DAR",
+      "effect_id": "46c769fc57a6c250c560df648bb779f8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_DAR.json",
+      "source_sha256": "BDF477E10597F19610BA4CCBC83274DA7BFF68D19EC65D371EAB1AB6A9014129"
+    },
+    {
+      "card_uid": "30thC_FIG",
+      "effect_id": "9fedb80a97ddd5cc8b8022a21364c326",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_FIG.json",
+      "source_sha256": "2560F6A56BF59D2AE958B32C9205D1CE056F3D9ADEE24A14FD6BF139194957C4"
+    },
+    {
+      "card_uid": "30thC_FIR",
+      "effect_id": "22db5405bf0cce61a00aa8082cdd1e65",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_FIR.json",
+      "source_sha256": "2C89E8423A31BC038C55A99849CA388016E4FB2E47B1612F24D7B29AD927E48C"
+    },
+    {
+      "card_uid": "30thC_GRA",
+      "effect_id": "5e2d0ce37ca0c539aa45908da10544a0",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_GRA.json",
+      "source_sha256": "D607CD18E65046A9F5AAB4311DAB05FCE54AD4F09B4761A658044E6AA426475A"
+    },
+    {
+      "card_uid": "30thC_LIG",
+      "effect_id": "45550fd10011f6ade7eef16ba88788cf",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_LIG.json",
+      "source_sha256": "B7A16DACE3C76E1DF223ED7B88D947C23EF9D1E16E1F9662F9E5339D25312974"
+    },
+    {
+      "card_uid": "30thC_MET",
+      "effect_id": "4557c01497b81767fdaa0004089ecfb3",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_MET.json",
+      "source_sha256": "4993279051E43B713BA661438AB302EA88CE0B3BABBB71C19B9ECB74FBAD4F6F"
+    },
+    {
+      "card_uid": "30thC_PSY",
+      "effect_id": "41b2d1a95fafc35e4cf39383ffae928a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_PSY.json",
+      "source_sha256": "AA2AC7FBFAC3FFB013800219C40AB612CAC49D9F21DD27B6C8F5D831DF646B33"
+    },
+    {
+      "card_uid": "30thC_WAT",
+      "effect_id": "0cf075ae61b8a0b4e9151e5146c3aa26",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thC_WAT.json",
+      "source_sha256": "C4E16F02C3436BF1041275C604222EC309A27404CE7EEA0A02DFE6C89A7D95CC"
+    },
+    {
+      "card_uid": "30thDC_001",
+      "effect_id": "2919f9b010416347360126d812a61b87",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_001.json",
+      "source_sha256": "75BB4CD142E369A1C42BA9D334DDA19964CA8BBD7B5D519C00370C587097789D"
+    },
+    {
+      "card_uid": "30thDC_002",
+      "effect_id": "ce61353f9bb746d0f81652fe0e3d7b3c",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_002.json",
+      "source_sha256": "656B8BFEF0717FB31D265D6578088C3FBAAA114282483E0463B0741A01FBD78F"
+    },
+    {
+      "card_uid": "30thDC_003",
+      "effect_id": "4d90b958bac79c1ca798260fab8c7771",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AssignOrDistribute",
+        "AttackAndTarget",
+        "ChooseAttachedCardSet",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_003.json",
+      "source_sha256": "721CC6562974379FE5B9F080CD4A80065A3901598A3B03A02890AB154ECDD66B"
+    },
+    {
+      "card_uid": "30thDC_004",
+      "effect_id": "64758fae3b6ce94027c06e119a6b2397",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_004.json",
+      "source_sha256": "DAD595402A04A4B2F71C8E2A0E36AC6254417D3BE9F7A68163FFE3D66857F648"
+    },
+    {
+      "card_uid": "30thDC_005",
+      "effect_id": "dcf48d3966bd4bc7b4a4c7b1333846b6",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_005.json",
+      "source_sha256": "BE32AB83ABA83E03A2936137F5838E19A637C67CB63C4F067BEAACBBC192B6FF"
+    },
+    {
+      "card_uid": "30thDC_006",
+      "effect_id": "b7f7481e95ba441dd03d3cfe331b3596",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_006.json",
+      "source_sha256": "D6A123960BF9AB887414CE5DCF71E8EE812CC5A08933407901E119BFDEE0087D"
+    },
+    {
+      "card_uid": "30thDC_007",
+      "effect_id": "d34a44981052506ad934470c29c9ed32",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_007.json",
+      "source_sha256": "1290870E109B52DDF5229FA9E2CF015E3FF47BA7CFE9B95F7B033C105C3C5674"
+    },
+    {
+      "card_uid": "30thDC_008",
+      "effect_id": "84a76cffd047ab4a3e865781c4c5a26f",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_008.json",
+      "source_sha256": "A60DB6CD5C44327218DD177B4494FE4B15F3C18F1E6145D8B9131D9B39647598"
+    },
+    {
+      "card_uid": "30thDC_009",
+      "effect_id": "c05f485abf22b534b0e29c1acc5d186d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_009.json",
+      "source_sha256": "D418768B3CC7156243FDF5115BA78B3D6A9B75CB0ECBCE80472FD9D95EF7E57D"
+    },
+    {
+      "card_uid": "30thDC_010",
+      "effect_id": "41d19b25408b67ee69dd56dc60f094f8",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AssignOrDistribute",
+        "AttackAndTarget",
+        "ChooseAttachedCardSet",
+        "ChooseAttack",
+        "PayCost"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_010.json",
+      "source_sha256": "CB0465B09C613F9066032622DD92D7E68940675FA87EBC20F08BA19A25B2441F"
+    },
+    {
+      "card_uid": "30thDC_011",
+      "effect_id": "91e47d789c8f695b74e59253913e15d2",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_011.json",
+      "source_sha256": "CF386E885D6E66539F52BC89F6250D2441229F293DA69B8F72163135F519B7D3"
+    },
+    {
+      "card_uid": "30thDC_012",
+      "effect_id": "0cc9117514530887cde76b85435e0735",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_012.json",
+      "source_sha256": "09779B74F1CFB684121F89F9C2C298A3CF58552A331971577DB5524D9B585115"
+    },
+    {
+      "card_uid": "30thDC_013",
+      "effect_id": "8bb1d36f1e56079e0f50cb0917736300",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_013.json",
+      "source_sha256": "E6DDCFB8EEFACD2BD534CDD2D2B56A12A91C2212BE4605E2E810819E3C8448C1"
+    },
+    {
+      "card_uid": "30thDC_014",
+      "effect_id": "d765168a2339f9446f4ee88bb9aff5d7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_014.json",
+      "source_sha256": "C9328CE8FC67206C2F82F13DA04AD8342D10906464A84E9E0503D24A0664F666"
+    },
+    {
+      "card_uid": "30thDC_015",
+      "effect_id": "07474feb6ce288c2f43fa9b2f9fc3408",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_015.json",
+      "source_sha256": "1D13F675768543B62111E8A137F30D0EE8C9A84940BE178932A5EE448304C0C2"
+    },
+    {
+      "card_uid": "30thDC_016",
+      "effect_id": "71bd2afec3389ee13481c71b980ca790",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_016.json",
+      "source_sha256": "F1955FE96E686B49C07D271369E114DC45455F76BBDABE1D78EA01EBCBC9671A"
+    },
+    {
+      "card_uid": "30thDC_017",
+      "effect_id": "8e0a04d63667ed7dc2156b4fdb9220ab",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_017.json",
+      "source_sha256": "243FDBEACDADD9A59470D78D235245E0181F2833580DFE435890E35DA387AB23"
+    },
+    {
+      "card_uid": "30thDC_018",
+      "effect_id": "9995fb384ac73eff14fc1f35399ec716",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_018.json",
+      "source_sha256": "B0FF5A3F1B22AFBAD6B0A2343508CC285E02AC9DA08F0B49290A7554F56F6562"
+    },
+    {
+      "card_uid": "30thDC_019",
+      "effect_id": "6490e4427286b8f1e2864175cd682176",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_019.json",
+      "source_sha256": "DE1AE6A00911C391B00430F189E39364CD97421A497842B53895E717295FC436"
+    },
+    {
+      "card_uid": "30thDC_020",
+      "effect_id": "8a89529177eff0e771a3da6cd765ff54",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_020.json",
+      "source_sha256": "07F2999035D11626F6FBBAB142076C3C3CCDEA036A985EA36F5D5B96F8C523A1"
+    },
+    {
+      "card_uid": "30thDC_021",
+      "effect_id": "ed42f835279e42ce21860e383fa2960d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_021.json",
+      "source_sha256": "327B22DF0A75F26D6940D2F35B37073AD2F9CF97AB02186DBCD061B14308E878"
+    },
+    {
+      "card_uid": "30thDC_022",
+      "effect_id": "6e3ecd2b913cd2c9112e724f42d9990b",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_022.json",
+      "source_sha256": "F3FB4D81034378BC1F704432047B4AB7EC271E46465804575CFDA9AE2EFFE63F"
+    },
+    {
+      "card_uid": "30thDC_023",
+      "effect_id": "607f252260b417d92ddbc53cdc07a599",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_023.json",
+      "source_sha256": "EDC0369FB3E148A8D73876EB0D7966A1B3CEAF55B18186465202BD72740B20FA"
+    },
+    {
+      "card_uid": "30thDC_024",
+      "effect_id": "091e1fac0abbaef2722d9a2e82da5e3d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_024.json",
+      "source_sha256": "6E55E272257B3005F3609C771087A13A7C27BDDB7737D7102CB4109524677DA0"
+    },
+    {
+      "card_uid": "30thDC_025",
+      "effect_id": "d55a30533789115b7c2d85e09c899e32",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_025.json",
+      "source_sha256": "DBCBBC24C362EBB012CF57BEFCFAB9944D12D1384B94B945A561885E8A299D3F"
+    },
+    {
+      "card_uid": "30thDC_026",
+      "effect_id": "d55a30533789115b7c2d85e09c899e32",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_026.json",
+      "source_sha256": "8574B77186DA0122675900A275DA8C88D915E265257FE6DBBDC836FEC014BE86"
+    },
+    {
+      "card_uid": "30thDC_027",
+      "effect_id": "84ab979321ed4fbfb16135c683891bb0",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_027.json",
+      "source_sha256": "E62DBA98430049036979F38E35CF8D27731A0DE143619649E21427C59E1F57E7"
+    },
+    {
+      "card_uid": "30thDC_028",
+      "effect_id": "187d694096b96c54af0f7463c5e2b2b4",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_028.json",
+      "source_sha256": "D0B04C3630C09A97D9333DDDE6853B8E075E44F4688B101BEDDCE549D968B250"
+    },
+    {
+      "card_uid": "30thDC_029",
+      "effect_id": "77a259dbcc81481b6d06e3fc18f29c3c",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseAttachedCardSet",
+        "ChooseCardSet",
+        "PayCost"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_029.json",
+      "source_sha256": "2C7B19712681DB0FE80E365A84A7687F5116852C58F7ACEB683391ED13C2DA01"
+    },
+    {
+      "card_uid": "30thDC_030",
+      "effect_id": "a337ed34a45e63c6d21d98c3d8e0cb6e",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "PayCost",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_030.json",
+      "source_sha256": "D73F5C1CDE1C6DF43D5FF34EF4AA10F3DD252B39F2335132A41511026AD519DB"
+    },
+    {
+      "card_uid": "30thDC_031",
+      "effect_id": "b0754293ea1611bb9f931f02060ceb3b",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_031.json",
+      "source_sha256": "1BD33472285F0ACE6B7E69613EC0A802CEB0EEBDD764811BC56C3298CC86665C"
+    },
+    {
+      "card_uid": "30thDC_032",
+      "effect_id": "7c0b20e121c9d0e0d2d8a43524f7494e",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "RetreatOrSwitch"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_032.json",
+      "source_sha256": "02D28B7C2E48D87F7A6507BCDA2FA00CB3F6542CBC6711A56C2B0ED56E9DB1E6"
+    },
+    {
+      "card_uid": "30thDC_033",
+      "effect_id": "3a6d419769778b40091e69fbd76737ec",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "RetreatOrSwitch"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_033.json",
+      "source_sha256": "13D9AB1EB685370C5E58C272BD81510A8017AA6150FA6CAA0D829B4E4847A53C"
+    },
+    {
+      "card_uid": "30thDC_034",
+      "effect_id": "4eadb12f43cd50ddec37821f28ce0359",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_034.json",
+      "source_sha256": "20BF722442CBE59882DC3CD7BB611FDD4E937C5C17CEA2617E7C70F2EC8B6B42"
+    },
+    {
+      "card_uid": "30thDC_035",
+      "effect_id": "0c06539cb1ff6391b61c2556d2d11e58",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_035.json",
+      "source_sha256": "C535A865F14C7D332FCCA2B54170B778B217C14C499C3C2A3C9D1CDBCE559B92"
+    },
+    {
+      "card_uid": "30thDC_036",
+      "effect_id": "dab522c268c493ffb5410114f7f1f2ca",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_036.json",
+      "source_sha256": "7D5E6B675CA18C3970CD086402E8C8CDE8EE47CFCCFA99F3CE2B9DF5AD114893"
+    },
+    {
+      "card_uid": "30thDC_037",
+      "effect_id": "0a9bdf265647461dd5c6c827ffc19e61",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_037.json",
+      "source_sha256": "825A16E9ABC56FC2B9ADF9AF51166336B8AC9F2A55AA4E8D5EC5BAAEFB0EA3D9"
+    },
+    {
+      "card_uid": "30thDC_038",
+      "effect_id": "8d9b3076693b9f692bae94d057498720",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_038.json",
+      "source_sha256": "4BD42F96EA687F0EBB24E629CBD8F78CB20CC3F335182025EA0AE2E966E20DBE"
+    },
+    {
+      "card_uid": "30thDC_039",
+      "effect_id": "8e1fa2c9018db938084c94c7c970d419",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "RetreatOrSwitch"
+      ],
+      "source_path": "data/bundled_user/cards/30thDC_039.json",
+      "source_sha256": "3F97376123B4A58FD557AFF13A20BB6802B7974BA5A1FAD63A6925C3AF709DCE"
+    },
+    {
+      "card_uid": "30thDC_040",
+      "effect_id": "d57b61102355e6a0407d0aeb4db9477d",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_040.json",
+      "source_sha256": "1712BCBFCD9AD0391CE74B20F428E424925F35646220110D2943EA8C001D9231"
+    },
+    {
+      "card_uid": "30thDC_DAR",
+      "effect_id": "46c769fc57a6c250c560df648bb779f8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_DAR.json",
+      "source_sha256": "F3117C6613EB066CB1A6049DA471279D2DFF2DD76AAF077913B7B1371E38046C"
+    },
+    {
+      "card_uid": "30thDC_FIR",
+      "effect_id": "22db5405bf0cce61a00aa8082cdd1e65",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_FIR.json",
+      "source_sha256": "EED4FC10B343381D71E0244BC509BB1070F1D05C141547B1DE10D1A324724257"
+    },
+    {
+      "card_uid": "30thDC_GRA",
+      "effect_id": "5e2d0ce37ca0c539aa45908da10544a0",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_GRA.json",
+      "source_sha256": "4ADB6C695C2032AF92E5A08E9D61AFE6EEF449B0A1ADB7AD9AC193EFB315FF90"
+    },
+    {
+      "card_uid": "30thDC_LIG",
+      "effect_id": "45550fd10011f6ade7eef16ba88788cf",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_LIG.json",
+      "source_sha256": "2BFA67931838EDBE4EEA3BE0B97F35920B7197AE49BEF477330D28EF5B11ABE7"
+    },
+    {
+      "card_uid": "30thDC_PSY",
+      "effect_id": "41b2d1a95fafc35e4cf39383ffae928a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/30thDC_PSY.json",
+      "source_sha256": "16D4F60F424573CD69EC3EA758014FE18AE08F14277C9C07C7EDC8FFC2151F8A"
+    },
+    {
+      "card_uid": "CBB4C_0501",
+      "effect_id": "ffa371eb22d9dfd66abab6a42085d22a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CBB4C_0501.json",
+      "source_sha256": "A8452C80619F9DCA4BE4667AD4F436C5B92080AB77E9631278872437484B5177"
     },
     {
       "card_uid": "CBB5C_0301",
@@ -4254,6 +6012,24 @@
       "source_sha256": "2453CA024CB433E185DEEFD6BA939282A4415BD509E4EEC467ACECC7D0C39754"
     },
     {
+      "card_uid": "CSV1C_009",
+      "effect_id": "26846bd3499b028fb85156f64111e916",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV1C_009.json",
+      "source_sha256": "5FB3775AB87F4A44FBBFC97733BEDF7DC41105B732B1B565F57852BF4CAEE6E6"
+    },
+    {
+      "card_uid": "CSV1C_010",
+      "effect_id": "32a4f9af2d7891a833bccf80b40411b7",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV1C_010.json",
+      "source_sha256": "164DAA61F20182160AEEEF178F92FB8453D6EB23238E38963B5BDA39E98E4874"
+    },
+    {
       "card_uid": "CSV1C_028",
       "effect_id": "4f4c17fe9f3429419f9e344fbecb140d",
       "interaction_status": "compiled",
@@ -4379,8 +6155,10 @@
       "interaction_status": "compiled",
       "usable": true,
       "capability_ids": [
+        "ActivateOrPlay",
         "AssignOrDistribute",
         "ChooseAttachedCardSet",
+        "ChooseBoolean",
         "ChooseCardSet",
         "SearchAndMove"
       ],
@@ -4578,6 +6356,15 @@
       ],
       "source_path": "data/bundled_user/cards/CSV2C_011.json",
       "source_sha256": "8CD62D1BD9E4222CAEA9FF25AEB6CCF32F3092EA4C6B50365FB25704008911E8"
+    },
+    {
+      "card_uid": "CSV2C_012",
+      "effect_id": "0779cd043d2977d004c2cfff5503c939",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV2C_012.json",
+      "source_sha256": "DF7B47395C55221BDD84AE07829B9505A1CFC12BCDD7A7D73E0B05303EE599FD"
     },
     {
       "card_uid": "CSV2C_028",
@@ -4919,6 +6706,33 @@
       "source_sha256": "4B01D907573A5C36DD70F2A3047FA449DC598FD22B3D0C0172911A75EC75F578"
     },
     {
+      "card_uid": "CSV4C_032",
+      "effect_id": "b7337b94bb9779b843cf7c00f703119a",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttachedCardSet",
+        "ChooseAttack",
+        "PayCost"
+      ],
+      "source_path": "data/bundled_user/cards/CSV4C_032.json",
+      "source_sha256": "4F74B4FC018D792775EBAC82EEFC7937D8BA5BCDB44358B50AE03D0531B160D7"
+    },
+    {
+      "card_uid": "CSV4C_043",
+      "effect_id": "a7eb3d36fe16b1c33fbc3b6badaf3553",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/CSV4C_043.json",
+      "source_sha256": "869FB78F8C0F1A328F0B308F348AD95D03AD95B8E94BBF1181ECCFCC35D1EACE"
+    },
+    {
       "card_uid": "CSV4C_044",
       "effect_id": "5bb7158b704f6d30d43c8f68cc52f39c",
       "interaction_status": "automatic",
@@ -5198,6 +7012,42 @@
       ],
       "source_path": "data/bundled_user/cards/CSV5C_128.json",
       "source_sha256": "1F7ED45B3D1EB77272CB5C2974943E01B242B3A00DD6E5D86345D6E458C7D842"
+    },
+    {
+      "card_uid": "CSV6C_009",
+      "effect_id": "46d964eb8e1fb610ea78db5873f4e019",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV6C_009.json",
+      "source_sha256": "E0093650C703322D2F9849ED59FA131313DC093BDB2FE694F7E70713939B4D31"
+    },
+    {
+      "card_uid": "CSV6C_010",
+      "effect_id": "74e486ef3049c0ce097db1e3f6153d02",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV6C_010.json",
+      "source_sha256": "EBB3426C05B1FDB6AE721DF4243CF9F1579FD309CB79958FEA34E5A6B82BD1B7"
+    },
+    {
+      "card_uid": "CSV6C_032",
+      "effect_id": "5e06feeca2c0f59fc31f10534bce6844",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV6C_032.json",
+      "source_sha256": "85E42FA2D21CF8FFA588504CEBA27B73B53A484525E6679392FA0B4B4EA93ADD"
+    },
+    {
+      "card_uid": "CSV6C_038",
+      "effect_id": "a8f9a49f3d894665f5851f51fda77855",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV6C_038.json",
+      "source_sha256": "D4844394AF748455606F48CC9E322C38B408A11803236FD417A14EC0C06B0BD8"
     },
     {
       "card_uid": "CSV6C_042",
@@ -5584,6 +7434,19 @@
       "capability_ids": [],
       "source_path": "data/bundled_user/cards/CSV7C_054.json",
       "source_sha256": "51ECC66D454CBB8D33665F75BF97607572906D637E731AAB6A0D483C0459F8B8"
+    },
+    {
+      "card_uid": "CSV7C_057",
+      "effect_id": "f6baf0c4c60ff47c7f836c1271f40cb3",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "AttackAndTarget",
+        "ChooseAttack",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/CSV7C_057.json",
+      "source_sha256": "6165012BBFFC38F42205E3DAD96FD5F08FDEA03E1B813E358FF67F46BC15FEA9"
     },
     {
       "card_uid": "CSV7C_059",
@@ -6215,6 +8078,24 @@
       "source_sha256": "F10787B0880E95A5995CCE37B7603C1E4A96E961DCD77A4B2671547352D2020B"
     },
     {
+      "card_uid": "CSV8C_059",
+      "effect_id": "13f57c90c23bf4118291353727093eff",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV8C_059.json",
+      "source_sha256": "EC17690D86EE9AA0471F73527B87111FF0D4A91AAB4BA6D535918C2DE80CC441"
+    },
+    {
+      "card_uid": "CSV8C_062",
+      "effect_id": "a4600d2953dacffa956d665a7fb29b02",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV8C_062.json",
+      "source_sha256": "7400B6CA173936684E8F5FBE9D3EF751AC6C322E01C6CCE40BD64407CDB0DDB6"
+    },
+    {
       "card_uid": "CSV8C_067",
       "effect_id": "14cf8080c35f652fe13a579f1b50542a",
       "interaction_status": "compiled",
@@ -6335,6 +8216,15 @@
       "source_sha256": "E0AB1098A00AE8A43AA9EADFE3707CB12E88CED084BB4493CBB41FC98FC4B9A3"
     },
     {
+      "card_uid": "CSV8C_115",
+      "effect_id": "309c53f62310a22661ec15d7b6327dea",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV8C_115.json",
+      "source_sha256": "DFA74D73B2AF9C9BC5023E61DD74CCAFFF99C62202895A0E228772BE2B2A5278"
+    },
+    {
       "card_uid": "CSV8C_119",
       "effect_id": "f133f2b8d38148794b81a8b4ca135cff",
       "interaction_status": "compiled",
@@ -6392,7 +8282,7 @@
         "SearchAndMove"
       ],
       "source_path": "data/bundled_user/cards/CSV8C_133.json",
-      "source_sha256": "5D998D1EC05631BF0C7A4FADB2D02FA7DAEE519A8865A074401337F54968F351"
+      "source_sha256": "ACB268874B6C24FBA0C27B52306F17A239733AB370A6E005EC530316070C3043"
     },
     {
       "card_uid": "CSV8C_135",
@@ -6571,6 +8461,8 @@
       "interaction_status": "compiled",
       "usable": true,
       "capability_ids": [
+        "ActivateOrPlay",
+        "ChooseBoolean",
         "ChooseCardSet",
         "SearchAndMove"
       ],
@@ -6917,6 +8809,29 @@
       "source_sha256": "260F7CE2B94B53DE37346F78C2427A835E41E9B69903DF423131FB9A4E9E3865"
     },
     {
+      "card_uid": "CSV9.5C_051",
+      "effect_id": "3c38a9d3798223dfe455c2bc898f78b6",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ActivateOrPlay",
+        "ChooseCardSet",
+        "RetreatOrSwitch",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/CSV9.5C_051.json",
+      "source_sha256": "12D6AF6924082A7A4A897CAFBDD8A2AFD294B98308A4D6C649490893FD31B8CE"
+    },
+    {
+      "card_uid": "CSV9.5C_052",
+      "effect_id": "1b97f4552b78e850d48100edf4d82c95",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV9.5C_052.json",
+      "source_sha256": "0B9F1DA9AFBDC58BD72EF7A2C4087B71F25E5A18081BA243A88D88DB9D4E74AB"
+    },
+    {
       "card_uid": "CSV9.5C_058",
       "effect_id": "ea603744a76e329006742da58c0f7514",
       "interaction_status": "compiled",
@@ -7008,6 +8923,15 @@
       "source_sha256": "C03BE6F45C9CB17F312AEBE937D9DEA01E9E8384D2F437E12EE18DF081815A45"
     },
     {
+      "card_uid": "CSV9.5C_101",
+      "effect_id": "cc0285c411d9f2c4d7c3f0c486cd2667",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV9.5C_101.json",
+      "source_sha256": "2DC06A093EBA57D016B31BF82656505537C7A9C209C4917D861A0B6C43B5006A"
+    },
+    {
       "card_uid": "CSV9.5C_104",
       "effect_id": "233350ffecdbfac2a8fab27e7f7da282",
       "interaction_status": "automatic",
@@ -7085,6 +9009,19 @@
       ],
       "source_path": "data/bundled_user/cards/CSV9.5C_163.json",
       "source_sha256": "5B1BF0F6EAA3A593BF8D3F7AB6077CC6E2A3230C808DDDD5D6C6478D82BFB259"
+    },
+    {
+      "card_uid": "CSV9.5C_166",
+      "effect_id": "c0ea20d42e8e30a99c2a2430843a7b26",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "PayCost",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/CSV9.5C_166.json",
+      "source_sha256": "D23ED46C9543C3B21E90A54E09D1129D94FBC622F4D5F757C11DB1D29483BC99"
     },
     {
       "card_uid": "CSV9.5C_182",
@@ -7228,6 +9165,15 @@
       "capability_ids": [],
       "source_path": "data/bundled_user/cards/CSV9C_039.json",
       "source_sha256": "8FE62162135DF067104802ADE925CC927AF02B142704BFD148CD6647F7289A2A"
+    },
+    {
+      "card_uid": "CSV9C_051",
+      "effect_id": "5a7b30386f52c19ae6ceb2c9ae905f84",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSV9C_051.json",
+      "source_sha256": "F3087B8655693AAEA63798E75B7E67D29CB1499877010E7DA5E0037DDA6A7FCE"
     },
     {
       "card_uid": "CSV9C_053",
@@ -8053,6 +9999,42 @@
       "source_sha256": "B3449C9C4D8A2C9A8D413BECE2139C813F683E088428F43A90E85DE9960C1E73"
     },
     {
+      "card_uid": "CSVH4C_024",
+      "effect_id": "c996546aa1c4254d9f1c41d265b9f016",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSVH4C_024.json",
+      "source_sha256": "88A3A690691619D772DAED898F9ED936460A00453E8E9CB54B8CBFD7CCAEE73D"
+    },
+    {
+      "card_uid": "CSVH4eC_001",
+      "effect_id": "f727c4fb3a5816eb5cdf2d06b2c37324",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSVH4eC_001.json",
+      "source_sha256": "1191D9F9A2E2BA5D8A1014BAC8A52C7E979DA340422147F93DBDE435E2897CCA"
+    },
+    {
+      "card_uid": "CSVH4eC_002",
+      "effect_id": "29caf0a046110a6cc450e04e493bdfa2",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSVH4eC_002.json",
+      "source_sha256": "AA90D1879DB0BCC689B31F9D688A45D81AF78C82DA2B9BFD883AF71C48AE4ECF"
+    },
+    {
+      "card_uid": "CSVH4eC_044",
+      "effect_id": "a444b83881df9e2a0225aee95bbc853a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSVH4eC_044.json",
+      "source_sha256": "DD74D4BD0586F911365DC3385FBEDE70FBA99C18559FDEDF92BE0DBE6654054A"
+    },
+    {
       "card_uid": "CSVH5C_002",
       "effect_id": "defef39f399206a6de240aab5caa7f6b",
       "interaction_status": "automatic",
@@ -8060,6 +10042,15 @@
       "capability_ids": [],
       "source_path": "data/bundled_user/cards/CSVH5C_002.json",
       "source_sha256": "8BFCF9BA0293155ACBEE2747300F9347CC68FEDD8AD5C338BD468746694C5082"
+    },
+    {
+      "card_uid": "CSVH5pC_006",
+      "effect_id": "1d75a8974ad24952cc961bbb1a27ffc8",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSVH5pC_006.json",
+      "source_sha256": "B66208D040A4D57288627A388749210B9B5FCE4321750530483BEBF6007B3EF1"
     },
     {
       "card_uid": "CSVL1C_036",
@@ -8088,6 +10079,15 @@
       ],
       "source_path": "data/bundled_user/cards/CSVL1C_037.json",
       "source_sha256": "9882D51D48D80C3E5A6999AC299685C2C4F1BC3ADF1219B8A24737C0273AEC83"
+    },
+    {
+      "card_uid": "CSVL1C_039",
+      "effect_id": "87cc640402d6b606ee4ef78b7c9d2689",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/CSVL1C_039.json",
+      "source_sha256": "21465AFAAB048516AD19333B28C41FF9926D872150186D96567C827CE6913A78"
     },
     {
       "card_uid": "CSVL1C_045",
@@ -8301,6 +10301,27 @@
       "source_sha256": "3761D5AB906C7DAC7B9231FA780983E0070E918006F6F5DF304535362A210322"
     },
     {
+      "card_uid": "LEN_MEG_119",
+      "effect_id": "47fdbe7775a150170eeced33c27c1c72",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/LEN_MEG_119.json",
+      "source_sha256": "CF9C617682C1A9D869200FB471944479854A3E4D94D83C4248AB67793D32FD08"
+    },
+    {
+      "card_uid": "LEN_POR_81",
+      "effect_id": "37d9368f331023f9145669360477c7ad",
+      "interaction_status": "compiled",
+      "usable": true,
+      "capability_ids": [
+        "ChooseCardSet",
+        "SearchAndMove"
+      ],
+      "source_path": "data/bundled_user/cards/LEN_POR_81.json",
+      "source_sha256": "671D8369793955ADA414AACCAEBC958FB64B7912F5617CAE61F69C0C912FEC96"
+    },
+    {
       "card_uid": "LEN_PRE_4",
       "effect_id": "07ece21268d2d5ad700ebc6859b1ab1d",
       "interaction_status": "automatic",
@@ -8399,6 +10420,15 @@
       "source_sha256": "DBF925897E9FE94C672A664F98F1B7FA5C7B8EEF3AC22D562C9B18EFC6DD8C4E"
     },
     {
+      "card_uid": "M6A_060",
+      "effect_id": "6f032c3b7bf63df90da2a8d8886ac9b6",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/M6A_060.json",
+      "source_sha256": "A201172EB340EE1B445DF5480F82F0FC15BEB58D9D5F859F0BDE158200B0BC22"
+    },
+    {
       "card_uid": "SVP_067",
       "effect_id": "98ecdb0066cdc5dc6697a0075bcfa4a9",
       "interaction_status": "compiled",
@@ -8466,6 +10496,24 @@
       "capability_ids": [],
       "source_path": "data/bundled_user/cards/SVP_159.json",
       "source_sha256": "2948995BFCC402C2C6D0D98C5ED9FEDF7E2C5B2EE1CBF6A76F6C95A34EF19BF5"
+    },
+    {
+      "card_uid": "SVP_175",
+      "effect_id": "28875f87f42e55f4606bf4494568705a",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/SVP_175.json",
+      "source_sha256": "41C233152F86FA5749E75A619FB3BC7A6C66E0D04346706B54771F357C75D3D7"
+    },
+    {
+      "card_uid": "SVP_176",
+      "effect_id": "68d5729d1856e519334cecfd49a276ce",
+      "interaction_status": "automatic",
+      "usable": true,
+      "capability_ids": [],
+      "source_path": "data/bundled_user/cards/SVP_176.json",
+      "source_sha256": "2BC179E2E86C10D6CFA895B9B056085D7027D0D3CBB097680089E71F9A71A05E"
     },
     {
       "card_uid": "UTEST_001",

@@ -119,7 +119,7 @@ class ForgeTests(unittest.TestCase):
         checks = {row["id"]: row for row in report["checks"]}
         self.assertTrue(checks["python"]["accepted"])
         self.assertGreaterEqual(checks["sdk-snapshot"]["file_count"], 276)
-        self.assertEqual(797, checks["supported-cards"]["total_cards"])
+        self.assertEqual(len(json.loads((ROOT / "contracts/ptcgdap/ucis_card_catalog_v1.json").read_text(encoding="utf-8"))["cards"]), checks["supported-cards"]["total_cards"])
         self.assertTrue(checks["supported-cards"]["accepted"])
         self.assertTrue(checks["contract-drift"]["accepted"])
         self.assertTrue(checks["template-package"]["accepted"])

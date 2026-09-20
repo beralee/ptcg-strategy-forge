@@ -22,7 +22,7 @@ SDK 不执行引擎动作，也不持有 ticket。它只解析当前不可变 `s
 
 日常开发用 `workspace inspect`；需要检查整个 UCIS generation 或运行教学向量时再使用三个底层 `ucis` 子命令：
 
-- `catalog`：当前 generation、16 个原语、729 个可用 effect、unsupported 清单和资格 hash；
+- `catalog`：当前 generation、16 个原语、887 个可用 effect、unsupported 清单和资格 hash；
 - `walkthrough`：运行精确取 3、option 重排、重复分配、能量债务、奖赏时钟和未知 shape 拒绝；
 - `inspect`：把一个场景显示为命名化 context/option 和公开事实，不回显 `raw_observation`、Search token 或隐藏数据。
 

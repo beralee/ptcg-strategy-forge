@@ -215,7 +215,7 @@ def build() -> dict[str, object]:
             "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
             "captured_on": "2026-08-23",
             "scope": "author-strategy development, validation, simulation, and publishing",
-            "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Each distributed byte is pinned below.",
+            "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Card catalog refresh on 2026-09-20: all 1011 qualified public card sources and matching UCIS metadata from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c plus the reviewed EffectRegistry resource-identity fix and CSV6C_032 registration. The policy interpreter remains at this SDK baseline. Each distributed byte is pinned below.",
         },
         "files": files,
     }

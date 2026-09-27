@@ -67,7 +67,7 @@ def train(args):
         env=child_environment();env['PTCG_FORGE_MONITORED_TRAIN']='1'
         with (output/'training.log').open('wb') as log:
             process=subprocess.Popen([sys.executable,str(Path(__file__).resolve()),'train','--dataset',str(Path(args.dataset).resolve()),
-                '--output',str(output),'--epochs',str(args.epochs),'--seed',str(args.seed),'--variant',args.variant,'--internal-worker'],
+                '--output',str(output),'--epochs',str(args.epochs),'--seed',str(args.seed),'--variant',args.variant,*(['--initial-checkpoint',str(Path(args.initial_checkpoint).resolve())] if args.initial_checkpoint else []),'--internal-worker'],
                 stdout=log,stderr=subprocess.STDOUT,env=env,creationflags=child_creation_flags())
             code=monitor_process(process,output,storage_targets=admission['storage_targets'],max_seconds=1800)
         if code!=0 or not (output/'training-report.json').is_file():
@@ -92,18 +92,22 @@ def train_worker(args):
         if set(e['seed_group'] for e in train_rows)&set(e['seed_group'] for e in valid): raise ValueError('neural_split_leakage')
         # Fixed categories derive from the published profile/sealed deck, not labels.
         from scripts.ai.ptcgdap.semantic_model_profile import KINDS,PROFILE_ID
-        uid_codes=list(range(len(data['uid_vocabulary'])+1))
-        fc={19:list(range(49)),20:list(range(11)),24:uid_codes,25:uid_codes,26:uid_codes,31:list(range(1,len(KINDS)+1))}
-        oc={0:list(range(1,len(KINDS)+1)),1:uid_codes,2:uid_codes,3:uid_codes,4:list(range(12)),6:list(range(8)),7:list(range(8)),21:list(range(8)),22:list(range(10)),29:list(range(17))}
-        fn={i:1.0 for i in range(128) if i not in fc}; on={i:1.0 for i in range(32) if i not in oc}
-        for i in (0,3,4,5,6): fn[i]=0.05
-        for i in (9,10): fn[i]=0.01
-        for i in (13,14,29,30): fn[i]=0.1
-        for i in range(32,128): fn[i]=0.25
-        for i in (8,13): on[i]=0.01
-        for i in (9,11,25,26): on[i]=0.1
-        spec=FeatureSpec(128,32,fn,on,fc,oc,relations='public_resource_relations_v1' if args.variant=='relations' else '')
+        from ptcg_strategy_forge.neural_features import build_feature_spec
+        PROFILE_ID=data.get('tensor_profile_id',PROFILE_ID)
+        if PROFILE_ID.endswith('_v2'):
+            evidence=data.get('projection_evidence',{})
+            witness=Path(evidence.get('report',''))
+            if (evidence.get('status')!='passed' or not witness.is_file() or sha(witness)!=evidence.get('report_sha256')):
+                raise ValueError('neural_reprojection_witness_missing')
+        spec=build_feature_spec(data,relations=args.variant=='relations')
         model=NeuralRanker(spec,hidden=96,bottleneck=48,seed=args.seed)
+        initial_score_delta=None
+        if args.initial_checkpoint:
+            from ptcg_strategy_forge.neural_features import load_ranker,initialize_from_parent
+            parent=load_ranker(args.initial_checkpoint)
+            initialize_from_parent(model,parent)
+            initial_score_delta=max(float(np.max(np.abs(model.scores(e)-parent.scores(e)))) for e in examples)
+            if initial_score_delta>0.0002:raise ValueError('neural_extended_initialization_mismatch')
         def progress(row):
             if row['epoch']%10==0: check_pressure(); print(json.dumps(row),flush=True)
         result=fit(model,train_rows,valid,epochs=args.epochs,learning_rate=0.001,batch_size=32,seed=args.seed,progress=progress,multi_positive=args.variant!='exact')
@@ -112,7 +116,7 @@ def train_worker(args):
         # Check all held-out windows with full padded deployment shapes.
         parity=[]; context={};by_action={};shared_losses=[];semantic_correct=0;exact_correct=0
         for e in valid:
-            n=len(e['options']); zeros=(0,)*32
+            n=len(e['options']); zeros=(0,)*spec.option_width
             tensors=PublicActorTensors(PROFILE_ID,tuple(e['frame']),tuple(e['frame_presence']),tuple(map(tuple,e['options']))+(zeros,)*(1024-n),
                 tuple(map(tuple,e['option_presence']))+(zeros,)*(1024-n),(1,)*n+(0,)*(1024-n),tuple(e['semantic_keys']),tuple(e['current_indexes']),{},1,1)
             scores,count,latency=actor.run(tensors)
@@ -133,11 +137,13 @@ def train_worker(args):
             actor_sha256=sha(output/'actor.ort'),actor_bytes=(output/'actor.ort').stat().st_size,import_report=imported,
             context_validation=context,action_validation=by_action,shared_validation_nll=float(np.mean(shared_losses)),
             exact_validation_accuracy=exact_correct/len(valid),equivalent_validation_accuracy=semantic_correct/len(valid),
-            variant=args.variant,relations=spec.relations,ort_parity=parity,seed=args.seed,epochs=args.epochs,production_ready=False)
+            variant=args.variant,relations=spec.relations,tensor_profile_id=PROFILE_ID,ort_parity=parity,
+            initial_checkpoint_sha256=sha(args.initial_checkpoint) if args.initial_checkpoint else None,
+            initial_score_max_delta=initial_score_delta,seed=args.seed,epochs=args.epochs,production_ready=False)
         result['implementation_sha256']={str(p.relative_to(ROOT)):sha(p) for p in (
             Path(__file__),ROOT/'src/ptcg_strategy_forge/neural_actor.py',ROOT/'src/ptcg_strategy_forge/neural_relations.py',
-            ROOT/'src/ptcg_strategy_forge/neural_dataset.py',ROOT/'src/ptcg_strategy_forge/ptcgai_ort.py',
-            ROOT/'scripts/ai/ptcgdap/semantic_model_profile.py')}
+            ROOT/'src/ptcg_strategy_forge/neural_dataset.py',ROOT/'src/ptcg_strategy_forge/neural_features.py',ROOT/'src/ptcg_strategy_forge/ptcgai_ort.py',
+            ROOT/'scripts/ai/ptcgdap/semantic_model_profile.py',ROOT/'scripts/ai/ptcgdap/semantic_model_profile_v2.py')}
         write(output/'training-report.json',result); print(json.dumps({k:v for k,v in result.items() if k not in ('history','ort_parity','import_report')}),flush=True)
 
 def main():
@@ -145,6 +151,7 @@ def main():
     d=s.add_parser('dataset'); d.add_argument('--run',required=True); d.add_argument('--runtime',required=True); d.add_argument('--workspace',required=True); d.add_argument('--validation-seed',type=int,required=True);d.add_argument('--output',required=True)
     t=s.add_parser('train');t.add_argument('--dataset',required=True);t.add_argument('--output',required=True);t.add_argument('--epochs',type=int,default=100);t.add_argument('--seed',type=int,default=260919)
     t.add_argument('--variant',choices=('exact','equivalent','relations'),default='exact')
+    t.add_argument('--initial-checkpoint')
     t.add_argument('--internal-worker',action='store_true',help=argparse.SUPPRESS)
     args=p.parse_args(); (dataset if args.command=='dataset' else train_worker if args.internal_worker else train)(args)
 

@@ -19,9 +19,13 @@ PREFIXES = (
 # Explicitly reviewed files whose PtcgDAP locations differ from the standalone
 # Forge layout.  Refresh copies bytes only from these allow-listed sources.
 REFRESH_FILES = {
+    Path("data/bundled_user/cards/30thC_102.json"): Path("data/bundled_user/cards/30thC_102.json"),
+    Path("data/bundled_user/cards/30thDC_040.json"): Path("data/bundled_user/cards/30thDC_040.json"),
     Path("scripts/ai/ptcgdap/semantic_model_profile.py"): Path("scripts/ai/ptcgdap/semantic_model_profile.py"),
+    Path("scripts/ai/ptcgdap/semantic_model_profile_v2.py"): Path("scripts/ai/ptcgdap/semantic_model_profile_v2.py"),
     Path("scripts/ai/ptcgdap/ptcgai_model_package.py"): Path("scripts/ai/ptcgdap/ptcgai_model_package.py"),
     Path("contracts/ptcgdap/semantic_model_tensor_profile_v1.json"): Path("contracts/ptcgdap/semantic_model_tensor_profile_v1.json"),
+    Path("contracts/ptcgdap/semantic_model_tensor_profile_v2.json"): Path("contracts/ptcgdap/semantic_model_tensor_profile_v2.json"),
 	Path("scripts/ai/ptcgdap/author_strategy_package.py"): Path(
 		"scripts/ai/ptcgdap/author_strategy_package.py"
 	),
@@ -215,7 +219,7 @@ def build() -> dict[str, object]:
             "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
             "captured_on": "2026-08-23",
             "scope": "author-strategy development, validation, simulation, and publishing",
-            "note": "Base snapshot plus reviewed 2026-09-19 PtcgDAP semantic Actor overlay: semantic_model_profile.py, ptcgai_model_package.py and semantic_model_tensor_profile_v1.json copied from authorized source; Base frontier return ported to the retained SDK evaluator without importing unrelated newer Turn Program behavior. Card catalog refresh on 2026-09-20: all 1011 qualified public card sources and matching UCIS metadata from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c plus the reviewed EffectRegistry resource-identity fix and CSV6C_032 registration. Custom deck mapping uses the reviewed public map_windows_local_rows method from the same source, retaining strict per-card raw hashes and removing the SDK-local deck-template dependency. The policy interpreter remains at this SDK baseline. Each distributed byte is pinned below.",
+            "note": "Base snapshot from PtcgDAP 3534d22b28d2895d5de5bf12cd35836d686714aa, captured 2026-08-23. Reviewed public card catalog and UCIS overlay from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c with the EffectRegistry script-identity fix and CSV6C_032 registration; 1011 public card sources. The reviewed damage registry expands metadata coverage from 797 to 1011 printings without changing the original 797 entries. Custom-deck validation retains exact per-card hashes without requiring an installed deck template. Reviewed semantic Actor v1/v2 projection, tensor contracts and package-validation overlays are included; Base frontier integration is ported to the retained Forge evaluator without importing unrelated newer Turn Program behavior. Public SDK publication reviewed 2026-09-27. Personal strategy builders, new deck templates, trained actors and private research outputs are excluded. Each distributed byte is pinned below; this manifest is not a full upstream commit or an engine/production acceptance claim.",
         },
         "files": files,
     }

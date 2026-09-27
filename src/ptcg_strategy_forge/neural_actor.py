@@ -26,7 +26,7 @@ class FeatureSpec:
     relations: str = ''
 
     def __post_init__(self):
-        if self.relations not in ('','public_resource_relations_v1') or (self.relations and (self.frame_width,self.option_width)!=(128,32)):
+        if self.relations not in ('','public_resource_relations_v1') or (self.relations and (self.frame_width,self.option_width) not in ((128,32),(416,48))):
             raise ValueError('neural_relations_profile_invalid')
         for width, numeric, categories in (
             (self.frame_width, self.frame_numeric, self.frame_categories),

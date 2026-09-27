@@ -17,7 +17,7 @@ func _initialize() -> void:
 	var data: Dictionary = ints(JSON.parse_string(FileAccess.get_file_as_string(OS.get_cmdline_user_args()[0])))
 	var actor := Actor.new()
 	actor._policy_mode="rules_with_model"
-	actor._tensor_profile_id="ptcgdap_local_semantic_actor_i32_v1"
+	actor._tensor_profile_id=data.get("tensor_profile_id","ptcgdap_local_semantic_actor_i32_v1")
 	for uid: String in data.uids: actor._allowed_uids[uid]=true
 	actor._native=ClassDB.instantiate("PtcgOrtActor")
 	var loaded: Dictionary=actor._native.load_actor(FileAccess.get_file_as_bytes(data.actor))

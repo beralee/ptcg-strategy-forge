@@ -1,12 +1,14 @@
 # 游戏支持卡牌清单
 
+2026-09-19 已同步游戏完整的 1,011 张卡源与对应 UCIS 资格清单，包括 `30thC_102`（宝可平板）和 `30thDC_040`（莉莉艾的决心）。本地目录资格与服务器部署分开验收；某个策略是否已完成实战或上传，以该策略的回执为准。
+
 Forge 在开发者交付中固定一份机器可读清单：
 
 - 仓库：[`data/developer/supported-cards-v1.json`](../data/developer/supported-cards-v1.json)；
 - 新建工作区：`SUPPORTED-CARDS.json`，与仓库文件 exact bytes 相同；
 - 静态开发者页面：提供同一快照的下载入口。
 
-该文件由 `contracts/ptcgdap/ucis_card_catalog_v1.json` 和已通过的 `ucis_catalog_qualification_v1.json` 机械生成。当前有 1,011 个 `godot_local_card_uid_v1` 条目：1,010 个 `usable=true`，1 个明确 `unsupported`。全部卡源随 SDK 提供；生成器和 doctor 检查文件存在、精确字节、UID 和效果身份。运行以下命令可验证文件没有落后于锁定合同：
+该文件由 `contracts/ptcgdap/ucis_card_catalog_v1.json` 和已通过的 `ucis_catalog_qualification_v1.json` 机械生成。当前有 1,011 个 `godot_local_card_uid_v1` 条目：1,010 个 `usable=true`，1 个明确 `unsupported`。每张卡的源 JSON 都随 SDK 交付；生成器和 `doctor` 会核对文件、UID、效果身份和字节摘要。运行以下命令可验证文件没有落后于锁定合同：
 
 ```powershell
 .\.venv\Scripts\python.exe tools\build_developer_supported_cards.py --check
@@ -70,13 +72,11 @@ Host 逐张核对 raw/canonical SHA-256、UID、效果、类型和数量，要�
 
 ## 更新规则
 
-清单不能手工编辑。卡表/UCIS 合同升级后运行：
+清单不能手工编辑。维护者先在游戏仓库运行 `tools/ptcgdap/refresh_developer_card_catalog.py --refresh --godot <Godot executable>`，通过真实引擎、UCIS 和 Host 测试，再在 Forge 仓库运行专用同步工具。它只复制公共卡源和对应目录，不覆盖策略解释器或用户工作区：
 
 ```powershell
-.\.venv\Scripts\python.exe tools\build_developer_supported_cards.py
+.\.venv\Scripts\python.exe tools\refresh_card_catalog.py --source <PtcgDAP source directory>
 .\.venv\Scripts\python.exe tools\build_developer_supported_cards.py --check
 ```
 
 生成器固定源文件 raw SHA-256、资格 evidence、条目顺序和状态计数；`doctor` 会在创建工作区前拒绝缺失或过期的交付文件。
-
-维护者使用 `python tools/refresh_card_catalog.py --source <已验收的公共游戏目录>` 同步。刷新只复制公开卡源与 UCIS 证据，先检查游戏资格，再重建清单和 SDK 来源锁。包含两个周年系列与雪童子 CSV6C_032；服务器运行仍须核对其独立发布身份。

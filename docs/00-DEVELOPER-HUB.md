@@ -8,8 +8,11 @@
 
 ## 先选择你的目标
 
+新牌组规则底座、已有策略多步决策和录像复盘，使用 [`$ptcg-strategy-base`](../skills/ptcg-strategy-base/SKILL.md)；它编译到现有 Base 裁决器，并把缺项和优化假设纳入可验证迭代。见 [框架说明](35-STRATEGY-BASE-FRAMEWORK.md)。
+
 本机学习实验启动或恢复前，先核对 [电脑稳定性与运行保护](30-TRAINING-MACHINE-STABILITY.md)：磁盘与内存门槛、持续监督、完整写盘和失败恢复。
 
+单次干预收益标签、小规模排序头纠错及模型选择门见 [受控收益训练](31-CONTROLLED-OUTCOME-TRAINING.md)。局部收益样本与完整配对胜率是不同的证据。
 
 账号登录、登记公钥和可恢复提交请读 [控制面与 Forge CLI](23-CONTROL-PLANE-CLI.md)。
 

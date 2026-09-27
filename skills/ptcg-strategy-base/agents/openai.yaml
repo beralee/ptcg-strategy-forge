@@ -1,0 +1,4 @@
+interface:
+  display_name: "PTCG Base 策略构筑与复盘"
+  short_description: "基于局面与资源约束构筑多步策略，从真实录像持续完善规则和框架"
+  default_prompt: "使用 $ptcg-strategy-base，基于当前 Base 框架构筑或优化指定牌组，检查多步路线、复盘录像并完成有证据的迭代。"

@@ -1,5 +1,6 @@
 extends SceneTree
 const ModelInput = preload("res://scripts/ai/ptcgdap/host/godot/SemanticModelInput.gd")
+const ModelInputV2 = preload("res://scripts/ai/ptcgdap/host/godot/SemanticModelInputV2.gd")
 const Base = preload("res://scripts/ai/ptcgdap/public/CompetitivePolicyV2.gd")
 const Actor = preload("res://scripts/ai/ptcgdap/host/godot/PtcgDAPModelActor.gd")
 const Loader = preload("res://scripts/ai/ptcgdap/packages/AuthorStrategyPackageLoader.gd")
@@ -22,13 +23,17 @@ func _initialize() -> void:
 	for uid: String in data.uids: uids[uid]=true
 	var failures: Array = []
 	for c: Dictionary in data.cases:
-		var result := ModelInput.project(c.frame,uids)
+		var result := ModelInputV2.project(c.frame,uids) if c.get("profile_id") == ModelInputV2.PROFILE_ID else ModelInput.project(c.frame,uids)
+		if c.has("expected_error"):
+			if result.get("ok",false) or result.get("error_code") != c.expected_error: failures.append({"case":c.id,"error":result})
+			continue
 		if not result.get("ok",false): failures.append({"case":c.id,"error":result}); continue
 		for key: String in c.expected:
 			var actual: Variant=result[key]
 			if actual is PackedInt32Array: actual=Array(actual)
 			if key in ["option_i32","option_presence_i32","option_mask_i32"]: actual=actual.slice(0,c.expected[key].size())
 			if actual != c.expected[key]: failures.append({"case":c.id,"field":key,"actual":actual.slice(0,140) if actual is Array else actual}); break
+		if not c.has("frontier"): continue
 		var tiers := {}
 		for i: int in c.frame.options.size(): tiers[i]=[0]
 		var frontier := Base._base_model_frontier(c.frame,c.selected,tiers,[],[],[],{},c.audit)

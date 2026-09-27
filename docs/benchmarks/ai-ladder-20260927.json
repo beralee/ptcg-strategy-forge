@@ -1,0 +1,1110 @@
+{
+  "document_type": "forge_public_ladder_benchmark_excerpt_v1",
+  "schema_version": 1,
+  "source_url": "https://api.ptcg.skillserver.cn/v1/ladder/snapshot?match_limit=1",
+  "page_url": "https://ptcg.skillserver.cn/dist/competition.html",
+  "data_as_of_epoch": 1790518808,
+  "data_as_of_beijing": "2026-09-27 22:20:08 +08:00",
+  "snapshot_id": "ladder-snapshot-d0ac7e36e95973a6be96f26c7b538125323d2116",
+  "snapshot_sha256": "D0AC7E36E95973A6BE96F26C7B538125323D21168772F4BB66DD59AD075C945F",
+  "source_response_sha256": "5dc7b243fda7ccab50e5629813473b8b94e446f2d2e0301227cec106ca278a93",
+  "profile": {
+    "display_name": "Godot v18 Continuous Ladder",
+    "engine_label": "Godot 4.6.1",
+    "evidence_status": "windows_local_stopped_snapshot",
+    "official_cabt_validated": false,
+    "production_ready": false,
+    "qualification_environment": "Windows local stopped snapshot"
+  },
+  "ranking": {
+    "algorithm_id": "score_gap_pair_v2",
+    "initial_mu": "600.000000",
+    "initial_sigma": "200.000000",
+    "provisional_max_sigma": 100,
+    "provisional_min_rated_series": 10,
+    "sort_metric": "mu_desc"
+  },
+  "season": {
+    "display_name": "积分邻近匹配第一赛季",
+    "first_policy_version": 31,
+    "rating_algorithm_id": "score_gap_pair_v2",
+    "rating_sequence_start": 2872,
+    "season_id": "ladder-season-d7560862635cb4dd98428af76c081a6e",
+    "started_at_epoch": 1789806334
+  },
+  "participant_counts": {
+    "total": 52,
+    "developer": 27,
+    "platform_npc": 25
+  },
+  "note": "Allow-listed public snapshot excerpt; no strategy source, archives, credentials or decision traces. Image is a data visualization, not a website screenshot.",
+  "release_leaderboard": [
+    {
+      "rank": 1,
+      "release_id": "release-b721ed7f55b4c2d4b1b93eb5659d770035d033b0",
+      "display_name": "余烬霜幕 · 攻击接力与奖赏竞速",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.ember-frost",
+      "package_version": "0.4.0",
+      "mu": "987.691049",
+      "rated_series_count": 207,
+      "actual_game_count": 414,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 21,
+        "win_rate_micros": 650000,
+        "wins": 39
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 2,
+      "release_id": "release-cf196388c350c2d1d81de05682f03a09f60d5cb8",
+      "display_name": "幽影接力 · 18.5 多龙黑夜魔灵",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.dragapult-dusknoir",
+      "package_version": "0.9.1",
+      "mu": "935.930254",
+      "rated_series_count": 200,
+      "actual_game_count": 400,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 23,
+        "win_rate_micros": 616667,
+        "wins": 37
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 3,
+      "release_id": "release-9027dadefc5dfa2b534c7b16b0244bccf59d774e",
+      "display_name": "余烬霜幕 · 支援者统筹与孤场抢救",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.ember-frost",
+      "package_version": "0.6.1",
+      "mu": "927.061674",
+      "rated_series_count": 207,
+      "actual_game_count": 414,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 33,
+        "win_rate_micros": 450000,
+        "wins": 27
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 4,
+      "release_id": "release-e3794d686875434b30c51f45730b885c9e38808c",
+      "display_name": "厄诡椪／岩殿居蟹 R4",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.z.ogerpon-crustle",
+      "package_version": "1.4.0",
+      "mu": "872.546273",
+      "rated_series_count": 204,
+      "actual_game_count": 408,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 5,
+      "release_id": "release-8dda7b942cf9c5e6300273bad82dd85bb7c3b10e",
+      "display_name": "苍刃咒线 · 赫普的苍响",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.z.hop-zacian",
+      "package_version": "0.2.0",
+      "mu": "847.753555",
+      "rated_series_count": 202,
+      "actual_game_count": 404,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 6,
+      "release_id": "release-a3fb2fba2c5b52f33ca41afc596297e6cf40df00",
+      "display_name": "玛丽的礼盒 V3 真·豆包",
+      "author_display_name": "e719",
+      "owner_kind": "developer",
+      "package_id": "dev.e719.marnies-gift-box-v2",
+      "package_version": "0.2.0",
+      "mu": "842.504670",
+      "rated_series_count": 196,
+      "actual_game_count": 392,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 25,
+        "win_rate_micros": 583333,
+        "wins": 35
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 7,
+      "release_id": "release-1f23c3c46d3f8f6f668c9d659a91ecef42f1d7c6",
+      "display_name": "18.5 玛俐霜织",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.z.marnie185",
+      "package_version": "0.2.1",
+      "mu": "823.394461",
+      "rated_series_count": 210,
+      "actual_game_count": 420,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 32,
+        "win_rate_micros": 466667,
+        "wins": 28
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 8,
+      "release_id": "release-4d2cf64bac2f2a44870473a9ecf11d452d7dbf22",
+      "display_name": "玛丽的礼盒 V3 真·豆包",
+      "author_display_name": "e719",
+      "owner_kind": "developer",
+      "package_id": "dev.e719.marnies-gift-box-v2",
+      "package_version": "0.3.0",
+      "mu": "812.466023",
+      "rated_series_count": 203,
+      "actual_game_count": 406,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 29,
+        "win_rate_micros": 516667,
+        "wins": 31
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 9,
+      "release_id": "release-b5ead06e78ef867093a36d0117e1ac2ea2e8705d",
+      "display_name": "玛丽的礼盒 V2 优化版",
+      "author_display_name": "e719",
+      "owner_kind": "developer",
+      "package_id": "dev.e719.marnies-gift-box-v2",
+      "package_version": "0.1.0",
+      "mu": "810.255021",
+      "rated_series_count": 182,
+      "actual_game_count": 364,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 27,
+        "win_rate_micros": 550000,
+        "wins": 33
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 10,
+      "release_id": "release-9abe532ad39fa6c2a04385382a7eb3826642497e",
+      "display_name": "玛丽的礼盒 V2 优化版",
+      "author_display_name": "e719",
+      "owner_kind": "developer",
+      "package_id": "dev.e719.marnies-gift-box-v2",
+      "package_version": "0.4.0",
+      "mu": "778.978318",
+      "rated_series_count": 211,
+      "actual_game_count": 422,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 29,
+        "win_rate_micros": 516667,
+        "wins": 31
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 11,
+      "release_id": "release-24dc3d5ee410eb8546bbdfc74d991230aed9dafb",
+      "display_name": "玛俐的礼盒",
+      "author_display_name": "波导的勇者",
+      "owner_kind": "developer",
+      "package_id": "dev.bodao-yongzhe.marnies-gift-box",
+      "package_version": "5.13.0",
+      "mu": "761.431635",
+      "rated_series_count": 276,
+      "actual_game_count": 552,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 31,
+        "win_rate_micros": 483333,
+        "wins": 29
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 12,
+      "release_id": "release-7d6617731b0856a169b230fa2c794ec6ced5f27b",
+      "display_name": "玛丽的礼盒 V3——真·豆包",
+      "author_display_name": "e719",
+      "owner_kind": "developer",
+      "package_id": "dev.e719.marnies-gift-box-v2",
+      "package_version": "0.2.0",
+      "mu": "758.722432",
+      "rated_series_count": 195,
+      "actual_game_count": 390,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 13,
+      "release_id": "release-4264aa02813e73df68e6ff82fa8c9dfaeba9af80",
+      "display_name": "Ariel 多龙黑夜魔灵 R1",
+      "author_display_name": "Ariel",
+      "owner_kind": "developer",
+      "package_id": "dev.ariel.dragapult-dusknoir",
+      "package_version": "0.1.0",
+      "mu": "709.535284",
+      "rated_series_count": 197,
+      "actual_game_count": 394,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 14,
+      "release_id": "release-19edd8a79340981866a09c0c634d4ef6b5a90396",
+      "display_name": "Ariel 多龙黑夜魔灵 R2",
+      "author_display_name": "Ariel",
+      "owner_kind": "developer",
+      "package_id": "dev.ariel.dragapult-dusknoir",
+      "package_version": "0.1.1",
+      "mu": "708.525975",
+      "rated_series_count": 66,
+      "actual_game_count": 132,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 36,
+        "win_rate_micros": 400000,
+        "wins": 24
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 15,
+      "release_id": "release-5cf8adfdd711fdf524236500b17b4d5d1b130129",
+      "display_name": "Ariel 多龙巴鲁托 R3",
+      "author_display_name": "Ariel",
+      "owner_kind": "developer",
+      "package_id": "dev.counter.dragapult-r1",
+      "package_version": "0.1.6",
+      "mu": "706.993348",
+      "rated_series_count": 224,
+      "actual_game_count": 448,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 16,
+      "release_id": "release-a8629ec3d8fba1c97e1820f47d5b3cfcb3ad16d6",
+      "display_name": "绯幕垂丝 · 火箭队操陷蛛",
+      "author_display_name": "61Krahs",
+      "owner_kind": "developer",
+      "package_id": "dev.61krahs.rocket-spidops",
+      "package_version": "0.2.2",
+      "mu": "698.113678",
+      "rated_series_count": 97,
+      "actual_game_count": 194,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 26,
+        "win_rate_micros": 566667,
+        "wins": 34
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 17,
+      "release_id": "release-3c2e232ba96dc34dfa138bd0e4c1d1418316bed6",
+      "display_name": "GPT6 astra · 余烬霜幕 · 0.1.2",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.ember-frost",
+      "package_version": "0.1.2",
+      "mu": "688.392691",
+      "rated_series_count": 273,
+      "actual_game_count": 546,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 33,
+        "win_rate_micros": 450000,
+        "wins": 27
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 18,
+      "release_id": "release-dfb5098fef6e12d9d4dffd483a5be675f174c2a2",
+      "display_name": "Ariel 阿响火暴兽 R1",
+      "author_display_name": "Ariel",
+      "owner_kind": "developer",
+      "package_id": "dev.ariel.ethans-typhlosion-r1",
+      "package_version": "0.11.0",
+      "mu": "654.036988",
+      "rated_series_count": 213,
+      "actual_game_count": 426,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 19,
+      "release_id": "builtin-v18-800033475",
+      "display_name": "18.0 远古巨蜓",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "641.889409",
+      "rated_series_count": 237,
+      "actual_game_count": 474,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 20,
+      "release_id": "release-062c0dc162dfc903f264c117c41c931b4388b822",
+      "display_name": "火箭队操陷蛛",
+      "author_display_name": "61Krahs",
+      "owner_kind": "developer",
+      "package_id": "dev.61krahs.rocket-spidops",
+      "package_version": "0.1.0",
+      "mu": "636.969629",
+      "rated_series_count": 89,
+      "actual_game_count": 178,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 34,
+        "win_rate_micros": 433333,
+        "wins": 26
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 21,
+      "release_id": "release-4ae4fe91758852f6c1687b0b53ccca948b6d4711",
+      "display_name": "Ariel 多龙巴鲁托 R2",
+      "author_display_name": "Ariel",
+      "owner_kind": "developer",
+      "package_id": "dev.counter.dragapult-r1",
+      "package_version": "0.1.5",
+      "mu": "628.396347",
+      "rated_series_count": 216,
+      "actual_game_count": 432,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 29,
+        "win_rate_micros": 516667,
+        "wins": 31
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 22,
+      "release_id": "release-dfa4c59d26fc4667b7c4d86dec2836623bf7e3fc",
+      "display_name": "虹途 · 18.5 伊布 box",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.eevee-box",
+      "package_version": "0.8.1",
+      "mu": "622.453450",
+      "rated_series_count": 217,
+      "actual_game_count": 434,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 31,
+        "win_rate_micros": 483333,
+        "wins": 29
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 23,
+      "release_id": "release-637caba7058e5698f516a659c32579d3be27e361",
+      "display_name": "18.5 沙奈朵 · 星轨",
+      "author_display_name": "z",
+      "owner_kind": "developer",
+      "package_id": "dev.gardevoir185.startrail",
+      "package_version": "0.5.2",
+      "mu": "621.883168",
+      "rated_series_count": 184,
+      "actual_game_count": 368,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 24,
+      "release_id": "builtin-v18-800018499",
+      "display_name": "18.0 多龙巴鲁托",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "607.005892",
+      "rated_series_count": 221,
+      "actual_game_count": 442,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 25,
+      "release_id": "builtin-v18-800018880",
+      "display_name": "18.0 阿响火暴兽",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "587.621628",
+      "rated_series_count": 219,
+      "actual_game_count": 438,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 29,
+        "win_rate_micros": 516667,
+        "wins": 31
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 26,
+      "release_id": "release-32ccd2539013e8ec8d3d2b9135414a1a4fc348ad",
+      "display_name": "Ariel 多龙黑夜魔灵 R3",
+      "author_display_name": "Ariel",
+      "owner_kind": "developer",
+      "package_id": "dev.ariel.dragapult-dusknoir",
+      "package_version": "0.1.2",
+      "mu": "580.243436",
+      "rated_series_count": 47,
+      "actual_game_count": 94,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 34,
+        "win_rate_micros": 433333,
+        "wins": 26
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 27,
+      "release_id": "builtin-v18-18000230",
+      "display_name": "18.0 喷火龙多龙巴鲁托",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "571.948558",
+      "rated_series_count": 225,
+      "actual_game_count": 450,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 28,
+      "release_id": "builtin-v18-800018543",
+      "display_name": "18.0 竹兰烈咬陆鲨",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "562.816954",
+      "rated_series_count": 223,
+      "actual_game_count": 446,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 32,
+        "win_rate_micros": 466667,
+        "wins": 28
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 29,
+      "release_id": "builtin-v18-800017407",
+      "display_name": "18.0 赫普苍响",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "555.034129",
+      "rated_series_count": 227,
+      "actual_game_count": 454,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 31,
+        "win_rate_micros": 483333,
+        "wins": 29
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 30,
+      "release_id": "builtin-v18-800017047",
+      "display_name": "18.0 象牙猪火焰鸡",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "552.094906",
+      "rated_series_count": 220,
+      "actual_game_count": 440,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 31,
+      "release_id": "builtin-v18-800018500",
+      "display_name": "18.0 陆地水母厄诡椪",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "545.627703",
+      "rated_series_count": 218,
+      "actual_game_count": 436,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 32,
+      "release_id": "builtin-v18-800018539",
+      "display_name": "18.0 阿响凤王",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "545.609469",
+      "rated_series_count": 216,
+      "actual_game_count": 432,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 33,
+      "release_id": "builtin-v18-800017643",
+      "display_name": "18.0 火伊布猫头夜鹰",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "545.227457",
+      "rated_series_count": 224,
+      "actual_game_count": 448,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 34,
+      "release_id": "builtin-v18-800018501",
+      "display_name": "18.0 玛俐的长毛巨魔",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "529.837363",
+      "rated_series_count": 230,
+      "actual_game_count": 460,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 32,
+        "win_rate_micros": 466667,
+        "wins": 28
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 35,
+      "release_id": "builtin-v18-800015934",
+      "display_name": "18.0 Tord太晶盒",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "525.424336",
+      "rated_series_count": 218,
+      "actual_game_count": 436,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 32,
+        "win_rate_micros": 466667,
+        "wins": 28
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 36,
+      "release_id": "builtin-v18-800019125",
+      "display_name": "18.0 火焰鸡多龙巴鲁托",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "494.279601",
+      "rated_series_count": 220,
+      "actual_game_count": 440,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 37,
+      "release_id": "builtin-v18-800015734",
+      "display_name": "18.0 自爆多龙巴鲁托",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "491.770764",
+      "rated_series_count": 222,
+      "actual_game_count": 444,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 29,
+        "win_rate_micros": 516667,
+        "wins": 31
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 38,
+      "release_id": "release-2c2c7d612c8c1f019878f36f8842ff638674e6e5",
+      "display_name": "绯幕垂丝 · 火箭队操陷蛛",
+      "author_display_name": "61Krahs",
+      "owner_kind": "developer",
+      "package_id": "dev.61krahs.rocket-spidops",
+      "package_version": "0.3.1",
+      "mu": "483.704844",
+      "rated_series_count": 53,
+      "actual_game_count": 106,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 33,
+        "win_rate_micros": 450000,
+        "wins": 27
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 39,
+      "release_id": "builtin-v18-800017097",
+      "display_name": "18.0 无碟沙奈朵",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "481.767001",
+      "rated_series_count": 219,
+      "actual_game_count": 438,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 40,
+      "release_id": "builtin-v18-800018359",
+      "display_name": "18.0 大比鸟控制",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "481.662057",
+      "rated_series_count": 222,
+      "actual_game_count": 444,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 33,
+        "win_rate_micros": 450000,
+        "wins": 27
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 41,
+      "release_id": "release-49c4bd8299301a0f9dbc5c6134d9cdf365a414ae",
+      "display_name": "反制天梯多龙巴鲁托 R1",
+      "author_display_name": "PTCG Counter Lab",
+      "owner_kind": "developer",
+      "package_id": "dev.counter.dragapult-r1",
+      "package_version": "0.1.4",
+      "mu": "449.285609",
+      "rated_series_count": 215,
+      "actual_game_count": 430,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 30,
+        "win_rate_micros": 500000,
+        "wins": 30
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 42,
+      "release_id": "builtin-v18-800017631",
+      "display_name": "18.0 雪妖女愿增猿",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "448.275496",
+      "rated_series_count": 224,
+      "actual_game_count": 448,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 26,
+        "win_rate_micros": 566667,
+        "wins": 34
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 43,
+      "release_id": "builtin-v18-800016834",
+      "display_name": "18.0 纯赛富豪",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "425.067846",
+      "rated_series_count": 218,
+      "actual_game_count": 436,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 44,
+      "release_id": "release-60e9aebfaaf9f930e091934691e3bb0e41117961",
+      "display_name": "绯幕垂丝 · 火箭队操陷蛛",
+      "author_display_name": "61Krahs",
+      "owner_kind": "developer",
+      "package_id": "dev.61krahs.rocket-spidops",
+      "package_version": "0.3.0",
+      "mu": "423.290367",
+      "rated_series_count": 66,
+      "actual_game_count": 132,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 33,
+        "win_rate_micros": 450000,
+        "wins": 27
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 45,
+      "release_id": "release-3beddc15a5892314bae598695e57893ccefa2f97",
+      "display_name": "Dragapult Phantom Dive",
+      "author_display_name": "e719",
+      "owner_kind": "developer",
+      "package_id": "dev.e719.dragapult-phantom-dive",
+      "package_version": "0.1.0",
+      "mu": "395.003652",
+      "rated_series_count": 211,
+      "actual_game_count": 422,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 31,
+        "win_rate_micros": 483333,
+        "wins": 29
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 46,
+      "release_id": "builtin-v18-18000625",
+      "display_name": "18.0 愿增猿火焰鸡",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "381.353715",
+      "rated_series_count": 215,
+      "actual_game_count": 430,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 32,
+        "win_rate_micros": 466667,
+        "wins": 28
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 47,
+      "release_id": "builtin-v18-800018497",
+      "display_name": "18.0 沙奈朵",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "368.594198",
+      "rated_series_count": 216,
+      "actual_game_count": 432,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 35,
+        "win_rate_micros": 416667,
+        "wins": 25
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 48,
+      "release_id": "builtin-v18-800018105",
+      "display_name": "18.0 虫甲圣沙奈朵",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "343.289549",
+      "rated_series_count": 214,
+      "actual_game_count": 428,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 36,
+        "win_rate_micros": 400000,
+        "wins": 24
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 49,
+      "release_id": "builtin-v18-800018509",
+      "display_name": "18.0 猛雷鼓厄诡椪",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "323.331648",
+      "rated_series_count": 212,
+      "actual_game_count": 424,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 29,
+        "win_rate_micros": 516667,
+        "wins": 31
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 50,
+      "release_id": "builtin-v18-800018498",
+      "display_name": "18.0 学院沙奈朵",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "322.986065",
+      "rated_series_count": 215,
+      "actual_game_count": 430,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 28,
+        "win_rate_micros": 533333,
+        "wins": 32
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 51,
+      "release_id": "builtin-v18-800018502",
+      "display_name": "18.0 N的索罗亚克",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "261.996350",
+      "rated_series_count": 210,
+      "actual_game_count": 420,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 34,
+        "win_rate_micros": 433333,
+        "wins": 26
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    },
+    {
+      "rank": 52,
+      "release_id": "builtin-v18-800017280",
+      "display_name": "18.0 铝钢龙钢铁防线",
+      "owner_kind": "platform_npc",
+      "package_id": "",
+      "package_version": "",
+      "mu": "244.094972",
+      "rated_series_count": 210,
+      "actual_game_count": 420,
+      "recent_60_games": {
+        "draws": 0,
+        "games": 60,
+        "losses": 38,
+        "win_rate_micros": 366667,
+        "wins": 22
+      },
+      "qualification_status": "passed",
+      "participation_status": "eligible"
+    }
+  ]
+}

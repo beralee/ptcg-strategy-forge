@@ -13,7 +13,15 @@ class ResourceGateTests(unittest.TestCase):
     def test_kernel_mutex_blocks_second_process_without_launching_a_pool(self):
         from ptcg_strategy_forge.resources_gate import heavy_job
         code = "from ptcg_strategy_forge.resources_gate import heavy_job\ntry:\n with heavy_job(): print('unexpected')\nexcept ValueError as error: print(str(error))"
-        with patch("ptcg_strategy_forge.resources_gate.windows_snapshot", return_value=self.healthy()), heavy_job():
+        # This exercises the real cross-process mutex without launching work.
+        # Mock disk pressure as well as RAM so host free space cannot prevent
+        # reaching the mutex assertion; storage thresholds have separate tests.
+        disks = [{"volume": "test-volume", "roles": ["output"], "free_gib": 32.0}]
+        with (
+            patch("ptcg_strategy_forge.resources_gate.windows_snapshot", return_value=self.healthy()),
+            patch("ptcg_strategy_forge.run_safety.storage_snapshot", return_value=disks),
+            heavy_job(),
+        ):
             child = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, timeout=20,
                                    env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")})
         self.assertEqual(0, child.returncode, child.stderr)

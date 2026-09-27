@@ -182,6 +182,6 @@ their_clock = facts.opponent_attack_windows_to_win(prizes_per_attack=1)
 
 ## 能力与声明边界
 
-UCIS generation 1 覆盖 49/49 Context、17/17 Option shape、16 个交互原语和 729 个声明可用 effect；1 个动态未登记能力显式 unsupported。九类代表性双引擎证据只证明 current-window input、ordered semantic options 和双方接受的 indexes。
+UCIS generation 1 覆盖 49/49 Context、17/17 Option shape、16 个交互原语和 887 个声明可用 effect；1 个动态未登记能力显式 unsupported。九类代表性双引擎证据只证明 current-window input、ordered semantic options 和双方接受的 indexes。
 
 SDK 不证明提交后的 state、damage、KO、RNG、terminal、完整规则 A3、Search、production sandbox、Android/device acceptance 或策略强度。统一 v2 与 Windows ORT Actor 有独立可执行证据，但当前 SDK 仍不证明 macOS 实机能力。完整边界见[明确限制](LIMITATIONS.md)。

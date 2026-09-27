@@ -1,0 +1,343 @@
+{
+  "document_type": "ptcg_strategy_forge_public_sdk_acceptance_v1",
+  "schema_version": 1,
+  "accepted": true,
+  "captured_at_utc": "2026-09-27T14:39:21.012948+00:00",
+  "rollback_commit": "aa5cda65467ea71f030579b1df196ffcb393b617",
+  "scope": "Public SDK and README/benchmark documentation only; no new personal strategy implementation, deck workspace, trained actor, credential or private trace.",
+  "python_version": "3.13.7",
+  "test_environment": {
+    "PYTHONUTF8": "1",
+    "PYTHONIOENCODING": "utf-8"
+  },
+  "checks": {
+    "focused_unit_tests": {
+      "passed": 54,
+      "failed": 0
+    },
+    "regression_coverage": {
+      "verified_test_methods": 291,
+      "initial_full_discovery": {
+        "total": 291,
+        "passed": 289,
+        "failures": 1,
+        "errors": 1,
+        "seconds": 513.65,
+        "log_sha256": "852A4B1770F125FE2F57C79D56D86779A4340E87837C8BB1B74508A51771EC73"
+      },
+      "corrected_failures": [
+        "test_kernel_mutex_blocks_second_process_without_launching_a_pool",
+        "test_documentation_relative_links_exist"
+      ],
+      "final_targeted_recheck": {
+        "passed": 17,
+        "failed": 0,
+        "log_sha256": "F801F626BBC7F172BA51EE3708BBC50805EBFB3EFF67A815E2434815F073A47C"
+      },
+      "unresolved": 0,
+      "note": "Full discovery followed by focused rechecks of both failures and all resource tests; no second full discovery claimed."
+    },
+    "sdk_manifest_check": true,
+    "supported_cards_check": {
+      "total": 1011,
+      "usable": 1010,
+      "unsupported": 1
+    },
+    "clean_staged_export_doctor": "passed",
+    "clean_workspace_check": {
+      "status": "passed",
+      "scenarios": 10,
+      "passed": 10,
+      "deterministic": true,
+      "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A"
+    },
+    "clean_demo": {
+      "status": "passed",
+      "baseline_red": true,
+      "green": 10,
+      "deterministic": true
+    },
+    "wheel": {
+      "built": true,
+      "isolated_target_install": true,
+      "outside_repository_doctor": "passed",
+      "public_strategy_base_import": true
+    },
+    "outgoing_credential_pattern_scan": {
+      "changed_files": 60,
+      "findings": 0,
+      "scope": "Full contents of changed/new text files; PEM private keys, service-token formats, JWTs and long literal credential assignments; path review excludes personal artifacts."
+    },
+    "new_markdown_links_missing": 0,
+    "git_diff_check": true
+  },
+  "retained_failed_attempts": [
+    "Initial regression stopped after a Windows GBK/UTF-8 subprocess decoding mismatch; log retained locally. Final full run uses consistent UTF-8.",
+    "UTF-8 full discovery found two documentation links read before correction and one mutex-only test depending on real low disk space. Links and test input isolation were fixed; all 17 affected/resource checks pass. Production resource thresholds remain unchanged.",
+    "Wheel build without isolation lacked setuptools; the isolated build succeeded without changing repository dependencies.",
+    "Initial installed CLI probe passed an unsupported main argument; corrected sys.argv probe succeeded."
+  ],
+  "benchmark": {
+    "source": "public anonymous ladder API",
+    "snapshot_id": "ladder-snapshot-d0ac7e36e95973a6be96f26c7b538125323d2116",
+    "snapshot_sha256": "D0AC7E36E95973A6BE96F26C7B538125323D21168772F4BB66DD59AD075C945F",
+    "data_as_of_epoch": 1790518808,
+    "image_kind": "data visualization, not a website screenshot",
+    "browser_capture": "unavailable: browser connection failed"
+  },
+  "claims": {
+    "sdk_and_public_window_validation": true,
+    "new_full_game_benchmark_run": false,
+    "new_godot_native_acceptance": false,
+    "official_cabt_parity": false,
+    "production_approval": false,
+    "strategy_strength_improvement": false
+  },
+  "known_gaps": [
+    "Native engine/device acceptance remains separate.",
+    "Public ladder scores describe the frozen pool/season/version; they are not independent paired improvement evidence.",
+    "Personal strategy implementations and experiments remain local; pre-existing tracked SDK templates and fixtures are unchanged."
+  ],
+  "changed_files_excluding_this_receipt": [
+    {
+      "path": ".gitignore",
+      "sha256": "616DE545040375B5F2F6AE3AEB6E132249FD2428772D3145843F996A92765DE4"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "123AF7115B094151364E20F913A1EFBFC236E8386BFA2BBB99C66B22DA5CEC71"
+    },
+    {
+      "path": "README.md",
+      "sha256": "9122CBF85988965136C79EF89EB71977F015C48E6E737CAF19E88F90EB6D6F99"
+    },
+    {
+      "path": "TODO.md",
+      "sha256": "0172625F09BE4297E93B193BCEA5850E9E6ED02195594BE56A6732B7B508B21E"
+    },
+    {
+      "path": "contracts/ptcgdap/public_damage_capability_registry_v1.json",
+      "sha256": "C132A27B82CF2BA0661065E5EF5A10AE0AB506B44CDB7DB802B51A286D9EDFB4"
+    },
+    {
+      "path": "contracts/ptcgdap/semantic_model_tensor_profile_v2.json",
+      "sha256": "FF4D1FBFC0B15283FF3A94A6BE438C419BD54B09976344A59A1379F89B974232"
+    },
+    {
+      "path": "docs/00-DEVELOPER-HUB.md",
+      "sha256": "B91D284B8F59DEB95F53F532F8F2AB9A8F048B2BB693D7CE1D62A3EE83442A6D"
+    },
+    {
+      "path": "docs/08-ARCHITECTURE.md",
+      "sha256": "B5794B6C451B47B772B6F030401E63358E2CF7EDBF52D976C0B30CA0F34789AA"
+    },
+    {
+      "path": "docs/15-UCIS-SDK-DEVELOPER-GUIDE.md",
+      "sha256": "7ED7ED1B36F4CB87A9F82E6FCCF95E13C7C0990ABCDCD8DC79526C2F8049BF65"
+    },
+    {
+      "path": "docs/19-SUPPORTED-CARDS.md",
+      "sha256": "A9E398CC6F53B9AB0F35D353D9FB52952F66E75C49434DBC926274773ED271A4"
+    },
+    {
+      "path": "docs/27-ONLINE-DECISION-TRACES.md",
+      "sha256": "BFEE7DEED477C2061EF0F9A99EC2FB3FF43A9336F38FEDAF9E58EC85D8CCAA22"
+    },
+    {
+      "path": "docs/28-LEARNED-SEMANTIC-ACTOR.md",
+      "sha256": "31C1F6792DEFB731EF29F50015E14B084B1179B8F195BA4362065F3582560C6E"
+    },
+    {
+      "path": "docs/30-TRAINING-MACHINE-STABILITY.md",
+      "sha256": "6F9534FFAABB7834CF759F611DF3B7C8C4EBC143FDE0F22EC4F25AC3CCF0C658"
+    },
+    {
+      "path": "docs/31-CONTROLLED-OUTCOME-TRAINING.md",
+      "sha256": "108DDDED9F3E90839562DB205482D29E007CBC5FFE28FE6AE28E13D2FEAEE03A"
+    },
+    {
+      "path": "docs/35-STRATEGY-BASE-FRAMEWORK.md",
+      "sha256": "A4DA1408468A2BDD1E8090F5012080779209BD6978DBD88B9DEBA001107948A3"
+    },
+    {
+      "path": "docs/37-AI-LADDER-BENCHMARK.md",
+      "sha256": "D50BFAEE17CD77407E119B35E511DF741671A8229B9266E70EAB5A5CBE38CB67"
+    },
+    {
+      "path": "docs/LIMITATIONS.md",
+      "sha256": "20BE2130A15F42732FB6A236D933F4A6C08C7B9CB13F9BB6334A0AE17FF40165"
+    },
+    {
+      "path": "docs/assets/ai-ladder-20260927.png",
+      "sha256": "72038526F5B4E5D7266309856FD9B650386C8960F9E39223B29AA85167118A2B"
+    },
+    {
+      "path": "docs/benchmarks/ai-ladder-20260927.json",
+      "sha256": "7085A0B0ED190EE8A88D77FCF6E77229CFB4DAA697C09600AC83970F0106DB0D"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/ptcgai_model_package.py",
+      "sha256": "DECF993A64C5B6958B657FF7FDFC5EC3C525258746C013625CE725645FD4AE44"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/semantic_model_profile.py",
+      "sha256": "ECD8F974B021D8A05A0477D144019A91997C619D87BD1DB306208753FBD1EDE2"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/semantic_model_profile_v2.py",
+      "sha256": "921ACDDD4EE23B1234084FD8B690981E2C440C6BB2D290177911141469806D19"
+    },
+    {
+      "path": "skills/ptcg-learned-strategy-pipeline/references/computer-stability.md",
+      "sha256": "B7800F0665683D3772860D719E241676CB6D481EC21D35F85A5DE870B840C2AF"
+    },
+    {
+      "path": "skills/ptcg-learned-strategy-pipeline/references/continuous-improvement.md",
+      "sha256": "F13210AFE5BFEEF3F3CC42C1E80482C504CF8E5F35F027782B0C29362554A446"
+    },
+    {
+      "path": "skills/ptcg-strategy-base/SKILL.md",
+      "sha256": "EA4AC071B2B0EA41C4E5563159E8F6CF555DB041E389CF60873E067AD5D92EEA"
+    },
+    {
+      "path": "skills/ptcg-strategy-base/agents/openai.yaml",
+      "sha256": "21A72A966795D774CBACE9663736BEA7BBCEE9AE0F812C51ABC8A7F9A2417111"
+    },
+    {
+      "path": "skills/ptcg-strategy-base/assets/ITERATION-RECORD.md",
+      "sha256": "1A67F82148BB0BE0AA743F1B0D9BE754E4F3C07D57A2598422D156C76D430103"
+    },
+    {
+      "path": "skills/ptcg-strategy-base/assets/STRATEGY-BLUEPRINT.md",
+      "sha256": "39D996E8A4DDFDA9850642DE16989C00D0277010A4DD432AD667DC05EE926907"
+    },
+    {
+      "path": "skills/ptcg-strategy-base/references/framework.md",
+      "sha256": "FD54E27048B760EB90C3A0F87206900EA69A08A6BC04EA573F1E7976023F8B58"
+    },
+    {
+      "path": "skills/ptcg-strategy-base/references/iteration.md",
+      "sha256": "178E0EFD5E30BEBACB1765019E15B898240C84F91042CB88AA6FEF329215F9D6"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/__init__.py",
+      "sha256": "3DF6E23BEB0395770A8B8D3B0D0B08D2DBD4387901C3F39FED5671BC53804564"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/controlled_branch.py",
+      "sha256": "5C8E6EA467B946B1B41E7564CC82D24260FF9F3AF43AB9FBB0C757BC960AD34D"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/neural_actor.py",
+      "sha256": "CB948CD5DB6270D56091DBB157601B878A48CCE8C9CB2D531FCAEB31F1D68827"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/neural_dataset.py",
+      "sha256": "8EDD541F9FB96B3EE28E1E97B0DFED004BFA71961C23AD7CD7A6DB02086AEB6C"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/neural_features.py",
+      "sha256": "0B61223C1CE7CCC2D21C448D4A3E5FBDDA674ADEE151FACF8BAD3E210A0E78BF"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/preference_head.py",
+      "sha256": "69FF9AEE711A44203905FB2646EFE813B6816D23F4F2460CBAA1EE00E372D2FA"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/ptcgai_ort.py",
+      "sha256": "3C9C2E607154A7BCA94BFDB7DFE5669A70E2BD76BD1CE08F6DACC4ECA6E2A5A2"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/run_safety.py",
+      "sha256": "05D701C9ABC18D9675A9F49AB60A87144DEEADF6925A2B5126CD1428E0692BFA"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/sdk.py",
+      "sha256": "B712C28E37834B5871C9CB3DC3BFEB6FE4A60F6919680939A387093B08F9F834"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/strategy_base.py",
+      "sha256": "882873B9A6DF62146C9BFA545954009BC46554FF3F3C8608E823854B2B1EE91D"
+    },
+    {
+      "path": "src/ptcg_strategy_forge/strategy_reflection.py",
+      "sha256": "D2BB1C3FB090F1DA88168802FA88792F00237D7964D90717F437123C13A6D9B5"
+    },
+    {
+      "path": "tests/test_controlled_branch.py",
+      "sha256": "B30C799A5981AED8A662B7C6F66704396C3A45F3D868E6C3AE77B8803E1D659A"
+    },
+    {
+      "path": "tests/test_damage_registry_catalog.py",
+      "sha256": "9AF85DF04EB19AD4E725015E774105F9A41645D07B1F36B742E673AE1C2C9FEF"
+    },
+    {
+      "path": "tests/test_neural_dataset_v2.py",
+      "sha256": "360705AD1108C144FE9D09411142AAB9FF0CBBC87BE2A2E129970602DE482DFB"
+    },
+    {
+      "path": "tests/test_neural_features_v2.py",
+      "sha256": "64C4F506E027C142DC2F7CB5C174BCF4DA25838D26BAFD448DDF60AE5B61F06F"
+    },
+    {
+      "path": "tests/test_preference_head.py",
+      "sha256": "46898C16D511781E2551CCAD19C9D5168CCF75AD8EED8C1B309B3DD2E893FA10"
+    },
+    {
+      "path": "tests/test_resource_gate.py",
+      "sha256": "65DAE25A634E3C46F0BE67C3A05C5ECC8544D6DF5E97F3AD0B5788564C426002"
+    },
+    {
+      "path": "tests/test_run_safety.py",
+      "sha256": "A27FB35B0AA7CF6BB86B24B45D2DAF461801A193BC09965748D5BED6B6059A42"
+    },
+    {
+      "path": "tests/test_semantic_model_profile_v2.py",
+      "sha256": "AFC700EC38F54FCDAA12E6803F0E4645D9CB2504E5D4498C32E4EEC2704AEA31"
+    },
+    {
+      "path": "tests/test_strategy_base.py",
+      "sha256": "2B423365DAD58DAC70FAEDF70B850D64E3396FC895B5F4C891CF0F0702AF52C2"
+    },
+    {
+      "path": "tests/test_strategy_base_cli.py",
+      "sha256": "183AAB5E80E83475F7F3FDE62CAFF7DB1F7FE1D709EAA194995D90D11BB68A50"
+    },
+    {
+      "path": "tests/test_strategy_reflection.py",
+      "sha256": "A748620EACC2E5BD48851F2680D71FB672F75E0ED051F8D1B4A0AB50EB00F909"
+    },
+    {
+      "path": "tools/build_sdk_snapshot.py",
+      "sha256": "B500B344D6186F85B2AC00B197EC9A172A4BE9B8D90949C64FB3E7AAA8FA73FE"
+    },
+    {
+      "path": "tools/controlled_branch_policy.gd",
+      "sha256": "8321093A0848469A817134989233CBA118247240F767BCA03C33149FD1ED0CEB"
+    },
+    {
+      "path": "tools/local_engine_bench.py",
+      "sha256": "849ADD8794E1F2078B6140232C92D17AA3CA873D5A8251D4B975C9EBA009FC86"
+    },
+    {
+      "path": "tools/neural_strategy_research.py",
+      "sha256": "83A78985E0C5D8A4CF1C3C8C7BA73FBC97260C5CFAE89F0EF94A9E15C5B1F2E4"
+    },
+    {
+      "path": "tools/semantic_actor_probe.gd",
+      "sha256": "369A9F31D5B4EDAFC112595F87978C0BC1CC7662EAED7939C73C419867DCA6CB"
+    },
+    {
+      "path": "tools/semantic_model_probe.gd",
+      "sha256": "4294456B1777F5573521481A44127C0D6730C8D356B118E52B92ABDA43257E37"
+    },
+    {
+      "path": "tools/strategy_base.py",
+      "sha256": "A39A0DC364BA5B2E021472C8229C1C00D48A71C6D203CD8ADF82BC0CF6A7C0C7"
+    },
+    {
+      "path": "vendor/ptcgdap-sdk-manifest.json",
+      "sha256": "FFCD237BA61C871923586EF2ED91192F37A6C47E0D78F59708F45316829C59CF"
+    }
+  ]
+}

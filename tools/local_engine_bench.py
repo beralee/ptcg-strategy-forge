@@ -404,10 +404,31 @@ def build_match_schedule(runtime,plan):
     return candidate,games,original
 
 
+def apply_research_interventions(candidate,games,plan):
+    import copy
+    games=copy.deepcopy(games)
+    interventions=plan.get('research_single_interventions',{})
+    if interventions:
+        if candidate['requires_model'] or len(games)!=2:
+            raise ValueError('branch_requires_rule_continuation_and_one_seed')
+        valid_keys={str(g['seat']) for g in games}
+        if not isinstance(interventions,dict) or not set(interventions)<=valid_keys:
+            raise ValueError('branch_schedule_invalid')
+        for game in games:
+            if str(game['seat']) in interventions:
+                game['research_intervention']=interventions[str(game['seat'])]
+        if plan.get('research_only_requested_seats') is True:
+            games=[g for g in games if 'research_intervention' in g]
+    elif plan.get('research_only_requested_seats'):
+        raise ValueError('branch_schedule_invalid')
+    return games
+
+
 def _run(runtime,godot,plan_path,output,*,wait_ms=0):
     runtime=Path(runtime).resolve();output=Path(output).resolve();godot=Path(godot).resolve()
     if output.exists():raise ValueError("bench_output_exists")
     plan=read(plan_path);candidate,games,original=build_match_schedule(runtime,plan)
+    games=apply_research_interventions(candidate,games,plan)
     with heavy_job(workers=1, output_path=output, wait_ms=wait_ms) as resource:
         (runtime/GATE).write_text(original,encoding="utf-8")
         output.mkdir(parents=True)

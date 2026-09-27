@@ -83,13 +83,21 @@ def atomic_json(path, value):
 
 
 def output_size(path):
-    total = 0
-    for root, dirs, files in os.walk(path,followlinks=False):
-        dirs[:] = [d for d in dirs if not os.path.islink(os.path.join(root,d)) and not os.path.isjunction(os.path.join(root,d))]
-        for name in files:
-            p=Path(root)/name
-            if not p.is_symlink(): total += p.stat().st_size
-    return total
+    """Re-enumerate once if an atomic writer invalidates a listed path."""
+    for attempt in range(2):
+        total = 0
+        try:
+            for root, dirs, files in os.walk(path,followlinks=False):
+                dirs[:] = [d for d in dirs if not os.path.islink(os.path.join(root,d)) and not os.path.isjunction(os.path.join(root,d))]
+                for name in files:
+                    p=Path(root)/name
+                    if not p.is_symlink(): total += p.stat().st_size
+            return total
+        except FileNotFoundError:
+            # Restart the entire sum: skipping just the vanished temp can miss
+            # the larger committed replacement and undercount the output cap.
+            if attempt:
+                raise
 
 
 def process_memory(root_pid):

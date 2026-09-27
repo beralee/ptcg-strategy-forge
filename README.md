@@ -1,4 +1,8 @@
-# PTCG Strategy Forge
+# PTCG Strategy Forge · AI 训练家的工具包
+
+**把牌组理解变成能参加 AI 天梯的 AI 选手。** Forge 为 AI 训练家提供规则构筑、公开决策数据、模型训练与接入、场景回归、对战评估、构建签名和提交工具。你可以亲自编写策略，也可以让 Codex、WorkBuddy 等编程助手协助完成迭代。
+
+这是独立的 SDK 与开发工具仓库。本次更新发布通用框架、合同和测试；个人参赛策略、训练权重、实验工作区、API Key 与签名私钥留在作者自己的环境。
 
 ## 让 Codex、WorkBuddy 带你完成第一次提交
 
@@ -44,6 +48,30 @@ PTCG Strategy Forge 是独立的 `.ptcgai` 策略开发工具链。你可以从�
 - **不必从零搭工具链**：工作区脚手架、已审核牌组、支持卡牌快照、场景 runner、Host 校验、模型 conformance、构建和签名流程已经连成一条开发路径。
 
 如果你擅长牌组理解、规则系统、策略搜索、模仿学习或强化学习，这里都可以成为同一个公开竞技场上的不同解法。
+
+## AI 天梯：持续对战的 benchmark
+
+[AI 策略天梯](https://ptcg.skillserver.cn/dist/competition.html) 是策略开发后的公开对战与反馈入口：开发者提交精确版本的 `.ptcgai`，通过平台资格后，与社区策略和内置 NPC 参加双座位系列对局；公开榜单展示策略榜、作者榜、积分、场次与近期胜率，失败录像则为下一轮回归提供线索。
+
+**2026-09-27 22:20:08（北京时间）公开快照：52 个参赛版本，其中 27 个开发者版本、25 个平台 NPC。** 下表按快照排名列出前五名，均为作者 `z` 的开发者策略；不同版本单独占一行，不等于五种独立牌组。
+
+![AI 天梯公开数据快照：前五名积分、场次与近期战绩](docs/assets/ai-ladder-20260927.png)
+
+*依据公开 API 快照绘制的榜单图，并非网页截图。数据与名次会变化；[打开实时天梯](https://ptcg.skillserver.cn/dist/competition.html)。*
+
+| 排名 | 策略 / 版本 | 平台积分 μ | 已计分组 / 实际局 | 最近 60 局 |
+|---:|---|---:|---:|---:|
+| 1 | [余烬霜幕 · 攻击接力与奖赏竞速](https://ptcg.skillserver.cn/dist/strategy.html?release_id=release-b721ed7f55b4c2d4b1b93eb5659d770035d033b0) · 0.4.0 | 987.69 | 207 / 414 | 39 胜 21 负 · 65.0% |
+| 2 | [幽影接力 · 18.5 多龙黑夜魔灵](https://ptcg.skillserver.cn/dist/strategy.html?release_id=release-cf196388c350c2d1d81de05682f03a09f60d5cb8) · 0.9.1 | 935.93 | 200 / 400 | 37 胜 23 负 · 61.7% |
+| 3 | [余烬霜幕 · 支援者统筹与孤场抢救](https://ptcg.skillserver.cn/dist/strategy.html?release_id=release-9027dadefc5dfa2b534c7b16b0244bccf59d774e) · 0.6.1 | 927.06 | 207 / 414 | 27 胜 33 负 · 45.0% |
+| 4 | [厄诡椪／岩殿居蟹 R4](https://ptcg.skillserver.cn/dist/strategy.html?release_id=release-e3794d686875434b30c51f45730b885c9e38808c) · 1.4.0 | 872.55 | 204 / 408 | 30 胜 30 负 · 50.0% |
+| 5 | [苍刃咒线 · 赫普的苍响](https://ptcg.skillserver.cn/dist/strategy.html?release_id=release-8dda7b942cf9c5e6300273bad82dd85bb7c3b10e) · 0.2.0 | 847.75 | 202 / 404 | 32 胜 28 负 · 53.3% |
+
+这里的 benchmark 衡量**指定引擎、赛季、对手池和策略版本下的实际对战表现**。当前赛季采用 `score_gap_pair_v2`，榜单按积分 `μ` 降序；最近 60 局胜率是近期记录，不是历史总胜率，名次也不按这列直接排序。前两名近期分别为 39/60、37/60，说明这些版本已在该对手池积累实战表现；不能由此推断 SDK、某种训练方法或更高版本必然更强。
+
+平台快照标注引擎为 Godot 4.6.1，证据范围为 `windows_local_stopped_snapshot`，并明确 `official_cabt_validated=false`、`production_ready=false`。这是一项社区研究 benchmark，不能称作官方 PTCG/CABT 认证、人类水平测试或独立配对提升实验。公开成绩不包含策略源码与训练权重。
+
+完整字段、统计口径、冻结快照与比较方法见 [AI 天梯 benchmark 说明](docs/37-AI-LADDER-BENCHMARK.md)。
 
 ## 从一个想法到 AI 天梯
 
@@ -131,9 +159,12 @@ cd ptcg-strategy-forge
 .\forge.ps1 workspace check work\my-model-strategy
 ```
 
-Forge 不规定你的训练循环；它固定公开张量、无状态 Actor 合同、ORT 导入检查和运行裁决。可执行的最小 BC→离线 contextual-bandit RL 示例见 [`examples/minimal-bc-rl-marnie`](examples/minimal-bc-rl-marnie)。
+Forge 提供可选的 BC、公开语义特征与受控收益研究工具，也允许接入你自己的训练循环；公开张量、无状态 Actor 合同、ORT 导入检查和运行裁决保持固定。可执行的最小 BC→离线 contextual-bandit RL 示例见 [`examples/minimal-bc-rl-marnie`](examples/minimal-bc-rl-marnie)。
 
 ## 把“会打这套牌”变成可验证策略
+
+通用规则构筑与复盘可以使用 [`StrategyBase`](docs/35-STRATEGY-BASE-FRAMEWORK.md) 和 [`ptcg-strategy-base`](skills/ptcg-strategy-base/SKILL.md)：审核 16 项设计要素，编译分阶段路线，并从已校验录像提取待验证的改进假设。
+
 
 好的策略不只是给每个按钮一个分数。Forge 鼓励你同时表达四个尺度：
 

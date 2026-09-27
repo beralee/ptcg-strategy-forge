@@ -42,11 +42,11 @@ def admit_unique_teacher_example(seen, identity, example):
     return True
 
 
-def qualify_teacher_record(payload, *, allowed_uids, projector_sha256):
-    return _qualify_record(payload,allowed_uids=allowed_uids,projector_sha256=projector_sha256)
+def qualify_teacher_record(payload, *, allowed_uids, projector_sha256, tensor_profile_id=PROFILE_ID):
+    return _qualify_record(payload,allowed_uids=allowed_uids,projector_sha256=projector_sha256,tensor_profile_id=tensor_profile_id)
 
 
-def qualify_teacher_query_record(payload, *, allowed_uids, projector_sha256, model_artifact_sha256):
+def qualify_teacher_query_record(payload, *, allowed_uids, projector_sha256, model_artifact_sha256, tensor_profile_id=PROFILE_ID):
     """A rule query on a model-visited state is NOT an executed teacher action.
 
     The run caller must verify that the frozen rule documents equal the teacher.
@@ -54,11 +54,14 @@ def qualify_teacher_query_record(payload, *, allowed_uids, projector_sha256, mod
     if not isinstance(model_artifact_sha256,str) or len(model_artifact_sha256)!=64:
         raise ValueError('neural_query_model_identity_invalid')
     return _qualify_record(payload,allowed_uids=allowed_uids,projector_sha256=projector_sha256,
-                           query_artifact_sha256=model_artifact_sha256.upper())
+                           query_artifact_sha256=model_artifact_sha256.upper(),tensor_profile_id=tensor_profile_id)
 
 
-def _qualify_record(payload, *, allowed_uids, projector_sha256, query_artifact_sha256=None):
+def _qualify_record(payload, *, allowed_uids, projector_sha256, query_artifact_sha256=None, tensor_profile_id=PROFILE_ID):
     from tools.local_engine_bench import verify_window
+    capture_profiles={PROFILE_ID:'ptcgdap-semantic-model-input-v1',
+                      'ptcgdap_local_semantic_actor_i32_v2':'ptcgdap-semantic-model-input-v2'}
+    if tensor_profile_id not in capture_profiles:raise ValueError('neural_tensor_profile_invalid')
     record=payload['decision']; checked=verify_window(record,_trace_frame_error)
     frame,host=checked['frame'],checked['host']; policy=record['policy']
     if host.get('status')!='accepted' or host.get('fallback_used') or host.get('error_code'):
@@ -77,7 +80,7 @@ def _qualify_record(payload, *, allowed_uids, projector_sha256, query_artifact_s
         return None,'model_visited_requires_distinct_teacher_query_lane'
     capture=host.get('model_input_evidence',{})
     if capture.get('status')!='captured': return None,'projection_unavailable'
-    if (capture.get('profile_id')!='ptcgdap-semantic-model-input-v1' or capture.get('tensor_profile_id')!=PROFILE_ID
+    if (capture.get('profile_id')!=capture_profiles[tensor_profile_id] or capture.get('tensor_profile_id')!=tensor_profile_id
             or capture.get('semantic_projector_sha256','').upper()!=projector_sha256.upper()):
         raise ValueError('neural_projector_identity_mismatch')
     frontier=capture.get('base_frontier',{})
@@ -100,7 +103,7 @@ def _qualify_record(payload, *, allowed_uids, projector_sha256, query_artifact_s
         raise ValueError('neural_teacher_selection_invalid')
     if policy['base_result'].get('selected_indexes')!=selected or not policy.get('ok') or policy.get('error_code'):
         raise ValueError('neural_teacher_selection_invalid')
-    t=project_semantic_frame(frame,allowed_uids); n=len(t.row_to_current_index)
+    t=project_semantic_frame(frame,allowed_uids,profile_id=tensor_profile_id); n=len(t.row_to_current_index)
     expected={'frame_i32':list(t.frame_i32),'frame_presence_i32':list(t.frame_presence_i32),
         'option_i32':[v for row in t.option_i32[:n] for v in row],
         'option_presence_i32':[v for row in t.option_presence_i32[:n] for v in row],
@@ -120,4 +123,5 @@ def _qualify_record(payload, *, allowed_uids, projector_sha256, query_artifact_s
                   equivalence_kind='same_uid_hand_copy_current_target_v1')
     if query_artifact_sha256:
         result.update(teacher_was_executed=False,observed_host_indexes=host['accepted_indexes'],model_artifact_sha256=query_artifact_sha256)
+    if tensor_profile_id!=PROFILE_ID:result['tensor_profile_id']=tensor_profile_id
     return result,'qualified'

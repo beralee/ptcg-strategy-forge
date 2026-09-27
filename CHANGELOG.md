@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-27 · Public AI trainer SDK and ladder benchmark
+
+- Publish reusable StrategyBase route authoring/reflection, semantic Actor v2 (416/48), versioned features, qualified data projection and controlled outcome tools.
+- Expand public damage metadata to the qualified 1,011-card catalog; retain unknown/hidden-input rejection and Base authority.
+- Include the bounded output-scan race fix and focused regressions. Rebuild SDK provenance from the exact public file set.
+- Isolate the mutex-only unit test from host disk pressure, matching its existing mocked RAM input; production resource limits and disk-threshold tests remain unchanged.
+- Refocus README on the AI trainer toolkit; document the public ladder with a dated API excerpt, data graphic, version-specific results and benchmark limits.
+- Exclude personal strategy implementations, new strategy/deck workspaces, trained weights, credentials and private experiment records. Existing tracked SDK fixtures remain unchanged.
+
 2026-09-20：新增可直接交给 Codex、WorkBuddy 的完整任务书，README 与开发者入口优先链接环境→开发→验收→签名→提交→资格闭环。
 
 2026-09-20：自定义牌组直接按包内清单与 SDK 卡源校验，不再要求预装同名内置牌组。保留逐卡 raw/canonical 摘要、效果身份、60 张、基本宝可梦与数量限制；新卡自定义牌组加入回归。

@@ -11,6 +11,51 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'src'))
 
 
 class RunSafetyTests(unittest.TestCase):
+    def test_output_scan_reobserves_atomic_replacement_and_preserves_cap(self):
+        from ptcg_strategy_forge.run_safety import output_size, validate_job
+        original_stat = Path.stat
+        for size in (20, 200):
+            with self.subTest(size=size), tempfile.TemporaryDirectory() as folder:
+                target = Path(folder) / 'engine-summary.json'
+                temporary = Path(folder) / 'engine-summary.json.tmp'
+                target.write_bytes(b'old')
+                temporary.write_bytes(b'x' * size)
+                replaced = False
+                def racing_stat(path, *args, **kwargs):
+                    nonlocal replaced
+                    if path == temporary and kwargs.get('follow_symlinks', True) and not replaced:
+                        replaced = True
+                        os.replace(temporary, target)
+                        raise FileNotFoundError(str(temporary))
+                    return original_stat(path, *args, **kwargs)
+                with patch.object(Path, 'stat', racing_stat):
+                    measured = output_size(folder)
+                self.assertTrue(replaced)
+                self.assertEqual(measured, size)
+                snapshot = dict(processes=[dict(private_gib=0.1)], tree_private_gib=0.1, output_bytes=measured)
+                if size > 100:
+                    with self.assertRaisesRegex(ValueError, 'resource_output_cap'):
+                        validate_job(snapshot, output_limit_bytes=100)
+                else:
+                    validate_job(snapshot, output_limit_bytes=100)
+
+    def test_output_scan_repeated_disappearance_is_bounded(self):
+        from ptcg_strategy_forge.run_safety import output_size
+        with tempfile.TemporaryDirectory() as folder:
+            with patch('ptcg_strategy_forge.run_safety.os.walk', return_value=[(folder, [], ['missing'])]) as walk:
+                with self.assertRaises(FileNotFoundError):
+                    output_size(folder)
+                self.assertEqual(walk.call_count, 2)
+
+    def test_output_scan_permission_failure_is_not_retried(self):
+        from ptcg_strategy_forge.run_safety import output_size
+        with tempfile.TemporaryDirectory() as folder:
+            with patch('ptcg_strategy_forge.run_safety.os.walk', return_value=[(folder, [], ['unreadable'])]) as walk, \
+                 patch.object(Path, 'stat', side_effect=PermissionError('denied')):
+                with self.assertRaises(PermissionError):
+                    output_size(folder)
+                self.assertEqual(walk.call_count, 1)
+
     def healthy(self):
         return dict(available_gib=32,commit_percent=40,other_heavy_pids=[],
                     disks=[dict(volume='D:\\',roles=['output'],free_gib=30)],

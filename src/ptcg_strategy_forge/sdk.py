@@ -707,8 +707,14 @@ class WorkspaceModel:
             if document.get('profile_id') == 'ptcgdap-competitive-public-frame-v2':
                 from scripts.ai.ptcgdap.semantic_model_profile import project_semantic_frame
                 deck = load_json(self.workspace.root / 'package/deck/deck_manifest.json')
+                model_manifest_path = self.workspace.root / 'package/model/model_manifest.json'
                 try:
-                    tensors = project_semantic_frame(document, [row['local_card_uid'] for row in deck['cards']])
+                    model_manifest = load_json(model_manifest_path) if model_manifest_path.is_file() else None
+                    if model_manifest is not None and (not isinstance(model_manifest, dict) or not isinstance(model_manifest.get('tensor_profile'), dict)):
+                        _raise('model_tensor_profile_invalid')
+                    profile_id = (model_manifest['tensor_profile'].get('profile_id')
+                                  if model_manifest is not None else 'ptcgdap_local_semantic_actor_i32_v1')
+                    tensors = project_semantic_frame(document, [row['local_card_uid'] for row in deck['cards']], profile_id=profile_id)
                 except ValueError as error:
                     _raise(str(error))
                 except (KeyError, TypeError):

@@ -25,6 +25,8 @@ forge.py
 
 快照取自 `https://github.com/beralee/PtcgDeckAgent` 的 PtcgDAP 受审工作树，记录的 base commit 为 `3534d22b28d2895d5de5bf12cd35836d686714aa`，捕获日期 2026-08-23。由于源工作树当时含受审但未提交的 PtcgDAP 增量，不能只用 commit 表示内容；因此 manifest 固定每个实际分发文件的 exact bytes/hash。
 
+2026-09-27 公共 SDK 整理在上述基底上保留已审核的卡库/UCIS 增量（PtcgDAP `53cc7f86cb2048827ae29dc510494ded92ceb48c` 与对应资格修复），补齐 1,011 张卡的公开伤害元数据及语义 Actor v2 投影/包合同。具体增量说明由 `tools/build_sdk_snapshot.py` 生成，manifest 固定本次实际公开文件；未引入个人策略构筑器、新牌组模板、训练权重或实验目录。这不是整个上游提交的镜像，也不自动构成原生引擎或生产验收。
+
 ## 报告与 authority
 
 所有 Forge 报告都是开发证据，不拥有 engine、current window、production、CABT official 或玩家 runtime authority。真正游戏执行仍由 PtcgDAP Host 重新观察、重建窗口、绑定 ticket 并 commit；工具包模拟不会执行引擎方法。

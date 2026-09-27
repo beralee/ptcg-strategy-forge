@@ -28,8 +28,9 @@
 这条链路提供复盘证据，不能直接证明策略更强，也不自动授予 BC 训练资格。
 仍需独立完成场景测试、双座位引擎对照和生产资格验证。
 
-## 证据边界
+## 本地文件与认证来源
 
-`native-traces inspect` 单独读取本地文件，不推断网络来源，所以其
+`native-traces inspect` 单独读取本地文件，不推断网络来源，因此其
 `source_authenticated` 仍为 false；认证下载关系记录在对应的在线下载回执中。
-`production_ready` 和 `bc_eligible` 均不会因为这次下载自动变成 true。
+`production_ready` 和 `bc_eligible` 均不会因为下载自动变成 true。
+个人下载记录和决策轨迹由作者在本地保存，不随公共 SDK 提交。

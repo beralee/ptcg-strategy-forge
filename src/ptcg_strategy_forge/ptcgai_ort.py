@@ -42,7 +42,7 @@ def _expected_io(profile_id='competitive_public_actor_i32_v1') -> tuple[dict[str
 
 
 def _profile_for_io(inputs, outputs):
-    for profile_id in ('competitive_public_actor_i32_v1', 'ptcgdap_local_semantic_actor_i32_v1'):
+    for profile_id in ('competitive_public_actor_i32_v1', 'ptcgdap_local_semantic_actor_i32_v1', 'ptcgdap_local_semantic_actor_i32_v2'):
         if (inputs, outputs) == _expected_io(profile_id):
             return tensor_profile_document(profile_id)
     _raise('model_tensor_profile_invalid')

@@ -7,9 +7,54 @@
     "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
     "captured_on": "2026-08-23",
     "scope": "author-strategy development, validation, simulation, and publishing",
-    "note": "Base snapshot from PtcgDAP 3534d22b28d2895d5de5bf12cd35836d686714aa, captured 2026-08-23. Reviewed public card catalog and UCIS overlay from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c with the EffectRegistry script-identity fix and CSV6C_032 registration; 1011 public card sources. The reviewed damage registry expands metadata coverage from 797 to 1011 printings without changing the original 797 entries. Custom-deck validation retains exact per-card hashes without requiring an installed deck template. Reviewed semantic Actor v1/v2 projection, tensor contracts and package-validation overlays are included; Base frontier integration is ported to the retained Forge evaluator without importing unrelated newer Turn Program behavior. Public SDK publication reviewed 2026-09-27. Personal strategy builders, new deck templates, trained actors and private research outputs are excluded. Each distributed byte is pinned below; this manifest is not a full upstream commit or an engine/production acceptance claim."
+    "note": "Base snapshot from PtcgDAP 3534d22b28d2895d5de5bf12cd35836d686714aa, captured 2026-08-23. Reviewed public card catalog and UCIS overlay from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c with the EffectRegistry script-identity fix and CSV6C_032 registration; 1011 public card sources. The reviewed damage registry expands metadata coverage from 797 to 1011 printings without changing the original 797 entries. Custom-deck validation retains exact per-card hashes without requiring an installed deck template. Reviewed semantic Actor v1/v2 projection, tensor contracts and package-validation overlays are included; Base frontier integration is ported to the retained Forge evaluator without importing unrelated newer Turn Program behavior. Public SDK publication reviewed 2026-10-07. Reviewed Forge public-input v2/v3, immutable decision queries, Base observation and semantic transaction helpers, bounded shared planning helpers, package capacity contract and public projection reference sources are included. No authored deck policy or private training pipeline is part of this overlay. Personal strategy builders, new deck templates, trained actors and private research outputs are excluded. Each distributed byte is pinned below; this manifest is not a full upstream commit or an engine/production acceptance claim."
   },
   "files": [
+    {
+      "path": "runtime/godot/BaseInputV1.gd",
+      "bytes": 5504,
+      "sha256": "DB391C00874B75EA2C5FAC42A06A12454C59236DE38946C157C20352451FFEFE"
+    },
+    {
+      "path": "runtime/godot/PublicAttackAccess.gd",
+      "bytes": 16020,
+      "sha256": "F0ED3DA1A982F298159EFB64376597CD43BE23D721A905A9533961623F38F7FB"
+    },
+    {
+      "path": "runtime/godot/PublicCardGoals.gd",
+      "bytes": 15663,
+      "sha256": "BF4E5243FE2356B2587FEB5E8FC4083309B648FA36F44940348103419FFE70A9"
+    },
+    {
+      "path": "runtime/godot/PublicCursedRoute.gd",
+      "bytes": 18123,
+      "sha256": "A2536FD08B3FA3D3F6F5FB16D9B2FED8EB0E4CBEEFCAFF035E66B426ABA7BDA9"
+    },
+    {
+      "path": "runtime/godot/PublicDamagePlanning.gd",
+      "bytes": 33885,
+      "sha256": "114E27EBF82317B069136896FD1634870D4EBFBA92E3815129AC6E010F9598E0"
+    },
+    {
+      "path": "runtime/godot/PublicGustForecast.gd",
+      "bytes": 2374,
+      "sha256": "A40F33866FBA43FF27D4887F74F58EC01367E9467F72778B2490331B8DF552DD"
+    },
+    {
+      "path": "runtime/godot/PublicInputV2.gd",
+      "bytes": 21085,
+      "sha256": "23F47BBA02A22E9154F01CCB547F8153AEC409CF8BF7421EFECD1C776B2CB745"
+    },
+    {
+      "path": "runtime/godot/PublicInputV3.gd",
+      "bytes": 32807,
+      "sha256": "EE6A4337B497C35B8B108748E9E7A43A14573AA0D63DD1A692F582D98D0150B9"
+    },
+    {
+      "path": "runtime/godot/PublicPlanComparison.gd",
+      "bytes": 31047,
+      "sha256": "63BF994A6267C5F75047412D8C571104BF873382CD11E42639DA0F539A9E1DAF"
+    },
     {
       "path": "scripts/ai/ptcgdap/__init__.py",
       "bytes": 56,
@@ -27,8 +72,8 @@
     },
     {
       "path": "scripts/ai/ptcgdap/author_strategy_package.py",
-      "bytes": 50104,
-      "sha256": "B95833E79FDEA0F3A208B745901CC40EECA2DA74F1DE3F5176E8D29E3064F100"
+      "bytes": 51079,
+      "sha256": "416A9F5EFB7F5E631B78692C3F9DEA41E03E8CD1934C2313F3080E415E1D8262"
     },
     {
       "path": "scripts/ai/ptcgdap/author_strategy_package_catalog.py",
@@ -39,6 +84,16 @@
       "path": "scripts/ai/ptcgdap/author_strategy_release.py",
       "bytes": 36435,
       "sha256": "02119D0A67E45DFABD776F7ADECD9026BC310C17BC804E436D7CD1CFB10276EF"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/base_input.py",
+      "bytes": 8311,
+      "sha256": "A6BAECF930CBD03E2A1259DF90101E4E21FBD2B61F50F3679BE86ED52666FAAD"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/base_transactions.py",
+      "bytes": 7346,
+      "sha256": "EF66AA69E9377F31FA0F366A2884D3E3CAC7D6C347CB2A94FEADA73112B0A5C0"
     },
     {
       "path": "scripts/ai/ptcgdap/cabt_a1_contract.py",
@@ -82,8 +137,8 @@
     },
     {
       "path": "scripts/ai/ptcgdap/competitive_policy_v2.py",
-      "bytes": 103675,
-      "sha256": "6BB22D3B20BCAFE0140587B7DABC22CDCDFE46C05DCD05DD7301D46EAAF75424"
+      "bytes": 113397,
+      "sha256": "5BABBAAC83FB21486618FB3E53639759A05F29F1C8BB0A7F1F4512D543BFB64D"
     },
     {
       "path": "scripts/ai/ptcgdap/competitive_strategy_evaluator.py",
@@ -206,19 +261,54 @@
       "sha256": "5014646C711D5675DC1239914956553E218E2A3D82047E2D9D330229648E67D2"
     },
     {
+      "path": "scripts/ai/ptcgdap/public_attack_access.py",
+      "bytes": 16475,
+      "sha256": "34748936ABBDAE0E0445B8274BA985E9C5CAECAE971EE649E67BB656625CD718"
+    },
+    {
       "path": "scripts/ai/ptcgdap/public_base_policy.py",
       "bytes": 22123,
       "sha256": "F87C9FBE63779560982945C55A00F6206C13A6BFDF489F508C7A7D927C8995B2"
     },
     {
+      "path": "scripts/ai/ptcgdap/public_card_goals.py",
+      "bytes": 13927,
+      "sha256": "8BF4B0CA7769602A867B4E9C15334325995FFCF3F2080D2E14D1D9750788E79F"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/public_cursed_route.py",
+      "bytes": 17647,
+      "sha256": "7F22BF81AFBB95A330FA51C54A959CCB9E13BF2ECC78ED3445D8AC22F79AFA01"
+    },
+    {
       "path": "scripts/ai/ptcgdap/public_damage_planning.py",
-      "bytes": 37029,
-      "sha256": "9774139DE076249A14D0B606A986AC7446B14E8BB2B4A3ADDB14AA2E3DA62F1B"
+      "bytes": 39604,
+      "sha256": "0CCB5FDC2E47C5068D450B12160E784880EECE5D056C7FB7870C33871EBEBA9F"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/public_decision_facts.py",
+      "bytes": 13201,
+      "sha256": "6B1CA611D1969320660B073D199B422C36E6A5B437427A299674F01E4628E948"
     },
     {
       "path": "scripts/ai/ptcgdap/public_deck_adapter.py",
       "bytes": 33773,
       "sha256": "F169A86908FFE719C4BDA2081C94F12FD8CB226486654F0E9E4F339D5953BACC"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/public_gust_forecast.py",
+      "bytes": 2687,
+      "sha256": "25E234DFAD3074347DD7CCC7F7BC3019653BFDB79779C41C30BF25A62CC76725"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/public_input_v2.py",
+      "bytes": 23051,
+      "sha256": "4ED7CD68E9A15A00192390AB4A81E715F0B3462C41CDA53D64D0E5C3AA4D2DDA"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/public_input_v3.py",
+      "bytes": 19001,
+      "sha256": "39EA25628C9473A0C4D9EC11C89B1AE2E953DAC20C57767B186BD7607DBDCA59"
     },
     {
       "path": "scripts/ai/ptcgdap/public_log_cursor.py",
@@ -231,9 +321,19 @@
       "sha256": "817F7F5684EE111BB13CF9363F5AC01B4E130D33B3450FC5DE2BC1ECA279A1F3"
     },
     {
+      "path": "scripts/ai/ptcgdap/public_plan_comparison.py",
+      "bytes": 39232,
+      "sha256": "A1D5C55BB781D60084B853B5E5288DA14DDA8C4E307F97A25A866421F1A6F99C"
+    },
+    {
       "path": "scripts/ai/ptcgdap/public_policy_budget.py",
       "bytes": 22148,
       "sha256": "E78C7F11E10B7EFC9AC9E0EEAF428C5FC4232A53723099B6DEB58C91BFD39C46"
+    },
+    {
+      "path": "scripts/ai/ptcgdap/public_precommit_review.py",
+      "bytes": 4214,
+      "sha256": "92436A01671AFCE6870F262B5D7715CE9B4E6531E2FE0C492C5F87BFF0C05FA6"
     },
     {
       "path": "scripts/ai/ptcgdap/restricted_base_graph_executor.py",
@@ -242,8 +342,8 @@
     },
     {
       "path": "scripts/ai/ptcgdap/semantic_model_profile.py",
-      "bytes": 10184,
-      "sha256": "ECD8F974B021D8A05A0477D144019A91997C619D87BD1DB306208753FBD1EDE2"
+      "bytes": 10500,
+      "sha256": "3A2F135893DAC0DD000111093BEE66D7DE84410CA084A4448146F8E46CBE9EE9"
     },
     {
       "path": "scripts/ai/ptcgdap/semantic_model_profile_v2.py",
@@ -309,6 +409,11 @@
       "path": "contracts/ptcgdap/alipay_static_site_target.json",
       "bytes": 1348,
       "sha256": "C5AFA4A39EEA85147541E85AE22634750E54726E1AB8CD3D7C995DFA4F962B5B"
+    },
+    {
+      "path": "contracts/ptcgdap/author_strategy_learning_capacity_v1.json",
+      "bytes": 357,
+      "sha256": "8D3069FF9FB4B3AD9C452DAEA05B61DE997660CFA52A2761AD21F73F7AAD871D"
     },
     {
       "path": "contracts/ptcgdap/author_strategy_live_seam.schema.json",
@@ -409,6 +514,11 @@
       "path": "contracts/ptcgdap/author_strategy_windows_local_deck_profile.json",
       "bytes": 1342,
       "sha256": "5ADA1E049561EF33A6CA62788D14CE15FE50731B3629DD1A79FBD9407834E869"
+    },
+    {
+      "path": "contracts/ptcgdap/base_input_v1.json",
+      "bytes": 15348,
+      "sha256": "97C539C3647788A194647F2B9FB96119583289BE2021B2F55695C867BF07980B"
     },
     {
       "path": "contracts/ptcgdap/cabt_a1_scope_report_v2.json",
@@ -602,23 +712,23 @@
     },
     {
       "path": "contracts/ptcgdap/competitive_policy_v2.schema.json",
-      "bytes": 37996,
-      "sha256": "49C03933CE4F36FF4BF33C6D9404F57D8F373B0E560F7812BFC5EA7C33000296"
+      "bytes": 44236,
+      "sha256": "F360CED02ECAA2E71F885943464017002CBBAD951020AF7D5B7752BF25952DD0"
     },
     {
       "path": "contracts/ptcgdap/competitive_policy_v2_bundle.json",
       "bytes": 751,
-      "sha256": "D82F3C5B6E82BD7D7362A61A3582B3B66AE6FB967C8AF9DF1B7C502A3AA41102"
+      "sha256": "B564A7AFFE8197D8B74F0F1484CB059E0EBD572F63CE9BB1BDD0BAF0F0C482ED"
     },
     {
       "path": "contracts/ptcgdap/competitive_policy_v2_conformance_vectors.json",
-      "bytes": 175366,
-      "sha256": "234D446B1E0DC51D36B4CA9830F82A7A7C0A1A24CC3FA29B75E5EEBAA5DA2240"
+      "bytes": 449797,
+      "sha256": "F833095C7B9C3C7702F8F11347BE1DA91E508A2C9925B60E7FFFFF38C9F86349"
     },
     {
       "path": "contracts/ptcgdap/competitive_policy_v2_profile.json",
-      "bytes": 3326,
-      "sha256": "88BB1D3D3A394CB67917ABF4AE38735FCCA4F347ACC58CA4274D02E818E51075"
+      "bytes": 13476,
+      "sha256": "9D9C1E7E64BBFBB05970F2BB3FEB4D7E57B8DF001C793D986864B0B3626D53AB"
     },
     {
       "path": "contracts/ptcgdap/competitive_strategy_evaluator_bundle.json",
@@ -1021,6 +1131,11 @@
       "sha256": "A144CAFF1EDBE15A22DBF0984EE5F17DF88A73E52BAA7BD47B92AA3B0123C263"
     },
     {
+      "path": "contracts/ptcgdap/public_attack_access_catalog_v1.json",
+      "bytes": 16003,
+      "sha256": "32291DDAB1EF9561D1C79F8CF93F334912A8E394B58E4A926043CC9D97D9240B"
+    },
+    {
       "path": "contracts/ptcgdap/public_base_policy.schema.json",
       "bytes": 6897,
       "sha256": "A29CD53A695991643142E6FED09E22C0A34958B74B31525726DE4F49B3079577"
@@ -1064,6 +1179,21 @@
       "path": "contracts/ptcgdap/public_deck_adapter_profile.json",
       "bytes": 2802,
       "sha256": "65483774469153FDDF6C39105A803CF3D80ED45408E1369B865B4CAAE99A992E"
+    },
+    {
+      "path": "contracts/ptcgdap/public_gust_scope_v1.json",
+      "bytes": 3825,
+      "sha256": "FF2B6510B45287B2CB19E32695CAFC62521AF58A852833803576DD6020638B7F"
+    },
+    {
+      "path": "contracts/ptcgdap/public_input_v2.json",
+      "bytes": 74326,
+      "sha256": "8EE50BCE95CFDD17169E0C6492E3BCBC775607224764812FC9CD675654BE9F74"
+    },
+    {
+      "path": "contracts/ptcgdap/public_input_v3.json",
+      "bytes": 121091,
+      "sha256": "7F58C9F00168CA13160FC9E217FC58AC86C042E263E73D97AA54015703FFFB96"
     },
     {
       "path": "contracts/ptcgdap/public_policy_budget.schema.json",
@@ -6572,13 +6702,13 @@
     },
     {
       "path": "tools/ptcgdap/build_author_strategy_package.py",
-      "bytes": 33605,
-      "sha256": "B7CC0C24A33DA570AB62B0592ED3667CCF3B0EE7E9FC9DD306261BF83DC2BF8A"
+      "bytes": 34308,
+      "sha256": "CFB4D5027045DFB29D8E7DDF20EBFED4D29B6EA4CBC249CE511D25C50B50D82A"
     },
     {
       "path": "tools/ptcgdap/build_competitive_policy_v2_contract.py",
-      "bytes": 113156,
-      "sha256": "4010C78906446214DC430B9C2E7708CF6B7237CAC70DD8DABEEC8AF082F7E164"
+      "bytes": 114096,
+      "sha256": "937418982ABDDEA8086BA1510C13A8700341375DA2D5A1940231F1C5FF00319D"
     },
     {
       "path": "tools/ptcgdap/build_public_damage_capability_registry.py",
@@ -6604,6 +6734,16 @@
       "path": "tools/ptcgdap/competition_service_client.py",
       "bytes": 11127,
       "sha256": "9686EBA90A6A473CEC1BAAF71C6C19E8FA95CAF4E91CB3A1CD953CCB7255152B"
+    },
+    {
+      "path": "tools/ptcgdap/public_counter_contract.py",
+      "bytes": 8852,
+      "sha256": "BB759D9F4127E694D358C0938042B4166898C98CD5AEA87DABE41FB1862B5BE6"
+    },
+    {
+      "path": "tools/ptcgdap/public_decision_contract.py",
+      "bytes": 9597,
+      "sha256": "1F0A233E2F18C7D7C32D0A69E8BAF97B4F1EA67235921BD50078A0C2C9CAF5E6"
     },
     {
       "path": "tools/ptcgdap/publish_strategy_release.py",

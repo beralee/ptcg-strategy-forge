@@ -34,6 +34,10 @@ def _i32(values):
 
 
 def project_semantic_frame(frame, allowed_uids, *, profile_id=PROFILE_ID):
+    # Legacy tensors retain their shapes, but no longer own an independent
+    # public-input parser. Richer future profiles start at this same boundary.
+    from .base_input import BaseInput
+    frame = BaseInput.capture(frame).frame()
     if profile_id == 'ptcgdap_local_semantic_actor_i32_v2':
         from .semantic_model_profile_v2 import project_semantic_frame_v2
         return project_semantic_frame_v2(frame, allowed_uids)
@@ -122,6 +126,7 @@ def base_model_frontier(*, frame, selected, tiers, vetoed, mandatory, terminal, 
     elif evaluated.get('selection_quotas') is not None: reason='quota'
     elif audit.get('fallback_used'): reason='base_fallback'
     elif audit.get('turn_contract',{}).get('route_authority_applied'): reason='route'
+    elif audit.get('goal_transaction',{}).get('indexes'): reason='transaction'
     elif audit.get('turn_program_canary',{}).get('applied'): reason='canary'
     elif any(audit.get(k,{}).get('selected_transaction_id') or audit.get(k,{}).get('transaction_id') or
              audit.get(k,{}).get('state') or audit.get(k,{}).get('current_indexes')

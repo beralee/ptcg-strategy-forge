@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "engine_assertions": 153,
+  "python_checks": 145,
+  "snapshots": 29,
+  "errors": [],
+  "files": {
+    "runtime\\godot\\PublicInputV2.gd": "23F47BBA02A22E9154F01CCB547F8153AEC409CF8BF7421EFECD1C776B2CB745",
+    "tools\\public_input_v2_probe.gd": "055E118EC49AE72DC038F1B2AA0A851F084DEF0042681341BBB41CF0B6626CA4",
+    "scripts\\ai\\ptcgdap\\public_input_v2.py": "4ED7CD68E9A15A00192390AB4A81E715F0B3462C41CDA53D64D0E5C3AA4D2DDA"
+  },
+  "godot_sha256": "1E5EFE381F62EE1CEA6BC18CAAC71C0C74BD6E68E6AF5C6EFB3DBE76628F61C7",
+  "engine_evidence_sha256": "0DEB72C9C4AC73077F8328F2E118AE030272C9C580EF2EE4DDB4C7A5053CAF80",
+  "scope": "constructed positions followed by real Godot operations/effect handlers and Host projection; no complete game or production claim",
+  "engine_source_manifest_sha256": "E7943F81B8102B178F9C00D8C2DAB092FF566012A8A5958BA5B8AD8E0F6DABA4",
+  "contract_sha256": "8EE50BCE95CFDD17169E0C6492E3BCBC775607224764812FC9CD675654BE9F74"
+}

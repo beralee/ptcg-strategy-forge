@@ -538,6 +538,9 @@ def build_schema() -> dict[str, Any]:
                 "maxItems": 32,
                 "items": damage_plan,
             },
+            "damage_forecast_profile": {"type": "string", "enum": ["legacy-v1", "reviewed-gust-v1"]},
+            "plan_comparison_profile": {"type": "string", "enum": ["legacy-v1", "resource-continuity-v1", "resource-continuity-v2", "resource-continuity-v3", "resource-continuity-v4", "resource-continuity-v5", "card-goals-v1"]},
+            "precommit_review_profile": {"type": "string", "enum": ["disabled", "completion-v1"]},
             "semantic_transactions": {
                 "type": "array",
                 "minItems": 1,
@@ -562,6 +565,7 @@ def build_schema() -> dict[str, Any]:
             "entity_serial": {"type": "integer", "minimum": 1, "maximum": 9007199254740991},
             "max_hp": safe_unsigned,
             "damage_counters": safe_unsigned,
+            "appeared_this_turn": {"type": "boolean"},
             "attached_tool_uid": nullable_uid,
             "pokemon_stack_uids": {
                 "type": "array",
@@ -2918,7 +2922,12 @@ def build_vectors() -> dict[str, Any]:
 
 
 def build_contract_documents() -> dict[str, dict[str, Any]]:
+    from tools.ptcgdap.public_counter_contract import extend_counter_contract
+
     documents = {"schema": build_schema(), "profile": build_profile(), "vectors": build_vectors()}
+    extend_counter_contract(documents, _sample_policy, _option, _frame)
+    from tools.ptcgdap.public_decision_contract import extend_decision_contract
+    extend_decision_contract(documents, _sample_policy, _option, _frame)
     documents["bundle"] = {
         "schema_version": 2,
         "bundle_id": BUNDLE_ID,
@@ -2947,6 +2956,8 @@ def write_or_check(*, check: bool) -> None:
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(expected)
+    from tools.ptcgdap.public_counter_contract import sync_consumer_pins
+    sync_consumer_pins(ROOT, documents, canonical_json_v1_bytes, check=check)
 
 
 def main() -> None:

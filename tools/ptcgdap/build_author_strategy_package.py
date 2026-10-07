@@ -344,8 +344,8 @@ def build_profile() -> dict[str, object]:
         },
         "required_payload_paths": sorted(REQUIRED_PAYLOAD_PATHS),
         "generated_member_paths": sorted(GENERATED_PATHS),
-        # The v1 contract remains byte-identical. V2 model members are
-        # validated by the generation-specific manifest/model validator.
+        # Base contract identity remains stable; learning capacity is a separate
+        # explicitly pinned extension consumed by upgraded research loaders.
         "optional_payload_kinds": V1_CONTRACT_OPTIONAL_PAYLOAD_KINDS,
         "payload_kinds": FIXED_PAYLOAD_KINDS,
         "resource_limits": {
@@ -566,6 +566,15 @@ def write_or_check_contracts(*, check: bool) -> None:
             path.write_bytes(expected)
     if failures:
         raise SystemExit(f"author strategy contract drift: {failures}")
+    capacity={"schema_version":1,"profile_id":"ptcgdap-author-learning-policy-capacity-v1",
+        "parent_author_package_bundle_canonical_sha256":sha256_bytes(canonical_json_v1_bytes(contract_documents()['bundle'])),
+        "payload_path":"policy/adapter.json","max_bytes":1024*1024,
+        "requires_capacity_aware_loader":True,"other_resource_limits_unchanged":True}
+    path=CONTRACT_ROOT/'author_strategy_learning_capacity_v1.json'
+    expected=(json.dumps(capacity,ensure_ascii=False,indent=2)+'\n').encode('utf-8')
+    if check:
+        if not path.is_file() or path.read_bytes()!=expected:raise SystemExit('learning capacity contract drift')
+    else:path.write_bytes(expected)
 
 
 def _safe_payload_path(raw: object) -> str:

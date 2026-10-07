@@ -145,3 +145,10 @@
 - 提供完整 Marnie RED→GREEN demo、10 个严格场景和确定性 release 包。
 - 完成真实本地 HTTP release 提交验证。
 - 增加 Windows 环境脚本、开发者文档、安全测试和 GitHub Actions。
+
+## 2026-10-07 — Public observation and decision SDK
+
+- Publish immutable public decision queries, versioned v2/v3 observations, event recovery and explicit capability/training-input gates.
+- Synchronize reviewed Base observation/transaction support, bounded shared planning helpers and package-capacity contracts. Preserve Base authority and legacy defaults.
+- Include byte-pinned Godot projection references and public constructed-position witnesses; no new private deck policies, trained actors, credentials or research pipelines.
+- Preserve the existing public card catalog and remote SDK changes. Native engine reruns and production acceptance are outside this source publication.

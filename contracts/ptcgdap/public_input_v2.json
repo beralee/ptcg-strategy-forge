@@ -1,0 +1,2616 @@
+{
+  "ephemeral_card_fields": [
+    "serial",
+    "card_serial",
+    "source_serial",
+    "target_serial",
+    "option_index_raw"
+  ],
+  "frontier": "only current v1 frame options; quota/cost/evaluation is never authority",
+  "identity_domains": {
+    "ability": "entity/source printing/ability index",
+    "entity": "current match public entity serial; never internal instance id",
+    "event": "per-view public stream sequence; never card identity",
+    "source_uid": "godot_local_card_uid_v1"
+  },
+  "migration": "opt-in companion payload; v1 frame, Base decisions and tensors unchanged",
+  "payload_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "abilities": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "entity": {
+              "maximum": 9007199254740991,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "index": {
+              "maximum": 31,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "kind": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "activated",
+                        "passive",
+                        "triggered"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "main_availability": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "offered",
+                        "not_offered",
+                        "conditional"
+                      ],
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "player": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "quota": {
+              "additionalProperties": false,
+              "properties": {
+                "group": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "limit": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete",
+                        "unlimited"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "remaining": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete",
+                        "unlimited"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "reset": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "turn",
+                            "match"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "scope": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "entity",
+                            "player",
+                            "named_group",
+                            "stadium_effect"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "used": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "scope",
+                "group",
+                "reset",
+                "used",
+                "limit",
+                "remaining"
+              ],
+              "type": "object"
+            },
+            "source_uid": {
+              "maxLength": 64,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "entity",
+            "player",
+            "source_uid",
+            "index",
+            "kind",
+            "quota",
+            "disabled",
+            "main_availability"
+          ],
+          "type": "object"
+        },
+        "maxItems": 128,
+        "type": "array"
+      },
+      "binding": {
+        "additionalProperties": false,
+        "properties": {
+          "public_observation_hash": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "seat": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "sequence": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "window_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "window_id",
+          "public_observation_hash",
+          "sequence",
+          "seat"
+        ],
+        "type": "object"
+      },
+      "effects": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "combination": {
+              "enum": [
+                "additive",
+                "any",
+                "engine_resolved",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            "condition": {
+              "maxLength": 256,
+              "type": "string"
+            },
+            "condition_met": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "expires_turn": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "expiry_boundary": {
+              "enum": [
+                "after_turn_end",
+                "leave_active_or_after_turn_end",
+                "while_source_present",
+                "unknown"
+              ],
+              "type": "string"
+            },
+            "expiry_player": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "parameters": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "unit": {
+                    "enum": [
+                      "hp",
+                      "energy_units",
+                      "count",
+                      "boolean",
+                      "rule"
+                    ],
+                    "type": "string"
+                  },
+                  "value": {
+                    "anyOf": [
+                      {
+                        "maximum": 9007199254740991,
+                        "minimum": -1000000,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "boolean"
+                      },
+                      {
+                        "maxLength": 256,
+                        "type": "string"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "name",
+                  "unit",
+                  "value"
+                ],
+                "type": "object"
+              },
+              "maxItems": 60,
+              "type": "array"
+            },
+            "rule": {
+              "maxLength": 256,
+              "type": "string"
+            },
+            "source_uid": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maxLength": 64,
+                      "minLength": 3,
+                      "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "starts_turn": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "target_entity": {
+              "anyOf": [
+                {
+                  "maximum": 9007199254740991,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "target_player": {
+              "anyOf": [
+                {
+                  "maximum": 1,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "target_entity",
+            "target_player",
+            "source_uid",
+            "parameters",
+            "condition",
+            "condition_met",
+            "starts_turn",
+            "expires_turn",
+            "expiry_boundary",
+            "expiry_player",
+            "combination",
+            "rule"
+          ],
+          "type": "object"
+        },
+        "maxItems": 256,
+        "type": "array"
+      },
+      "entities": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "burn_checkup_hp": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "damage_hp": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "effective_max_hp": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "entity": {
+              "maximum": 9007199254740991,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "evolution_stack": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                        "type": "string"
+                      },
+                      "maxItems": 60,
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "player": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "poison_checkup_hp": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "printed_hp": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "remaining_hp": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maximum": 1000000,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "resistance": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "source_uid": {
+              "maxLength": 64,
+              "minLength": 3,
+              "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+              "type": "string"
+            },
+            "tools": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "items": {
+                        "maxLength": 64,
+                        "minLength": 3,
+                        "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                        "type": "string"
+                      },
+                      "maxItems": 60,
+                      "type": "array"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "weakness": {
+              "additionalProperties": false,
+              "properties": {
+                "reason": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "source": {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                "status": {
+                  "enum": [
+                    "known",
+                    "unknown",
+                    "not_applicable",
+                    "unsupported",
+                    "history_incomplete"
+                  ],
+                  "type": "string"
+                },
+                "value": {
+                  "anyOf": [
+                    {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status",
+                "value",
+                "reason",
+                "source"
+              ],
+              "type": "object"
+            },
+            "zone": {
+              "enum": [
+                "active",
+                "bench"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "entity",
+            "player",
+            "zone",
+            "source_uid",
+            "tools",
+            "evolution_stack",
+            "printed_hp",
+            "effective_max_hp",
+            "damage_hp",
+            "remaining_hp",
+            "poison_checkup_hp",
+            "burn_checkup_hp",
+            "weakness",
+            "resistance"
+          ],
+          "type": "object"
+        },
+        "maxItems": 18,
+        "type": "array"
+      },
+      "gaps": {
+        "items": {
+          "maxLength": 128,
+          "minLength": 1,
+          "type": "string"
+        },
+        "maxItems": 256,
+        "type": "array"
+      },
+      "history": {
+        "additionalProperties": false,
+        "properties": {
+          "complete": {
+            "type": "boolean"
+          },
+          "cursor": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "events": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "cards": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "items": {
+                            "maxLength": 64,
+                            "minLength": 3,
+                            "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                            "type": "string"
+                          },
+                          "maxItems": 60,
+                          "type": "array"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "count": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "knowledge": {
+                  "enum": [
+                    "invalidate_hidden_associations",
+                    "public_reveal",
+                    "snapshot_only"
+                  ],
+                  "type": "string"
+                },
+                "phase": {
+                  "maximum": 9,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "player": {
+                  "anyOf": [
+                    {
+                      "maximum": 1,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "seq": {
+                  "maximum": 9007199254740991,
+                  "minimum": 1,
+                  "type": "integer"
+                },
+                "turn": {
+                  "maximum": 1000000,
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "type": {
+                  "enum": [
+                    "game_start",
+                    "game_end",
+                    "turn_start",
+                    "turn_end",
+                    "draw_card",
+                    "mulligan",
+                    "setup_place_active",
+                    "setup_place_bench",
+                    "setup_set_prizes",
+                    "play_pokemon",
+                    "evolve",
+                    "attach_energy",
+                    "play_trainer",
+                    "play_tool",
+                    "play_stadium",
+                    "use_stadium",
+                    "use_ability",
+                    "retreat",
+                    "attack",
+                    "coin_flip",
+                    "knockout",
+                    "take_prize",
+                    "send_out",
+                    "status_applied",
+                    "status_removed",
+                    "damage_dealt",
+                    "heal",
+                    "pokemon_check",
+                    "discard",
+                    "shuffle_deck",
+                    "public_reveal"
+                  ],
+                  "type": "string"
+                },
+                "visibility": {
+                  "enum": [
+                    "all",
+                    "seat"
+                  ],
+                  "type": "string"
+                },
+                "visible_to": {
+                  "anyOf": [
+                    {
+                      "maximum": 1,
+                      "minimum": 0,
+                      "type": "integer"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "seq",
+                "turn",
+                "player",
+                "phase",
+                "type",
+                "visibility",
+                "visible_to",
+                "count",
+                "cards",
+                "knowledge"
+              ],
+              "type": "object"
+            },
+            "maxItems": 128,
+            "type": "array"
+          },
+          "first_available": {
+            "maximum": 9007199254740991,
+            "minimum": 1,
+            "type": "integer"
+          },
+          "match": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "scope": {
+            "const": "engine_logged_actions",
+            "type": "string"
+          },
+          "seat": {
+            "maximum": 1,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "stream": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          }
+        },
+        "required": [
+          "stream",
+          "match",
+          "seat",
+          "cursor",
+          "first_available",
+          "complete",
+          "scope",
+          "events"
+        ],
+        "type": "object"
+      },
+      "interaction": {
+        "additionalProperties": false,
+        "properties": {
+          "action_id": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "action_index": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maximum": 31,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "action_kind": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "ability",
+                      "trainer",
+                      "stadium",
+                      "play_stadium",
+                      "attack",
+                      "granted_attack"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "allow_partial": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "cancel_allowed": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "cancel_semantics": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "abort_before_commit",
+                      "decline_optional",
+                      "finish_partial"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "checkpoint": {
+            "maximum": 1000000,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "in_progress": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "max_assignments": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "max_assignments_per_target": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "parent_committed": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "remaining_damage_counters": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "remaining_energy_cost": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maximum": 100,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "source_entity": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maximum": 9007199254740991,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "source_uid": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "maxLength": 64,
+                    "minLength": 3,
+                    "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          },
+          "stage": {
+            "additionalProperties": false,
+            "properties": {
+              "reason": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "source": {
+                "maxLength": 256,
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "known",
+                  "unknown",
+                  "not_applicable",
+                  "unsupported",
+                  "history_incomplete"
+                ],
+                "type": "string"
+              },
+              "value": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "main",
+                      "payment",
+                      "search",
+                      "target",
+                      "allocation",
+                      "resolution"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "status",
+              "value",
+              "reason",
+              "source"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "action_id",
+          "source_uid",
+          "source_entity",
+          "action_kind",
+          "action_index",
+          "in_progress",
+          "stage",
+          "parent_committed",
+          "cancel_allowed",
+          "cancel_semantics",
+          "remaining_energy_cost",
+          "remaining_damage_counters",
+          "max_assignments",
+          "max_assignments_per_target",
+          "allow_partial",
+          "checkpoint"
+        ],
+        "type": "object"
+      },
+      "quotas": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "id": {
+              "maxLength": 128,
+              "minLength": 1,
+              "type": "string"
+            },
+            "player": {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "quota": {
+              "additionalProperties": false,
+              "properties": {
+                "group": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maxLength": 128,
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "limit": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete",
+                        "unlimited"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "remaining": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete",
+                        "unlimited"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "reset": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "turn",
+                            "match"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "scope": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "entity",
+                            "player",
+                            "named_group",
+                            "stadium_effect"
+                          ],
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                },
+                "used": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "reason": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "source": {
+                      "maxLength": 256,
+                      "type": "string"
+                    },
+                    "status": {
+                      "enum": [
+                        "known",
+                        "unknown",
+                        "not_applicable",
+                        "unsupported",
+                        "history_incomplete"
+                      ],
+                      "type": "string"
+                    },
+                    "value": {
+                      "anyOf": [
+                        {
+                          "maximum": 1000000,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "value",
+                    "reason",
+                    "source"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "scope",
+                "group",
+                "reset",
+                "used",
+                "limit",
+                "remaining"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "id",
+            "player",
+            "quota"
+          ],
+          "type": "object"
+        },
+        "maxItems": 32,
+        "type": "array"
+      },
+      "version": {
+        "const": 2,
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "binding",
+      "abilities",
+      "quotas",
+      "effects",
+      "entities",
+      "history",
+      "interaction",
+      "gaps"
+    ],
+    "type": "object"
+  },
+  "phase_codes": {
+    "0": "setup",
+    "1": "mulligan",
+    "2": "setup_place",
+    "3": "draw",
+    "4": "main",
+    "5": "attack",
+    "6": "pokemon_check",
+    "7": "between_turns",
+    "8": "knockout_replace",
+    "9": "game_over"
+  },
+  "profile": "ptcg-public-input-v2",
+  "states": [
+    "known",
+    "unknown",
+    "not_applicable",
+    "unsupported",
+    "history_incomplete",
+    "unlimited"
+  ],
+  "supported_effect_types": [
+    "reduce_damage_next_turn",
+    "retreat_lock",
+    "ability_disabled",
+    "resolved_ability_disabled",
+    "resolved_tool_suppressed"
+  ],
+  "training_profiles": {
+    "public-state-complete-v2": "no gaps or unknown/unsupported/history_incomplete facts; complete history"
+  },
+  "units": {
+    "count": "nonnegative integer",
+    "energy_units": "engine effective supplied units",
+    "hp": "damage points, not counters",
+    "turn": "global engine turn_number"
+  },
+  "unsupported_effect_types": [
+    "general_damage_increase",
+    "damage_immunity",
+    "attack_effect_immunity",
+    "attack_restrictions",
+    "evolution_restrictions",
+    "energy_supply_effect_instances",
+    "attack_cost_effect_instances",
+    "retreat_cost_effect_instances",
+    "hp_effect_instances",
+    "weakness_effects",
+    "resistance_effects",
+    "general_stadium_and_field_effect_instances"
+  ],
+  "version": 2,
+  "visibility": "payload is viewer-specific; opponent hidden card identities and hidden linkages forbidden"
+}

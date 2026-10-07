@@ -34,6 +34,7 @@ ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONTRACT_ROOT = ROOT / "contracts/ptcgdap"
 PROFILE_ID = "ptcgdap-author-strategy-package-v1"
 BUNDLE_ID = "ptcgdap-author-strategy-package-as-wp1-v1"
+LEARNING_CAPACITY_CANONICAL_SHA256 = "CE57D95FC0E144EE7C9838085D4886B5416D4815DC8B0B143C0AACE419D96347"
 TEST_FIXTURE_KEY_ID = "ptcgdap-as-wp1-test-fixture-ed25519-v1"
 CABT_CONTRACT_SHA256 = "2CD02F54538985426EFDB057F3A6BDA4AD154DD171BCC03667D42D102982D294"
 CARD_CATALOG_SHA256 = "AB8CF10465F492A98DA8247A84572AECEE281D0726F7BB7B8E5DBC03A6AC70D4"
@@ -46,7 +47,7 @@ EXPECTED_ARTIFACT_CANONICAL_SHA256 = {
 }
 COMPETITIVE_POLICY_V2_PROFILE_ID = "ptcgdap-competitive-policy-v2"
 COMPETITIVE_POLICY_V2_BUNDLE_ID = "ptcgdap-competitive-policy-v2-as2-wp1"
-COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256 = "D82F3C5B6E82BD7D7362A61A3582B3B66AE6FB967C8AF9DF1B7C502A3AA41102"
+COMPETITIVE_POLICY_V2_EXPECTED_BUNDLE_CANONICAL_SHA256 = "B564A7AFFE8197D8B74F0F1484CB059E0EBD572F63CE9BB1BDD0BAF0F0C482ED"
 COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES = {
     "schema": "competitive_policy_v2.schema.json",
     "profile": "competitive_policy_v2_profile.json",
@@ -54,9 +55,9 @@ COMPETITIVE_POLICY_V2_CONTRACT_FILENAMES = {
     "bundle": "competitive_policy_v2_bundle.json",
 }
 COMPETITIVE_POLICY_V2_EXPECTED_ARTIFACT_CANONICAL_SHA256 = {
-    "schema": "49C03933CE4F36FF4BF33C6D9404F57D8F373B0E560F7812BFC5EA7C33000296",
-    "profile": "88BB1D3D3A394CB67917ABF4AE38735FCCA4F347ACC58CA4274D02E818E51075",
-    "vectors": "234D446B1E0DC51D36B4CA9830F82A7A7C0A1A24CC3FA29B75E5EEBAA5DA2240",
+    "schema": "F360CED02ECAA2E71F885943464017002CBBAD951020AF7D5B7752BF25952DD0",
+    "profile": "9D9C1E7E64BBFBB05970F2BB3FEB4D7E57B8DF001C793D986864B0B3626D53AB",
+    "vectors": "F833095C7B9C3C7702F8F11347BE1DA91E508A2C9925B60E7FFFFF38C9F86349",
 }
 CONTRACT_FILENAMES = {
     "schema": "author_strategy_package.schema.json",
@@ -465,6 +466,15 @@ class AuthorStrategyPackageLoader:
         self._windows_local_deck_validator = Draft202012Validator(self._windows_local_deck_documents["schema"])
         self._profile = self._documents["profile"]
         self._limits = self._profile["resource_limits"]
+        self._policy_json_bytes = self._limits["max_json_bytes"]
+        self._learning_capacity_enabled = False
+        capacity_path=self._contract_root/'author_strategy_learning_capacity_v1.json'
+        if capacity_path.is_file():
+            capacity=load_json_strict(capacity_path)
+            if _sha(canonical_json_v1_bytes(capacity))!=LEARNING_CAPACITY_CANONICAL_SHA256:
+                _raise('package_integrity_invalid')
+            self._policy_json_bytes=capacity['max_bytes']
+            self._learning_capacity_enabled=True
         self._trust_store = {
             entry["key_id"]: copy.deepcopy(entry) for entry in self._profile["trust_store"]["keys"]
         }
@@ -627,6 +637,8 @@ class AuthorStrategyPackageLoader:
     def contract_report(self) -> dict[str, Any]:
         release = self._release_gate.audit_snapshot()
         return {
+            "learning_capacity": {"enabled":self._learning_capacity_enabled,"max_policy_json_bytes":self._policy_json_bytes,
+                "canonical_sha256":LEARNING_CAPACITY_CANONICAL_SHA256 if self._learning_capacity_enabled else None},
             "profile_id": PROFILE_ID,
             "bundle_id": BUNDLE_ID,
             "bundle_canonical_sha256": EXPECTED_BUNDLE_CANONICAL_SHA256,
@@ -865,7 +877,8 @@ class AuthorStrategyPackageLoader:
         }
         for path, value in members.items():
             kind = FIXED_PAYLOAD_KINDS.get(path, OPTIONAL_PAYLOAD_KINDS.get(path))
-            if kind is not None and len(value) > per_kind[kind]:
+            limit=self._policy_json_bytes if path=='policy/adapter.json' else per_kind.get(kind,0)
+            if kind is not None and len(value) > limit:
                 _raise("package_resource_limit_exceeded")
             if kind in {"png", "webp"}:
                 dimensions = _image_dimensions(value, kind)

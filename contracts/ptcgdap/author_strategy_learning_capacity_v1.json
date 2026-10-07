@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "profile_id": "ptcgdap-author-learning-policy-capacity-v1",
+  "parent_author_package_bundle_canonical_sha256": "B416F2CBA2795B62126B6EF7B5F07A9000E84D5FA1DF62C1753CADC9E82E106B",
+  "payload_path": "policy/adapter.json",
+  "max_bytes": 1048576,
+  "requires_capacity_aware_loader": true,
+  "other_resource_limits_unchanged": true
+}

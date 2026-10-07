@@ -10,7 +10,7 @@ from scripts.ai.ptcgdap.cabt_tree_hash import jcs_canonical_json_bytes
 
 
 class NativeTraceTests(unittest.TestCase):
-    def test_recording_accepts_boolean_appearance_without_changing_policy_contract(self):
+    def test_recording_and_policy_share_exact_public_appearance_contract(self):
         import copy
         from tests.test_competitive_forge_v2 import _frame
         from ptcg_strategy_forge.native_trace import _trace_frame_error
@@ -21,11 +21,31 @@ class NativeTraceTests(unittest.TestCase):
         original = copy.deepcopy(frame)
         self.assertIsNone(_trace_frame_error(frame))
         self.assertEqual(original, frame)
-        self.assertIsNotNone(_frame_error(frame))
+        self.assertIsNone(_frame_error(frame))
         for key, value in [('appeared_this_turn', 1), ('unknown_slot_field', True), ('opponent_hand', [])]:
             bad = copy.deepcopy(frame)
             bad['public_state']['self']['active'][0][key] = value
             self.assertIsNotNone(_trace_frame_error(bad))
+
+    def test_counter_change_cannot_reuse_old_option_fingerprint(self):
+        import copy
+        from tools.ptcgdap.public_counter_contract import counter_cases
+        from tools.ptcgdap.build_competitive_policy_v2_contract import _sample_policy, _option, _frame
+        from ptcg_strategy_forge.native_trace import _window, _trace_frame_error
+        from scripts.ai.ptcgdap.cabt_tree_hash import public_observation_hash
+        frame = counter_cases(_sample_policy, _option, _frame)[0]['frame']
+        self.assertIsNone(_trace_frame_error(frame))
+        for option in frame['options']:
+            option['option_fingerprint'] = public_observation_hash({
+                'profile_id': 'ptcgdap-scoped-option-fingerprint-v1',
+                'public_observation_hash': frame['source']['public_observation_hash'],
+                'window_id': frame['source']['window_id'], 'index': option['index'],
+                'option': copy.deepcopy(option)})
+        for key in ('remaining_damage_counters', 'target_pending_damage_counters'):
+            changed = copy.deepcopy(frame)
+            changed['options'][0][key] += 1
+            with self.assertRaisesRegex(ValueError, 'native_trace_option_binding_invalid'):
+                _window({'frame': changed, 'host': {}})
 
     def test_import_is_immutable_and_reverified(self):
         from ptcg_strategy_forge.native_trace import NativeTraceStore

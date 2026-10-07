@@ -99,6 +99,10 @@ def main() -> int:
         epilog="New developers: start with `workspace create`, then `workspace status`.",
     )
     commands = parser.add_subparsers(dest="command", required=True)
+    public_input = commands.add_parser('public-input', help='Validate a versioned public observation and report semantic coverage.')
+    public_input.add_argument('--input', type=Path, required=True)
+    public_input.add_argument('--require-training', choices=['public-observation-v3', 'semantic-complete-v3'])
+    public_input.add_argument('--report', type=Path)
     doctor_parser = commands.add_parser("doctor", help="Verify Python, pinned SDK bytes, contracts, and template package.")
     doctor_parser.add_argument("--report", type=Path, help="Write the JSON report to this path.")
     new = commands.add_parser(
@@ -297,7 +301,16 @@ def main() -> int:
     register(commands, workspace_commands)
     args = parser.parse_args()
     try:
-        if hasattr(args, "iteration_handler"):
+        if args.command == 'public-input':
+            from scripts.ai.ptcgdap.public_input_v3 import PublicInputV3
+            observation = PublicInputV3.capture(json.loads(args.input.read_text(encoding='utf-8')))
+            if args.require_training:
+                observation.require_training(args.require_training)
+            report = {'status': 'passed', 'profile': 'ptcg-public-input-v3',
+                      'input_sha256': observation.input_sha256,
+                      'coverage': observation.coverage(),
+                      'current_option_count': len(observation.base.frame()['options'])}
+        elif hasattr(args, "iteration_handler"):
             report = args.iteration_handler(args)
         elif args.command == "workspace":
             if args.workspace_command == "create":

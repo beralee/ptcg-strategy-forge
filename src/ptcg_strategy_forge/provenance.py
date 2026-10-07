@@ -8,6 +8,7 @@ from typing import Any
 
 MANIFEST_PATH = Path("vendor/ptcgdap-sdk-manifest.json")
 SNAPSHOT_PREFIXES = (
+    Path("runtime/godot"),
     Path("scripts/ai/ptcgdap"),
     Path("contracts/ptcgdap"),
     Path("data/ptcgdap"),

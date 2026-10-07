@@ -9,6 +9,7 @@ import re
 from typing import Any
 
 from .cabt_tree_hash import public_observation_hash
+from .public_gust_forecast import inputs as gust_inputs
 
 
 REGISTRY_PATH = Path(__file__).resolve().parents[3] / "contracts" / "ptcgdap" / "public_damage_capability_registry_v1.json"
@@ -145,7 +146,10 @@ class PublicDamagePlanner:
         frame: Any,
         damage_plans: Any,
         registry: PublicDamageCapabilityRegistry,
+        *, reviewed_gust: bool = False, cursed_routes: bool = False, cursed_spread: bool = False,
     ) -> dict[str, Any]:
+        if type(reviewed_gust) is not bool:
+            return _error('invalid_damage_forecast_profile')
         if _contains_private(frame) or _contains_private(damage_plans):
             return _error("private_damage_plan_input")
         if type(frame) is not dict or not registry.validate_integrity():
@@ -170,6 +174,10 @@ class PublicDamagePlanner:
             in registry.card(str(slot.get("local_card_uid", ""))).get("capability_ids", [])
         )
         movable_counters = sum(max(0, int(slot.get("damage_counters", 0))) // 10 for slot in own_slots)
+        # A future mover takes counters from ONE source. Missing public damage
+        # is unknown, and funding the mover must not erase the available supply.
+        max_source_counters = (max((max(0, slot["damage_counters"]) // 10 for slot in own_slots), default=0)
+                               if all(type(slot.get("damage_counters")) is int for slot in own_slots) else None)
         ready_movers = 0
         for slot in own_slots:
             card = registry.card(str(slot.get("local_card_uid", "")))
@@ -261,12 +269,17 @@ class PublicDamagePlanner:
             ),
             default=0,
         )
+        # The registry was integrity-checked above; this helper only reads it.
+        if reviewed_gust:
+            gust_attacks, gust_targets, gust_typed = gust_inputs(frame, registry._document['cards'])
+        else:
+            gust_attacks, gust_targets, gust_typed = attack_options, {s['entity_serial'] for s in opponent.get('bench', [])}, False
         gust_target_metrics: dict[str, dict[str, Any]] = {}
         for target in opponent.get("bench", []):
             if type(target) is not dict or not _safe_int(target.get("entity_serial")):
                 continue
             target_damage = 0
-            for option in attack_options:
+            for option in gust_attacks if target['entity_serial'] in gust_targets else []:
                 rebound = copy.deepcopy(option)
                 rebound["projected_damage"] = None
                 target_damage = max(
@@ -287,8 +300,22 @@ class PublicDamagePlanner:
         for metrics in gust_target_metrics.values():
             if not best_gust_target or _target_sort_key(metrics) < _target_sort_key(best_gust_target):
                 best_gust_target = metrics
+        if gust_typed:
+            for option in frame.get('options', []):
+                if option.get('source_uid') not in ('30thDC_039','CSV6C_114'):
+                    continue
+                metrics = gust_target_metrics.get(str(option.get('target_entity_serial')))
+                if metrics is not None:
+                    option_metrics[str(option['index'])] = copy.deepcopy(metrics)
         facts = {
+            # A public HP opportunity, not a claim about effect prevention or
+            # the engine's next target window. Pending zero-HP bodies do not count.
+            "damage.minimum_bench_remaining_hp": min(
+                (s["remaining_hp"] for s in opponent.get("bench", []) if s["remaining_hp"] > 0),
+                default=None,
+            ),
             "damage.movable_counter_count": transferable,
+            "damage.max_source_counter_count": max_source_counters,
             "damage.available_mover_count": available_movers,
             "damage.froslass_check_count": froslass_checks,
             "damage.best_transfer_count": best_transfer,
@@ -306,6 +333,12 @@ class PublicDamagePlanner:
             "damage.best_gust_prize_yield": best_gust_target.get("prize_yield"),
             "damage.best_gust_remaining_debt": best_gust_target.get("remaining_debt"),
         }
+        cursed_audit = None
+        if cursed_routes:
+            from .public_cursed_route import calculate
+            cursed_audit = calculate(frame, registry._document['cards'],cursed_spread)
+            for key, metrics in cursed_audit['options'].items():
+                option_metrics[key].update(metrics)
         audit_payload = {
             "schema_version": 1,
             "profile_id": "ptcgdap-public-damage-plan-v1",
@@ -318,6 +351,8 @@ class PublicDamagePlanner:
             "targets": target_metrics,
             "public_only": True,
         }
+        if cursed_audit is not None:
+            audit_payload['cursed_routes'] = cursed_audit
         return {
             "accepted": True,
             "error_code": "",
@@ -589,6 +624,10 @@ class SemanticTransactionJournal:
         error = _transaction_error(definitions)
         if error:
             return self._result(False, error, "reject", error, self._state)
+        if type(damage_result) is dict and damage_result.get("error_code") == "unknown_damage_card_uid" and not damage_result.get("accepted"):
+            event = "abort" if self._state else "idle"
+            self.clear()
+            return self._result(True, "", event, "unknown_damage_card_uid", {})
         if type(damage_result) is not dict or not damage_result.get("accepted"):
             return self._result(False, "damage_plan_unavailable", "reject", "damage_plan_unavailable", self._state)
         turn = int(frame.get("public_state", {}).get("turn_number", 0))

@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "errors": [],
+  "snapshots": 49,
+  "native_assertions": 346,
+  "python_checks": 196,
+  "files": {
+    "scripts/ai/ptcgdap/public_input_v3.py": "39EA25628C9473A0C4D9EC11C89B1AE2E953DAC20C57767B186BD7607DBDCA59",
+    "runtime/godot/PublicInputV3.gd": "EE6A4337B497C35B8B108748E9E7A43A14573AA0D63DD1A692F582D98D0150B9",
+    "tools/public_input_v3_probe.gd": "F911140385940A6D6511670B3E4404CAB9FC9DBAAEFC3A4C1E2AB7F82ABA08C0",
+    "contracts/ptcgdap/public_input_v3.json": "7F58C9F00168CA13160FC9E217FC58AC86C042E263E73D97AA54015703FFFB96"
+  },
+  "godot_sha256": "1E5EFE381F62EE1CEA6BC18CAAC71C0C74BD6E68E6AF5C6EFB3DBE76628F61C7",
+  "engine_source_manifest_sha256": "98E71FC91CCD89AF70FE434CF21721F6F4F678CD5F85ACF93856AE99099D1188",
+  "engine_evidence_sha256": "A8CE32C3FADAA4AC1FD565AE1BF96DB2E6AD79110391B63946AD7689B169A37C",
+  "scope": "constructed positions, real engine methods/effects/bridge, both-view public Host envelopes; no production or CABT parity claim"
+}

@@ -91,19 +91,8 @@ def native_eligibility(decision, *, dirty=False):
 
 
 def _trace_frame_error(frame):
-    # Recorder-only compatibility: the deployed frame adds a public boolean.
-    # Keep the original for all hash checks; this does not extend policy inputs.
-    projected = copy.deepcopy(frame)
-    try:
-        for side in ('self', 'opponent'):
-            for zone in ('active', 'bench'):
-                for slot in projected['public_state'][side][zone]:
-                    if 'appeared_this_turn' in slot:
-                        if type(slot.pop('appeared_this_turn')) is not bool:
-                            return 'invalid_public_frame'
-    except (KeyError, TypeError, AttributeError):
-        return 'invalid_public_frame'
-    return _frame_error(projected)
+    # The recorder and policy share the closed public appearance/counter schema.
+    return _frame_error(frame)
 
 
 def _window(record):

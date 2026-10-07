@@ -1,0 +1,610 @@
+{
+  "action_mask": "Base-issued current frontier in canonical option row order",
+  "decision_schema": {
+    "additionalProperties": false,
+    "properties": {
+      "current_player_index": {
+        "maximum": 1,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "entities": {
+        "items": {
+          "additionalProperties": false,
+          "properties": {
+            "ability_disabled": {
+              "type": "boolean"
+            },
+            "ability_use_recorded_this_turn": {
+              "type": "boolean"
+            },
+            "attacks": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "attack_index": {
+                    "maximum": 31,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "cost_candidates": {
+                    "items": {
+                      "maxLength": 32,
+                      "pattern": "^[GWFRLPMDNYC]*$",
+                      "type": "string"
+                    },
+                    "maxItems": 256,
+                    "type": "array"
+                  },
+                  "energy_debt": {
+                    "maximum": 32,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "energy_ready": {
+                    "type": "boolean"
+                  },
+                  "source_uid": {
+                    "maxLength": 64,
+                    "minLength": 3,
+                    "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "attack_index",
+                  "source_uid",
+                  "cost_candidates",
+                  "energy_debt",
+                  "energy_ready"
+                ],
+                "type": "object"
+              },
+              "maxItems": 32,
+              "type": "array"
+            },
+            "conditions": {
+              "items": {
+                "enum": [
+                  "poisoned",
+                  "burned",
+                  "asleep",
+                  "paralyzed",
+                  "confused"
+                ],
+                "type": "string"
+              },
+              "maxItems": 5,
+              "type": "array"
+            },
+            "early_evolution_allowed": {
+              "type": "boolean"
+            },
+            "effective_retreat_cost": {
+              "maximum": 60,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "energies": {
+              "items": {
+                "additionalProperties": false,
+                "properties": {
+                  "local_card_uid": {
+                    "maxLength": 64,
+                    "minLength": 3,
+                    "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                    "type": "string"
+                  },
+                  "serial": {
+                    "maximum": 9007199254740991,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "types": {
+                    "items": {
+                      "enum": [
+                        "G",
+                        "W",
+                        "F",
+                        "R",
+                        "L",
+                        "P",
+                        "M",
+                        "D",
+                        "N",
+                        "Y",
+                        "C",
+                        "ANY"
+                      ],
+                      "type": "string"
+                    },
+                    "maxItems": 12,
+                    "type": "array"
+                  },
+                  "units": {
+                    "maximum": 60,
+                    "minimum": 0,
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "serial",
+                  "local_card_uid",
+                  "units",
+                  "types"
+                ],
+                "type": "object"
+              },
+              "maxItems": 60,
+              "type": "array"
+            },
+            "entity_serial": {
+              "maximum": 9007199254740991,
+              "minimum": 1,
+              "type": "integer"
+            },
+            "evolved_this_turn": {
+              "type": "boolean"
+            },
+            "played_this_turn": {
+              "type": "boolean"
+            },
+            "retreat_energy_ready": {
+              "type": "boolean"
+            },
+            "retreat_energy_units": {
+              "maximum": 3600,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "tool_effect_suppressed": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "entity_serial",
+            "played_this_turn",
+            "evolved_this_turn",
+            "conditions",
+            "effective_retreat_cost",
+            "retreat_energy_units",
+            "retreat_energy_ready",
+            "tool_effect_suppressed",
+            "ability_disabled",
+            "early_evolution_allowed",
+            "ability_use_recorded_this_turn",
+            "energies",
+            "attacks"
+          ],
+          "type": "object"
+        },
+        "maxItems": 18,
+        "type": "array"
+      },
+      "first_player_index": {
+        "maximum": 1,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "opponent": {
+        "additionalProperties": false,
+        "properties": {
+          "bench_capacity": {
+            "maximum": 8,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "is_first_turn": {
+            "type": "boolean"
+          },
+          "knocked_out_previous_opponent_turn": {
+            "type": "boolean"
+          },
+          "lost_zone": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "local_card_uid": {
+                  "maxLength": 64,
+                  "minLength": 3,
+                  "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                  "type": "string"
+                },
+                "serial": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "serial",
+                "local_card_uid"
+              ],
+              "type": "object"
+            },
+            "maxItems": 60,
+            "type": "array"
+          },
+          "vstar_used": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "is_first_turn",
+          "vstar_used",
+          "knocked_out_previous_opponent_turn",
+          "bench_capacity",
+          "lost_zone"
+        ],
+        "type": "object"
+      },
+      "selection": {
+        "additionalProperties": false,
+        "properties": {
+          "allow_partial": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_assignments": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "max_assignments_per_target": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "remaining_damage_counters": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "remaining_energy_cost": {
+            "anyOf": [
+              {
+                "maximum": 100,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "remaining_energy_cost",
+          "remaining_damage_counters",
+          "max_assignments",
+          "max_assignments_per_target",
+          "allow_partial"
+        ],
+        "type": "object"
+      },
+      "self": {
+        "additionalProperties": false,
+        "properties": {
+          "bench_capacity": {
+            "maximum": 8,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "is_first_turn": {
+            "type": "boolean"
+          },
+          "knocked_out_previous_opponent_turn": {
+            "type": "boolean"
+          },
+          "lost_zone": {
+            "items": {
+              "additionalProperties": false,
+              "properties": {
+                "local_card_uid": {
+                  "maxLength": 64,
+                  "minLength": 3,
+                  "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                  "type": "string"
+                },
+                "serial": {
+                  "maximum": 9007199254740991,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "serial",
+                "local_card_uid"
+              ],
+              "type": "object"
+            },
+            "maxItems": 60,
+            "type": "array"
+          },
+          "vstar_used": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "is_first_turn",
+          "vstar_used",
+          "knocked_out_previous_opponent_turn",
+          "bench_capacity",
+          "lost_zone"
+        ],
+        "type": "object"
+      },
+      "stadium": {
+        "additionalProperties": false,
+        "properties": {
+          "card_uid": {
+            "anyOf": [
+              {
+                "maxLength": 64,
+                "minLength": 3,
+                "pattern": "^[A-Za-z0-9.]+_[A-Za-z0-9._]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "owner_index": {
+            "anyOf": [
+              {
+                "maximum": 1,
+                "minimum": 0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "card_uid",
+          "owner_index"
+        ],
+        "type": "object"
+      },
+      "turn": {
+        "additionalProperties": false,
+        "properties": {
+          "stadium_effect_used": {
+            "type": "boolean"
+          },
+          "stadium_play_available": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "stadium_play_available",
+          "stadium_effect_used"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "const": 1,
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "current_player_index",
+      "first_player_index",
+      "stadium",
+      "turn",
+      "selection",
+      "self",
+      "opponent",
+      "entities"
+    ],
+    "type": "object"
+  },
+  "frame_required": [
+    "options",
+    "profile_id",
+    "prompt_kind",
+    "public_state",
+    "schema_version",
+    "seat",
+    "select_semantics",
+    "sequence",
+    "source"
+  ],
+  "identity_domain": "godot_local_card_uid_v1",
+  "limitations": [
+    "ability_marker_is_not_per_ability_quota",
+    "arbitrary_dynamic_effects_not_fully_projected",
+    "cost_ready_is_not_legal_action",
+    "unknown_deck_and_prize_identities_not_observed"
+  ],
+  "opponent_required": [
+    "active",
+    "bench",
+    "deck_count",
+    "discard",
+    "hand_count",
+    "prizes_remaining"
+  ],
+  "option_allowed": [
+    "ability_index",
+    "attack_index",
+    "card_serial",
+    "card_uid",
+    "energy_count",
+    "energy_type_raw",
+    "index",
+    "kind",
+    "option_number",
+    "option_player_index",
+    "option_type_raw",
+    "pending_assignment_count",
+    "projected_damage",
+    "projected_knockout",
+    "remaining_damage_counters",
+    "requires_interaction",
+    "source_entity_serial",
+    "source_serial",
+    "source_uid",
+    "special_condition_type",
+    "tags",
+    "target_attached_energy_count",
+    "target_attached_energy_uids",
+    "target_attack_ready",
+    "target_energy_debt",
+    "target_entity_serial",
+    "target_minimum_attack_energy_count",
+    "target_pending_damage_counters",
+    "target_prize_value",
+    "target_remaining_hp",
+    "target_serial",
+    "target_uid"
+  ],
+  "option_order": "canonical semantic record without current index; duplicates retained",
+  "option_required": [
+    "ability_index",
+    "attack_index",
+    "card_serial",
+    "card_uid",
+    "energy_count",
+    "energy_type_raw",
+    "index",
+    "kind",
+    "option_number",
+    "option_player_index",
+    "option_type_raw",
+    "pending_assignment_count",
+    "projected_damage",
+    "projected_knockout",
+    "requires_interaction",
+    "source_serial",
+    "source_uid",
+    "special_condition_type",
+    "tags",
+    "target_attached_energy_count",
+    "target_attached_energy_uids",
+    "target_attack_ready",
+    "target_energy_debt",
+    "target_minimum_attack_energy_count",
+    "target_prize_value",
+    "target_remaining_hp",
+    "target_serial",
+    "target_uid"
+  ],
+  "optional_representation": "omitted with explicit presence paths; null remains null",
+  "plan_keys": [
+    "goal_id",
+    "method_id",
+    "phase",
+    "target_entity",
+    "turn"
+  ],
+  "plan_unknown": null,
+  "printed_keys": [
+    "card_type",
+    "stage",
+    "hp",
+    "energy_type",
+    "energy_provides",
+    "evolves_from",
+    "weakness_energy",
+    "weakness_value",
+    "resistance_energy",
+    "resistance_value",
+    "retreat_cost",
+    "mechanic",
+    "ancient_trait",
+    "abilities",
+    "attacks",
+    "description"
+  ],
+  "profile": "ptcg-base-input-v1",
+  "self_allowed": [
+    "active",
+    "bench",
+    "bench_capacity",
+    "deck_count",
+    "discard",
+    "hand",
+    "prizes_remaining",
+    "turn"
+  ],
+  "self_required": [
+    "active",
+    "bench",
+    "deck_count",
+    "discard",
+    "hand",
+    "prizes_remaining"
+  ],
+  "slot_allowed": [
+    "appeared_this_turn",
+    "attached_energy_count",
+    "attached_energy_uids",
+    "attached_tool_uid",
+    "attack_ready",
+    "damage_counters",
+    "energy_debt",
+    "entity_serial",
+    "local_card_uid",
+    "max_hp",
+    "minimum_attack_energy_count",
+    "pokemon_stack_uids",
+    "prize_value",
+    "remaining_hp",
+    "serial"
+  ],
+  "slot_required": [
+    "attached_energy_count",
+    "attached_energy_uids",
+    "attack_ready",
+    "energy_debt",
+    "local_card_uid",
+    "minimum_attack_energy_count",
+    "prize_value",
+    "remaining_hp",
+    "serial"
+  ],
+  "state_required": [
+    "opponent",
+    "phase",
+    "self",
+    "turn_number"
+  ],
+  "turn_required": [
+    "manual_attachment_available",
+    "retreat_available",
+    "supporter_available"
+  ],
+  "version": 1
+}

@@ -15,6 +15,7 @@ import re
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from .public_decision_facts import DECISION_FACT_TYPES, decision_error, decision_fact
 from .cabt_tree_hash import CabtTreeHashError, public_observation_hash
 from .public_damage_planning import (
     PublicDamageCapabilityRegistry,
@@ -169,6 +170,8 @@ SCALAR_FACTS = frozenset(
         "option.option_number",
         "option.ability_index",
         "option.pending_assignment_count",
+        "option.target_pending_damage_counters",
+        "option.remaining_damage_counters",
         "option.tags",
         "option.target_attached_energy_uids",
         "option.source_is_active",
@@ -203,6 +206,7 @@ SCALAR_FACTS = frozenset(
         "threat.opponent_attacks_to_win",
         "threat.tempo_margin",
         "damage.movable_counter_count",
+        "damage.max_source_counter_count",
         "damage.available_mover_count",
         "damage.froslass_check_count",
         "damage.best_transfer_count",
@@ -215,6 +219,18 @@ SCALAR_FACTS = frozenset(
         "damage.best_prize_yield",
         "damage.best_remaining_debt",
         "damage.current_attack_damage",
+        "damage.option.cursed_allowed",
+        "damage.option.cursed_preferred",
+        "damage.option.cursed_evolve",
+        "damage.option.cursed_preserve",
+        "damage.option.cursed_value",
+        "damage.option.cursed2_allowed",
+        "damage.option.cursed2_preferred",
+        "damage.option.cursed2_evolve",
+        "damage.option.cursed2_preserve",
+        "damage.option.cursed2_value",
+        "damage.option.cursed2_prepare",
+        "damage.minimum_bench_remaining_hp",
         "damage.best_gust_target_entity_serial",
         "damage.best_gust_attack_windows_to_ko",
         "damage.best_gust_prize_yield",
@@ -285,6 +301,8 @@ WINDOW_UID_FACTS = frozenset(
         "window.option_count_target_uid",
     }
 )
+SCALAR_FACTS = SCALAR_FACTS | frozenset(DECISION_FACT_TYPES)
+
 NUMERIC_TERM_FACTS = frozenset(
     fact
     for fact in SCALAR_FACTS
@@ -350,6 +368,9 @@ DOCUMENT_KEYS = DOCUMENT_REQUIRED_KEYS | {
     "interaction_recipes",
     "turn_bonus_contracts",
     "damage_plans",
+    "damage_forecast_profile",
+    "plan_comparison_profile",
+    "precommit_review_profile",
     "semantic_transactions",
 }
 GOAL_KEYS = {"goal_id", "stage", "priority", "requirements"}
@@ -456,6 +477,8 @@ TURN_BONUS_KEYS = {
     "option_when",
     "score_bonus",
 }
+NUMERIC_TERM_FACTS = NUMERIC_TERM_FACTS - frozenset(k for k, v in DECISION_FACT_TYPES.items() if v != "integer")
+
 CONDITION_KEYS = {"fact", "op", "value", "card_uid"}
 TERM_KEYS = {"fact", "coefficient", "minimum", "maximum"}
 FRAME_KEYS = {
@@ -503,6 +526,7 @@ SLOT_KEYS = SLOT_REQUIRED_KEYS | {
     "entity_serial",
     "max_hp",
     "damage_counters",
+    "appeared_this_turn",
     "attached_tool_uid",
     "pokemon_stack_uids",
 }
@@ -536,7 +560,7 @@ OPTION_REQUIRED_KEYS = {
     "option_type_raw",
     "option_player_index",
 }
-OPTION_KEYS = OPTION_REQUIRED_KEYS | {"source_entity_serial", "target_entity_serial"}
+OPTION_KEYS = OPTION_REQUIRED_KEYS | {"source_entity_serial", "target_entity_serial", "target_pending_damage_counters", "remaining_damage_counters"}
 
 
 def _sha(value: Any) -> str:
@@ -632,7 +656,7 @@ def _condition_list_error(
             return error
         fact = condition["fact"]
         if not allow_option_facts and (
-            fact.startswith("option.")
+            fact.startswith(("option.", "decision.option."))
             or fact.startswith("goal.option.")
             or fact.startswith("damage.option.")
             or fact.startswith("transaction.option.")
@@ -734,7 +758,7 @@ def _route_value_component_error(value: Any) -> str | None:
         fact = term["fact"]
         if (
             fact not in NUMERIC_TERM_FACTS
-            or fact.startswith("option.")
+            or fact.startswith(("option.", "decision.option."))
             or fact.startswith("goal.option.")
             or not _safe_int(term["coefficient"], signed=True)
             or abs(term["coefficient"]) > 10_000
@@ -788,6 +812,12 @@ def _document_error(value: Any, allowed_uids: frozenset[str]) -> str | None:
         or not DOCUMENT_REQUIRED_KEYS <= set(value) <= DOCUMENT_KEYS
     ):
         return "invalid_policy_document"
+    if value.get('damage_forecast_profile', 'legacy-v1') not in ('legacy-v1','reviewed-gust-v1'):
+        return 'invalid_damage_forecast_profile'
+    if value.get('precommit_review_profile', 'disabled') not in ('disabled', 'completion-v1'):
+        return 'invalid_precommit_review_profile'
+    if value.get('plan_comparison_profile', 'legacy-v1') not in ('legacy-v1','resource-continuity-v1','resource-continuity-v2','resource-continuity-v3','resource-continuity-v4','resource-continuity-v5','card-goals-v1'):
+        return 'invalid_plan_comparison_profile'
     if (
         value["schema_version"] != 2
         or not _identifier(value["adapter_id"])
@@ -1096,7 +1126,7 @@ def _document_error(value: Any, allowed_uids: frozenset[str]) -> str | None:
             if (
                 fact not in NUMERIC_TERM_FACTS
                 or type(fact) is not str
-                or fact.startswith("option.")
+                or fact.startswith(("option.", "decision.option."))
                 or fact.startswith("goal.option.")
                 or not _safe_int(divisor)
                 or not 1 <= divisor <= 1_000_000
@@ -1232,6 +1262,8 @@ def _card_error(value: Any, *, slot: bool) -> bool:
         return True
     if "damage_counters" in value and not _safe_int(value["damage_counters"]):
         return True
+    if "appeared_this_turn" in value and type(value["appeared_this_turn"]) is not bool:
+        return True
     if "attached_tool_uid" in value and value["attached_tool_uid"] is not None \
         and not _uid(value["attached_tool_uid"]):
         return True
@@ -1260,6 +1292,26 @@ def _nullable(value: Any, kind: type) -> bool:
     return value is None or type(value) is kind
 
 
+def _counter_state_error(options: list, semantics: dict) -> bool:
+    keys = {"target_pending_damage_counters", "remaining_damage_counters"}
+    if not any(type(option) is dict and keys & set(option) for option in options):
+        return False
+    if semantics["select_type_raw"] != 1 or semantics["select_context_raw"] not in {13, 14}:
+        return True
+    budget = None
+    for option in options:
+        if type(option) is not dict or not keys <= set(option):
+            return True
+        if any(type(option[key]) is not int or not 0 <= option[key] <= 100 for key in keys):
+            return True
+        if not _safe_int(option.get("target_entity_serial")) or option["target_entity_serial"] <= 0:
+            return True
+        if budget is not None and budget != option["remaining_damage_counters"]:
+            return True
+        budget = option["remaining_damage_counters"]
+    return False
+
+
 def _frame_error(value: Any) -> str | None:
     if _contains_private(value):
         return "private_or_runtime_frame"
@@ -1285,7 +1337,8 @@ def _frame_error(value: Any) -> str | None:
         or UPPER_SHA.fullmatch(str(source["public_observation_hash"])) is None
         or UPPER_SHA.fullmatch(str(source["window_id"])) is None
         or type(state) is not dict
-        or set(state) != STATE_KEYS
+        or not STATE_KEYS <= set(state) <= STATE_KEYS | {"decision"}
+        or decision_error(state)
         or type(semantics) is not dict
         or set(semantics) != SEMANTIC_KEYS
         or type(options) is not list
@@ -1343,6 +1396,8 @@ def _frame_error(value: Any) -> str | None:
         or not _safe_int(semantics["select_type_raw"])
         or not _safe_int(semantics["select_context_raw"])
     ):
+        return "invalid_public_frame"
+    if _counter_state_error(options, semantics):
         return "invalid_public_frame"
     for index, option in enumerate(options):
         if (
@@ -1813,6 +1868,9 @@ def _fact(
     threat: dict[str, int],
     card_uid: str | None,
 ) -> Any:
+    if fact in DECISION_FACT_TYPES:
+        return decision_fact(frame, option, fact)
+
     damage = frame.get("_derived_damage", {})
     transaction = frame.get("_derived_transaction", {})
     if fact.startswith("damage.option."):
@@ -1961,7 +2019,7 @@ def _fact(
             )
             for slot in frame["public_state"]["self"]["active"]
         )
-    if fact.startswith("option."):
+    if fact.startswith(("option.", "decision.option.")):
         return None if option is None else option.get(fact.split(".", 1)[1])
     return None
 
@@ -1991,6 +2049,13 @@ def _compare(actual: Any, op: str, expected: Any) -> bool:
     return False
 
 
+def _unavailable_damage_facts(rows: list[dict[str, Any]], frame: dict[str, Any]) -> bool:
+    """Unknown damage cannot satisfy negative predicates or score terms."""
+    return frame.get("_derived_damage", {}).get("accepted") is False and any(
+        str(row.get("fact", "")).startswith("damage.") for row in rows
+    )
+
+
 def _matches(
     conditions: list[dict[str, Any]],
     frame: dict[str, Any],
@@ -1998,6 +2063,8 @@ def _matches(
     goal: dict[str, int],
     threat: dict[str, int],
 ) -> bool:
+    if _unavailable_damage_facts(conditions, frame):
+        return False
     return all(
         _compare(
             _fact(condition["fact"], frame, option, goal, threat, condition["card_uid"]),
@@ -2397,6 +2464,8 @@ def _current_turn_contract(
 def _evaluate(
     policy: CompetitivePolicyV2,
     frame: dict[str, Any],
+    *,
+    verified_document: dict[str, Any] | None = None,
 ) -> tuple[
     list[int],
     int,
@@ -2407,7 +2476,7 @@ def _evaluate(
     dict[str, int] | None,
     dict[str, Any],
 ]:
-    document = policy.to_public_dict()
+    document = policy.to_public_dict() if verified_document is None else verified_document
     goal_states, goals = _goal_states(document, frame)
     threat = _threat_clock(frame)
     turn_contract, route_overlays, route_selection_count = _current_turn_contract(
@@ -2424,6 +2493,8 @@ def _evaluate(
             matched.append(base_floor)
         for rule in document["rules"]:
             goal = goals[rule["goal_id"]]
+            if _unavailable_damage_facts(rule["score_terms"], frame):
+                continue
             if not _matches(rule["when"], frame, option, goal, threat):
                 continue
             raw = rule["base_score"]
@@ -2542,6 +2613,7 @@ class CompetitivePolicyV2Decision:
     selected_indexes: list[int]
     audit: dict[str, Any]
     model_frontier: dict[str, Any] | None = None
+    base_input: Any = None
 
 
 def _index_list(value: Any, option_count: int) -> bool:
@@ -2563,6 +2635,7 @@ class CompetitivePolicyV2Runtime:
         base_hard_tiers: list[dict[str, Any]] | None = None,
         base_vetoed_indexes: list[int] | None = None,
         transaction_journal: SemanticTransactionJournal | None = None,
+        goal_journal: Any = None,
     ) -> CompetitivePolicyV2Decision:
         if type(policy) is not CompetitivePolicyV2 or not policy.validate_integrity():
             return CompetitivePolicyV2Decision(False, "invalid_policy", [], {})
@@ -2570,7 +2643,20 @@ class CompetitivePolicyV2Runtime:
         error = _frame_error(frame_value)
         if error is not None:
             return CompetitivePolicyV2Decision(False, error, [], {})
-        document = policy.to_public_dict()
+        from .base_input import BaseInput
+        try:
+            if goal_journal is not None:
+                from .base_transactions import GoalJournal
+                if type(goal_journal) is not GoalJournal or goal_journal.package_identity != policy._policy_hash:
+                    return CompetitivePolicyV2Decision(False, 'transaction_policy_mismatch', [], {})
+            base_input = BaseInput.capture(frame_value, plan=goal_journal.snapshot() if goal_journal is not None else None)
+        except ValueError as error:
+            return CompetitivePolicyV2Decision(False, str(error), [], {})
+        # Integrity was checked above for this invocation. Thaw one local
+        # snapshot, rather than rehashing the immutable 256 KiB policy four
+        # times in one decision. No validation result persists to a new call.
+        document = _thaw(policy._document)
+        verified_policy_hash = policy._policy_hash
         damage_result: dict[str, Any] = {
             "accepted": True,
             "error_code": "",
@@ -2580,12 +2666,16 @@ class CompetitivePolicyV2Runtime:
             "audit_hash": "",
         }
         if document.get("damage_plans"):
+            from .public_cursed_route import uses_cursed_route, uses_cursed_spread
             damage_result = PublicDamagePlanner.calculate(
                 frame_value,
                 document["damage_plans"],
                 PublicDamageCapabilityRegistry.load_default(),
+                reviewed_gust=document.get('damage_forecast_profile','legacy-v1')=='reviewed-gust-v1',
+                cursed_routes=uses_cursed_route(document),
+                cursed_spread=uses_cursed_spread(document),
             )
-            if not damage_result.get("accepted"):
+            if not damage_result.get("accepted") and damage_result.get("error_code") != "unknown_damage_card_uid":
                 return CompetitivePolicyV2Decision(
                     False,
                     str(damage_result.get("error_code", "damage_plan_failed")),
@@ -2615,6 +2705,11 @@ class CompetitivePolicyV2Runtime:
                 )
         frame_value["_derived_damage"] = damage_result
         frame_value["_derived_transaction"] = transaction_result
+        # Opt-in, per-window public planning. Older packages retain their exact
+        # path; the data-only adapter cannot supply simulated states or proofs.
+        from .public_attack_access import plan_attack_access, uses_attack_access
+        if uses_attack_access(document):
+            frame_value['_derived_access'] = plan_attack_access(frame_value, validated=True)
         option_count = len(frame_value["options"])
         mandatory = [] if mandatory_indexes is None else copy.deepcopy(mandatory_indexes)
         terminal = [] if terminal_indexes is None else copy.deepcopy(terminal_indexes)
@@ -2657,7 +2752,7 @@ class CompetitivePolicyV2Runtime:
             count_matched,
             selection_quotas,
             turn_contract,
-        ) = _evaluate(policy, frame_value)
+        ) = _evaluate(policy, frame_value, verified_document=document)
         any_rule_matched = any(card["matched_rules"] for card in scorecards)
         if not count_matched and not any_rule_matched:
             end_turn = [
@@ -2667,6 +2762,7 @@ class CompetitivePolicyV2Runtime:
             ]
             ranked = [*end_turn, *(index for index in ranked if index not in end_turn)]
         fallback_used = False
+        comparison_result = None
         if terminal:
             owner = "terminal"
             selected = list(terminal)
@@ -2681,6 +2777,12 @@ class CompetitivePolicyV2Runtime:
                 frontier = [index for index in frontier if tiers[index] == best_tier]
             frontier = [index for index in frontier if index not in vetoed]
             ordered = [index for index in ranked if index in frontier]
+            if document.get('plan_comparison_profile') in ('resource-continuity-v1','resource-continuity-v2','resource-continuity-v3','resource-continuity-v4','resource-continuity-v5','card-goals-v1') and selection_quotas is None:
+                from .public_plan_comparison import compare_plans
+                comparison_result = compare_plans(frame_value, ordered, validated=True, profile=document['plan_comparison_profile'])
+                proposal = comparison_result.get('proposed_index')
+                if comparison_result.get('accepted') and proposal in ordered:
+                    ordered = [proposal, *(index for index in ordered if index != proposal)]
             if selection_quotas is not None:
                 remaining = dict(selection_quotas)
                 typed_ordered: list[int] = []
@@ -2717,7 +2819,7 @@ class CompetitivePolicyV2Runtime:
         audit_payload = {
             "schema_version": 2,
             "profile_id": PROFILE_ID,
-            "policy_hash": policy.policy_hash,
+            "policy_hash": verified_policy_hash,
             "public_observation_hash": frame_value["source"]["public_observation_hash"],
             "window_id": frame_value["source"]["window_id"],
             "owner_layer": owner,
@@ -2738,18 +2840,70 @@ class CompetitivePolicyV2Runtime:
             "public_only": True,
             "stale_plan_has_authority": False,
         }
+        if not damage_result.get("accepted"):
+            audit_payload["damage_plan"].update(
+                status="unavailable", error_code=damage_result["error_code"]
+            )
+        if comparison_result is not None:
+            audit_payload['plan_comparison'] = comparison_result
         authority_indexes = turn_contract.get("route_authority_indexes", [])
         turn_contract["route_authority_applied"] = bool(
             authority_indexes
             and owner == "base_graph"
             and any(index in authority_indexes for index in selected)
         )
+        if document.get('precommit_review_profile') == 'completion-v1':
+            from .public_precommit_review import gate, propose
+            blocked = gate(frame_value, selected, audit_payload, selection_quotas)
+            review = dict(profile='completion-v1', evaluation_passes=1, changed=False, reason=blocked)
+            if not blocked:
+                # Pure second complete evaluation; do not advance the journal
+                # twice or recurse into decide on the same immutable window.
+                reranked, _, recards, _, _, _, _, _ = _evaluate(
+                    policy, frame_value, verified_document=document)
+                reordered = [i for i in reranked if i in frontier]
+                if comparison_result is not None:
+                    recompared = compare_plans(frame_value, reordered, validated=True,
+                                              profile=document['plan_comparison_profile'])
+                    reproposal = recompared.get('proposed_index')
+                    if recompared.get('accepted') and reproposal in reordered:
+                        reordered = [reproposal, *(i for i in reordered if i != reproposal)]
+                review = propose(frame_value, selected, frontier, recards, reranked,
+                                 reordered[0] if reordered else selected[0], policy._allowed_uids)
+                selected = [review['selected_index']]
+                audit_payload['selected_indexes'] = selected
+                if review['changed']: audit_payload['fallback_used'] = False
+            audit_payload['precommit_review'] = review
+        if goal_journal is not None:
+            # Research Base session only. Package schemas grant no new authority.
+            from .base_transactions import GoalJournal
+            if type(goal_journal) is not GoalJournal or goal_journal.package_identity != verified_policy_hash:
+                return CompetitivePolicyV2Decision(False, 'transaction_policy_mismatch', [], {})
+            prizes_left=frame_value['public_state']['self']['prizes_remaining']
+            active=frame_value['public_state']['opponent']['active']
+            finish_exists=any(o['kind'] in ('attack','granted_attack') and o.get('projected_knockout')
+                and (o.get('target_prize_value') or (active[0]['prize_value'] if active else 0))>=prizes_left>0
+                for o in frame_value['options'])
+            blocked = (owner != 'base_graph' or bool(mandatory) or bool(terminal)
+                       or turn_contract.get('route_authority_applied')
+                       or bool(transaction_result.get('state'))
+                       or minimum != 1 or maximum != 1 or selection_quotas is not None or finish_exists
+                       or frame_value['prompt_kind'] in ('setup_active','setup_bench','send_out','take_prize'))
+            try:
+                proposal = goal_journal.propose(base_input.frame(), [] if blocked else list(frontier))
+            except ValueError as error:
+                return CompetitivePolicyV2Decision(False, str(error), [], {})
+            if proposal['indexes'] and not blocked:
+                selected = [next(i for i in ranked if i in proposal['indexes'])]
+                audit_payload['selected_indexes'] = selected
+                audit_payload['fallback_used'] = False
+            audit_payload['goal_transaction'] = {**proposal, 'authority_blocked': bool(blocked)}
         audit = {**audit_payload, "audit_hash": _sha(audit_payload)}
         from .semantic_model_profile import base_model_frontier
         model_frontier = base_model_frontier(frame=frame_value, selected=selected, tiers=tiers,
             vetoed=vetoed, mandatory=mandatory, terminal=terminal,
             evaluated={'selection_quotas':selection_quotas}, audit=audit)
-        return CompetitivePolicyV2Decision(True, "", list(selected), audit, model_frontier)
+        return CompetitivePolicyV2Decision(True, "", list(selected), audit, model_frontier, base_input)
 
 
 __all__ = [

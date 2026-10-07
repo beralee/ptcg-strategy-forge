@@ -18,3 +18,9 @@ vendor/ptcgdap-sdk-manifest.json -text whitespace=-blank-at-eof,cr-at-eol
 demo/** -text whitespace=-blank-at-eof,cr-at-eol
 *.ptcgai -text
 *.bin -text
+
+# Public projection references and engine witness hashes are byte-pinned.
+runtime/godot/** -text whitespace=-blank-at-eof,cr-at-eol
+evidence/public-input-v*/** -text whitespace=-blank-at-eof,cr-at-eol
+tools/public_input_v2_probe.gd -text
+tools/public_input_v3_probe.gd -text

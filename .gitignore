@@ -51,3 +51,19 @@ evidence/*
 !evidence/ember-frost-complex-iteration-20260916.json
 
 !evidence/sdk-github-acceptance-20260927.json
+
+# Public SDK projection witnesses only; local experiments remain ignored.
+!evidence/public-input-v2/
+!evidence/public-input-v3/
+evidence/public-input-v2/*
+evidence/public-input-v3/*
+!evidence/public-input-v2/engine-*.json
+!evidence/public-input-v3/engine-*.json
+!evidence/sdk-github-acceptance-20261007.json
+# Private author output must not be added by broad staging.
+*.onnx
+*.ort
+*.pt
+*.pth
+*.ckpt
+private/

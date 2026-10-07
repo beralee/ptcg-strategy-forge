@@ -1,0 +1,68 @@
+{
+  "document_type": "forge_public_sdk_publication_acceptance_v1",
+  "date": "2026-10-07",
+  "status": "passed",
+  "public_predecessor": "4dd40d06640671a45741b80a9e95ab8efbc96099",
+  "validated_tree_before_receipt": "e7c07a6ae9c575f97c0d0905796a6f7873f4a7bb",
+  "sdk_manifest_sha256": "A6B9011191C69550042AA385AB95BE9A0109418ADE3CE09080CA5A937CDDC629",
+  "scope": "Reviewed public observation and decision SDK; no new authored deck strategies, deck templates, trained actors, private curricula or credentials.",
+  "unit_regression": {
+    "initial_full_suite": {
+      "tests": 392,
+      "passed": 379,
+      "errors": 12,
+      "failures": 1
+    },
+    "repairs": [
+      "Replace omitted private-dependent damage fixture with a minimal synthetic availability fixture.",
+      "Align native recorder and regression with the closed public appearance/counter schema."
+    ],
+    "targeted_reruns": {
+      "public_input_and_base_tests": 101,
+      "native_trace_tests": 5,
+      "status": "passed"
+    },
+    "final_covered_test_identities": 393,
+    "unresolved_failures": 0,
+    "method": "Full-suite results plus targeted reruns after repairs; the obsolete appearance test was renamed, and a counter fingerprint regression added. Not a second full-suite run."
+  },
+  "clean_staged_export": {
+    "doctor": "passed",
+    "red_to_green_demo": "passed",
+    "workspace_check": "passed",
+    "scenario_count": 10,
+    "passed_count": 10,
+    "deterministic": true,
+    "archive_sha256": "7F53F2DC698B0290DFC46C5E439B02439E4849B9522235B547EE5649EDA0D33A",
+    "external_game_checkout_required": false
+  },
+  "secret_scan": {
+    "scanner": "gitleaks 8.30.1",
+    "scanner_download_checksum_verified": true,
+    "scopes": [
+      "working directory",
+      "staged diff"
+    ],
+    "confirmed_credentials": 0,
+    "reviewed_false_positives": 8,
+    "false_positive_kind": "Exact 64-hex SHA-256 file entries in the two public engine-source manifests; filenames containing access, secret or api triggered the generic rule.",
+    "after_exact_reviewed_baseline": "passed",
+    "new_strategy_packages": 0,
+    "new_model_artifacts": 0,
+    "new_personal_decks": 0
+  },
+  "native_witnesses": {
+    "retained_v2_snapshots": 29,
+    "retained_v3_snapshots": 49,
+    "original_receipts_preserved": true,
+    "native_sessions_rerun_for_this_publication": false
+  },
+  "claims": {
+    "public_window_simulation": true,
+    "full_game_strength": false,
+    "cabt_parity": false,
+    "device_acceptance": false,
+    "production_approved": false
+  },
+  "rollback": "Revert the publication commit to the public predecessor; private local workspaces were not modified."
+}

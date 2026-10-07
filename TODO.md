@@ -97,3 +97,9 @@ Godot 模型输入诊断捕获已实现并通过针对性测试。私有控制�
 2026-09-09 扩展验收见 [本地升级回执](evidence/architecture-upgrade-local-20260909.json)：149/149 测试、规则与 BC 模型候选两个工作区均通过双构建/Host/10 场景、独立 wheel 与纯核心依赖安装通过。真实录像 79 个窗口完成资格统计，但没有合格 BC 行；完整架构计划仍未关闭，不能把此回执当成跨仓库联调或 production 完成。
 
 完成规则：只有证据文件和外部状态都可复核时才能把 `PENDING` 改为 `DONE`；不能仅因代码已写就关闭。
+
+## Public SDK publication — 2026-10-07
+
+- [x] Integrate versioned public observation/query contracts and reference modules on the latest public branch; keep personal strategy builders, deck templates, private learning pipelines and trained artifacts local.
+- [x] Detach public input integration from the private learning-loop import and pin native-reference bytes.
+- [ ] Production Host/transport, complete semantic coverage, new training tensors and device qualification remain separate work.

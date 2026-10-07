@@ -24,6 +24,8 @@ if TYPE_CHECKING:
 __version__ = "0.3.1"
 
 __all__ = [
+    "PublicDecisionView",
+    "DecisionApiError",
     "StrategyBase",
     "BasePlanError",
     "ResourceBudget",
@@ -31,6 +33,11 @@ __all__ = [
     "AccountStore",
     "ControlClient",
     "PublicBattleFacts",
+    "PublicInputV2",
+    "PublicEventMemory",
+    "PublicInputV3",
+    "PublicHistoryV3",
+    "agent_observation",
     "SelectionWindow",
     "SemanticOptionKey",
     "StrategyWorkspace",
@@ -44,6 +51,15 @@ __all__ = [
 
 
 def __getattr__(name: str) -> Any:
+    if name in {"PublicInputV3", "PublicHistoryV3", "agent_observation"}:
+        from scripts.ai.ptcgdap import public_input_v3
+        return getattr(public_input_v3, name)
+    if name in {"PublicInputV2", "PublicEventMemory"}:
+        from scripts.ai.ptcgdap import public_input_v2
+        return getattr(public_input_v2, name)
+    if name in {"PublicDecisionView", "DecisionApiError"}:
+        from . import decision_api
+        return getattr(decision_api, name)
     if name in {"StrategyBase", "BasePlanError", "ResourceBudget", "RouteValue"}:
         from . import strategy_base
         return getattr(strategy_base, name)

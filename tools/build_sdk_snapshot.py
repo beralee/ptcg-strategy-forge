@@ -9,6 +9,7 @@ import shutil
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIXES = (
+    Path("runtime/godot"),
     Path("scripts/ai/ptcgdap"),
     Path("contracts/ptcgdap"),
     Path("data/ptcgdap"),
@@ -219,7 +220,7 @@ def build() -> dict[str, object]:
             "base_commit": "3534d22b28d2895d5de5bf12cd35836d686714aa",
             "captured_on": "2026-08-23",
             "scope": "author-strategy development, validation, simulation, and publishing",
-            "note": "Base snapshot from PtcgDAP 3534d22b28d2895d5de5bf12cd35836d686714aa, captured 2026-08-23. Reviewed public card catalog and UCIS overlay from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c with the EffectRegistry script-identity fix and CSV6C_032 registration; 1011 public card sources. The reviewed damage registry expands metadata coverage from 797 to 1011 printings without changing the original 797 entries. Custom-deck validation retains exact per-card hashes without requiring an installed deck template. Reviewed semantic Actor v1/v2 projection, tensor contracts and package-validation overlays are included; Base frontier integration is ported to the retained Forge evaluator without importing unrelated newer Turn Program behavior. Public SDK publication reviewed 2026-09-27. Personal strategy builders, new deck templates, trained actors and private research outputs are excluded. Each distributed byte is pinned below; this manifest is not a full upstream commit or an engine/production acceptance claim.",
+            "note": "Base snapshot from PtcgDAP 3534d22b28d2895d5de5bf12cd35836d686714aa, captured 2026-08-23. Reviewed public card catalog and UCIS overlay from PtcgDAP 53cc7f86cb2048827ae29dc510494ded92ceb48c with the EffectRegistry script-identity fix and CSV6C_032 registration; 1011 public card sources. The reviewed damage registry expands metadata coverage from 797 to 1011 printings without changing the original 797 entries. Custom-deck validation retains exact per-card hashes without requiring an installed deck template. Reviewed semantic Actor v1/v2 projection, tensor contracts and package-validation overlays are included; Base frontier integration is ported to the retained Forge evaluator without importing unrelated newer Turn Program behavior. Public SDK publication reviewed 2026-10-07. Reviewed Forge public-input v2/v3, immutable decision queries, Base observation and semantic transaction helpers, bounded shared planning helpers, package capacity contract and public projection reference sources are included. No authored deck policy or private training pipeline is part of this overlay. Personal strategy builders, new deck templates, trained actors and private research outputs are excluded. Each distributed byte is pinned below; this manifest is not a full upstream commit or an engine/production acceptance claim.",
         },
         "files": files,
     }

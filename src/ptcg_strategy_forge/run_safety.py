@@ -231,3 +231,14 @@ def child_environment():
 
 def child_creation_flags():
     return subprocess.CREATE_NO_WINDOW | subprocess.BELOW_NORMAL_PRIORITY_CLASS if os.name=='nt' else 0
+
+
+def require_clean_engine_log(path):
+    """Godot may exit zero after a script error; never accept that as clean."""
+    try:
+        with open(path,'rb') as stream:
+            for line in stream:
+                if line.lstrip().startswith((b'SCRIPT ERROR:',b'ERROR:',b'FATAL ERROR:',b'USER ERROR:')):
+                    raise ValueError('engine_log_error')
+    except OSError as error:
+        raise ValueError('engine_log_unavailable') from error

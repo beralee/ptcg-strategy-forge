@@ -338,3 +338,5 @@ vendored PtcgDAP SDK 的文件、合同 hash 和来源固定在 [`vendor/ptcgdap
 项目使用 [Apache License 2.0](LICENSE)；vendored 组件来源见 [NOTICE](NOTICE)。这是非官方、非商业的学习与研究项目，不代表 Pokemon、PTCG 或任何相关权利方的授权与背书。
 
 当前新增的安装包、构建追溯、受控录像采集与 BC 数据合同，见 [v0.3 迭代 CLI 实施说明](docs/21-ITERATION-CLI-IMPLEMENTATION.md)；真实录像到 BC 与完整训练/发布闭环仍有明确缺口。
+
+最新公开 SDK（2026-10-07）：版本化公开输入 v3、不可变决策查询、事件恢复和能力门，见 [接入与交付范围](docs/63-PUBLIC-SDK-20261007.md)。本次不包含私人策略、模型或训练数据。

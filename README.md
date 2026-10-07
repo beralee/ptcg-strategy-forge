@@ -4,6 +4,19 @@
 
 这是独立的 SDK 与开发工具仓库。本次更新发布通用框架、合同和测试；个人参赛策略、训练权重、实验工作区、API Key 与签名私钥留在作者自己的环境。
 
+## 先离线跑通 Marnie RED→GREEN demo
+
+安装依赖后，先体验自带的 [Marnie 示例](demo/marnie-forge)，无需注册、API Key 或游戏仓库。在仓库根目录运行：
+
+```powershell
+.\setup.ps1
+.\forge.ps1 demo --output work\first-marnie-demo
+```
+
+输出目录必须不存在；重复运行请换一个目录。打开 `work/first-marnie-demo/demo-report.json`，成功时应看到 `status=passed`、`optimization.baseline_red=true`、10/10 场景通过和 `build.deterministic=true`。RED 是故意失败的基线，GREEN 包含修正后的选择、option 重排与安全负例。这是本地开发证据，不是平台资格或实战胜率。
+
+随后按[快速入门](docs/01-QUICKSTART.md)创建自己的工作区；准备提交时再连接开发者账号。
+
 ## 让 Codex、WorkBuddy 带你完成第一次提交
 
 把[Agent 任务书](docs/31-AGENT-START.md)交给编程助手，并告诉它你的牌组或策略想法。它会检查环境、开发和测试策略、完成本机签名、提交并跟进资格结果；你只需完成必要的账号验证和本机凭据输入。已有工作区也可以从当前进度继续。
@@ -90,7 +103,7 @@ PTCG Strategy Forge 是独立的 `.ptcgai` 策略开发工具链。你可以从�
 
 ## 先跑起你的第一个策略
 
-当前作者工具链要求 Windows、PowerShell 7 和 Python 3.13。已有开发者 API Key 后，创建、迭代、签名上传和查询均可使用 CLI，无需打开网页：
+当前作者工具链要求 Windows 和 Python 3.13。先使用系统自带 Windows PowerShell 5.1 或已有 PowerShell 7；`setup.ps1` / `forge.ps1` 未依赖 PowerShell 7 专用语法，遇到具体 Shell 兼容错误时再处理或升级，不必预先安装 PowerShell 7。若本机策略禁止 `.ps1`，可使用[快速入门的 Python 入口](docs/01-QUICKSTART.md#安装和自检)，无需永久放宽执行策略。离线 demo 通过后，已有开发者 API Key 的作者可继续使用 CLI 创建、迭代、签名上传和查询：
 
 ```powershell
 git clone https://github.com/beralee/ptcg-strategy-forge.git

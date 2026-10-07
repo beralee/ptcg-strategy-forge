@@ -1,5 +1,7 @@
 # PTCG Strategy Forge TODO 闭环
 
+2026-10-07：修复公共 Windows CI 的 tensorize 根路径规范化，保留严格路径解析与工作区包含检查；补充相对根、真实 8.3 别名、越界、非法路径及符号链接回归。README / Quickstart / Agent Start 统一启动脚本的 PowerShell 说明，并先引导已有离线 Marnie RED→GREEN demo。验收以该提交的 CI doctor、全量单元/安全测试与 demo 结果为准；不涉及游戏包、版本、网站部署或策略强度。
+
 2026-09-27：公共 SDK 提交整理；新增通用 Base 构筑/复盘、语义模型 v2 与受控收益工具，README 明确 AI 训练家定位和天梯 benchmark。仅发布 SDK、通用测试及公开榜单摘录；个人策略、权重和凭据不在此次提交范围。验收状态见 `evidence/sdk-github-acceptance-20260927.json`；此记录不关闭策略强度、官方 CABT、设备或生产门。
 
 提交回归发现互斥锁单元测试只模拟 RAM、却依赖真实磁盘余量；补齐该测试的磁盘输入模拟，使其可在低磁盘主机验证真实跨进程互斥。生产准入/停止阈值未变，磁盘负例另行复验。

@@ -1,29 +1,41 @@
 # 快速入门
 
-目标：从注册账号取得正式作者身份开始，创建一个工作区，看懂第一个选择，跑完全部门，并得到一个可安装、可签名上传的 `.ptcgai`。
-
-## 先取得正式开发者 ID
-
-已有 API Key 时，在下方安装完成后运行 `forge account login --origin https://api.ptcg.skillserver.cn`，按隐藏提示输入密钥。`forge account whoami` 返回完整身份，`workspace create --account` 自动绑定。离线创建仍支持 `--author-id`：必须逐字符保留完整 ID，包括 `developer-` 前缀。显示名称、邮箱和密钥标签不能替代它。
-
-完整开发者 ID 较长，而 `package_id` 还有独立长度限制。正式项目请另外选择一个简短、稳定且全局唯一的包 ID，例如 `dev.myname.my-strategy`，不要让工具从完整开发者 ID 自动拼接包名。
+目标：先离线跑通自带 Marnie RED→GREEN demo，看懂第一个选择；再创建自己的工作区，完成验收，准备提交时连接正式作者身份。体验 demo 无需注册、API Key 或游戏仓库。
 
 ## 安装和自检
 
-当前本地环境要求 Windows、PowerShell 7、Python 3.13：
+当前本地环境要求 Windows 和 Python 3.13。先使用系统自带 Windows PowerShell 5.1 或已有 PowerShell 7；`setup.ps1` / `forge.ps1` 未依赖 PowerShell 7 专用语法，遇到具体 Shell 兼容错误时再处理或升级，不必预先安装 PowerShell 7。在仓库根目录执行：
 
 ```powershell
 .\setup.ps1
 .\forge.ps1 doctor
 ```
 
-`setup.ps1` 创建 `.venv`、安装固定依赖并运行 `doctor`。`doctor` 必须通过 Python、vendored SDK byte manifest、UCIS 资格、合同漂移和模板包检查。手工环境可以运行：
+`setup.ps1` 创建 `.venv`、安装固定依赖并运行 `doctor`。首次下载工具和安装依赖需要网络；安装后 demo 在本地运行。`doctor` 必须通过 Python、vendored SDK byte manifest、UCIS 资格、合同漂移和模板包检查。若本机策略禁止 `.ps1`，无需永久放宽执行策略，可使用 Python 入口：
 
 ```powershell
-python -m venv .venv
+py -3.13 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 .\.venv\Scripts\python.exe forge.py doctor
 ```
+
+后续 `.\forge.ps1` 均可替换为 `.\.venv\Scripts\python.exe forge.py`。
+
+## 离线体验 Marnie RED→GREEN
+
+```powershell
+.\forge.ps1 demo --output work\first-marnie-demo
+```
+
+输出目录必须不存在；重复运行请换一个目录。检查 `work/first-marnie-demo/demo-report.json`：`status=passed`、`optimization.baseline_red=true`、`final_scenario_passed=10` / `final_scenario_total=10` 和 `build.deterministic=true` 表示故意失败的基线已复现，修正后的全部场景及双构建一致性通过。
+
+对照 [`baseline_adapter.json`](../demo/marnie-forge/optimization/baseline_adapter.json) 与[最终 adapter](../demo/marnie-forge/package/policy/adapter.json)，再查看[正例](../demo/marnie-forge/scenarios/01-positive.json)和[重排场景](../demo/marnie-forge/scenarios/04-reordered.json)。具体失败原因见[调试与优化](04-DEBUGGING-AND-OPTIMIZATION.md#redgreen-demo)。这是公开窗口开发证据，不自动证明 Godot 实战、平台资格或生产批准。
+
+## 准备提交时连接正式开发者 ID
+
+已有 API Key 时，运行 `.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn`，按隐藏提示输入密钥。`.\forge.ps1 account whoami` 返回完整身份，`workspace create --account` 自动绑定。还没有账号时，再前往[开发者中心](https://ptcg.skillserver.cn/dist/developers.html)完成注册。
+
+离线创建仍支持 `--author-id`；正式提交使用的 ID 必须逐字符保留完整身份，包括 `developer-` 前缀。显示名称、邮箱和密钥标签不能替代它。完整开发者 ID 较长，而 `package_id` 还有独立长度限制；正式项目请另外选择一个简短、稳定且全局唯一的包 ID，例如 `dev.myname.my-strategy`。
 
 ## 创建第一个规则工作区
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Resolve both workspace and scenario paths before tensorization containment checks, accepting Windows 8.3 aliases while retaining strict resolution and escape rejection. Add positive path and negative traversal/symlink regressions.
+- Start README, Quickstart and Agent Start with the existing offline Marnie RED-to-GREEN demo; clarify Windows PowerShell 5.1 / PowerShell 7 launcher support and defer account setup until submission preparation.
+
 ## 2026-09-27 · Public AI trainer SDK and ladder benchmark
 
 - Publish reusable StrategyBase route authoring/reflection, semantic Actor v2 (416/48), versioned features, qualified data projection and controlled outcome tools.

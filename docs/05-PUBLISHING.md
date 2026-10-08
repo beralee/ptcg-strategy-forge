@@ -1,11 +1,29 @@
 # 安装与发布
 
-## 已有 API Key：全程 CLI
+## 接入账号：选择一种登录方式
+
+刚注册、没有 API Key 时，完成邮箱验证后在自己的可交互终端运行，在隐藏提示中输入账号密码；用户名账号将 `--email YOUR_EMAIL` 替换为 `--username YOUR_USERNAME`，无需先在网页寻找 API Key：
+
+```powershell
+.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn --email YOUR_EMAIL
+```
+
+已有 API Key 时保留原流程，在隐藏提示中输入 API Key：
+
+```powershell
+.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn
+```
+
+由开发者在本机按助手权限要求确认后执行登录。密码登录会创建 CLI API Key；两种方式均将 API Key 保存到 Windows 当前用户凭据管理器。密码、API Key、签名私钥不得发送到聊天或写进命令参数。非 Windows / CI 的临时认证见 [无网页开发工作流](26-CLI-ONLY-DEVELOPMENT.md#ci-与非-windows不保存凭据)。
+
+## 登录后：全程 CLI
 
 日常发布优先使用 [无网页开发工作流](26-CLI-ONLY-DEVELOPMENT.md)：`account login` →
 `workspace create --account` → `workspace build` → `account register-signing-key` →
 `workspace release submit` → `releases wait`。`releases list/show/download/pause/resume`
 管理本人版本。上传自动在本机签名并保存精确回执；不需要手工重签后选择网页文件。
+
+先登记公钥，再由 `submit` 在本机签名上传。保存已接收的 `release_id` 回执，查询该 release 的运行资格是否为 `passed`，再单独核对该 release 的实际计分对局；三者不能互相替代。网页未显示公钥状态本身不能证明上传失败，应按本人 release 回执和查询结果判断。
 
 API Key 与签名私钥分别负责 HTTP 身份和包签名。已有 API Key 不意味着已经有签名私钥；
 首次发布可用 `release-key` 在仓库外生成。以下手工发布章节保留为兼容路径，网页不是前置条件。

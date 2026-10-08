@@ -60,7 +60,7 @@ macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预�
 
 已有账号跳过注册。没有账号时打开开发者中心，让用户完成邮箱注册和验证码；密码至少 12 位，验证码有效期 10 分钟。不要索取验证码、密码或 API Key 到聊天记录，不读取浏览器 Cookie，也不替用户猜测凭据。
 
-让用户在自己的可交互终端中执行下面的登录命令，并在隐藏提示中输入密码；你可以预填命令和非秘密邮箱，不能把密码拼进命令参数。如果你的运行环境不能展示隐藏输入，就打开用户可操作的本机终端，让他只做这一步。不要在后台启动一个无人能输入的密码提示后反复等待。
+刚注册、没有 API Key 时，无需先去网页寻找 API Key。由开发者在本机按助手权限要求确认后，在自己的可交互终端执行下面的登录命令，并在隐藏提示中输入密码；你可以预填命令和非秘密邮箱，不能把密码拼进命令参数。如果你的运行环境不能展示隐藏输入，就打开用户可操作的本机终端，让他只做这一步。不要在后台启动一个无人能输入的密码提示后反复等待。
 
 ```powershell
 .\forge.ps1 service capabilities --origin https://api.ptcg.skillserver.cn
@@ -68,7 +68,13 @@ macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预�
 .\forge.ps1 account whoami
 ```
 
-用户名账号使用 `--username`。已有 API Key 可在 `account login --origin ...` 的隐藏提示中输入。API Key、账号密码、签名私钥是不同的东西，不要混用。Windows 登录信息保存在当前用户凭据管理器，普通配置不保存明文密码或 Token。
+用户名账号将 `--email 用户注册邮箱` 替换为 `--username 用户名`。已有 API Key 时跳过密码登录，使用原流程，在隐藏提示中输入 API Key：
+
+```powershell
+.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn
+```
+
+密码登录会创建 CLI API Key；两种登录方式均将 API Key 保存到 Windows 当前用户凭据管理器，普通配置不保存明文密码或 Token。API Key、账号密码、签名私钥是不同的东西，不要混用，也不得发送到聊天。登录后用 `account whoami` 核对本人身份。
 
 非 Windows 或 CI 如使用临时认证，按 `docs/26-CLI-ONLY-DEVELOPMENT.md` 的 `--api-key-stdin` / `--api-key-env` 读取用户在本机配置的秘密；不能通过聊天或明文文件传递。不能通过公共网页给别人代建 API Key。
 
@@ -104,7 +110,7 @@ macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预�
 
 环境/安装失败不等于策略失败。首次提交不需要训练进程池或大规模 benchmark。需要额外真实对战评估时另行检查资源和工具支持，并如实区分本地检查与真实对战证据。
 
-## 6. 自动处理签名和公钥登记
+## 6. 准备密钥，先登记公钥
 
 先查已有公钥和本机密钥。已有可用匹配密钥时复用；不要覆盖或撤销旧密钥。如果私钥丢失，生成新文件并登记新公钥，不把撤销旧公钥作为默认清理动作——旧策略执行可能依赖它。
 
@@ -121,6 +127,8 @@ New-Item -ItemType Directory -Force -Path $keyDir | Out-Null
 
 密钥必须保存在仓库和工作区之外。私钥只供本机签名程序读取，绝不输出、截图、提交 Git 或发送到网页/聊天。网页只登记公钥。核对当前账号、包作者和有效公钥三者一致；Agent 应通过工具完成核对，不让用户手工复制编码字符串。
 
+先完成公钥登记与 `prepare` 预检，再由下一步 `submit` 在本机签名上传；不要把“已生成密钥”当成“已登记公钥”。
+
 ## 7. 提交，保存回执，等到明确的资格结果
 
 ```powershell
@@ -131,7 +139,7 @@ New-Item -ItemType Directory -Force -Path $keyDir | Out-Null
 
 `release_id` 和本地 `submission_id` 必须取自工具的真实输出，不能自行拼造。`submit` 会对已验收归档进行本机签名并提交，不需要用户再手工执行重签或网页上传。保存归档 SHA-256、版本、release ID、接收状态和资格状态。
 
-“已接收”与“资格通过”是两件事。`releases wait` 超时只说明这次等待结束，先查询进度并继续合理间隔等待，不能把超时当作被拒绝。发生网络断开或接收状态未知时，先按原回执只读对账：
+分别验证已接收 release（真实 `release_id`、`receipt_state=accepted`）、运行资格（`qualification_status=passed`）和同一 release 的实际计分对局；三者不能互相替代。网页未显示公钥状态本身不能证明上传失败。`releases wait` 超时只说明这次等待结束，先查询进度并继续合理间隔等待，不能把超时当作被拒绝。发生网络断开或接收状态未知时，先按原回执只读对账：
 
 ```powershell
 .\forge.ps1 workspace release status work\first-strategy --submission 实际submission_id --refresh
@@ -152,7 +160,7 @@ New-Item -ItemType Directory -Force -Path $keyDir | Out-Null
 | 已接收但响应丢失 | 使用原 submission ID / 归档 SHA-256 查询精确回执，不重复上传。 |
 | 只有泛化错误，信息不足 | 给出时间、release ID、请求 ID（若有）和错误码；不猜测根因，不上传凭据或私有日志。 |
 
-网页是备用路径：如果 CLI 不可用，按人类指南在本机生成已签名包，在开发者中心登记公钥并上传；仍由 Agent 准备正确产物和核对结果。不得把“请自行研究网页教程”作为交付。
+网页是备用路径：如果 CLI 不可用，按[安装与发布](05-PUBLISHING.md)先在开发者中心登记公钥，再在本机签署最终包并上传；仍由 Agent 准备正确产物和核对结果。不得把“请自行研究网页教程”作为交付。
 
 ## 完成条件和交付
 

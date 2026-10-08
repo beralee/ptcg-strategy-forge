@@ -94,8 +94,9 @@ PTCG Strategy Forge 是独立的 `.ptcgai` 策略开发工具链。你可以从�
   → 编写规则，或导入冻结 Actor
   → 用场景做 RED→GREEN 迭代
   → check / build 得到确定性 .ptcgai
-  → 在本机签名并上传开发者中心
-  → 通过独立资格门后进入 AI 天梯
+  → 登记公钥，再由 submit 在本机签名上传
+  → 保存已接收的 release 回执，等待运行资格 passed
+  → 单独核对该 release 的天梯计分对局
   → 从真实对局、录像与玩家反馈继续迭代
 ```
 
@@ -103,16 +104,33 @@ PTCG Strategy Forge 是独立的 `.ptcgai` 策略开发工具链。你可以从�
 
 ## 先跑起你的第一个策略
 
-当前作者工具链要求 Windows 和 Python 3.13。先使用系统自带 Windows PowerShell 5.1 或已有 PowerShell 7；`setup.ps1` / `forge.ps1` 未依赖 PowerShell 7 专用语法，遇到具体 Shell 兼容错误时再处理或升级，不必预先安装 PowerShell 7。若本机策略禁止 `.ps1`，可使用[快速入门的 Python 入口](docs/01-QUICKSTART.md#安装和自检)，无需永久放宽执行策略。离线 demo 通过后，已有开发者 API Key 的作者可继续使用 CLI 创建、迭代、签名上传和查询：
+当前作者工具链要求 Windows 和 Python 3.13。先使用系统自带 Windows PowerShell 5.1 或已有 PowerShell 7；`setup.ps1` / `forge.ps1` 未依赖 PowerShell 7 专用语法，遇到具体 Shell 兼容错误时再处理或升级，不必预先安装 PowerShell 7。若本机策略禁止 `.ps1`，可使用[快速入门的 Python 入口](docs/01-QUICKSTART.md#安装和自检)，无需永久放宽执行策略。离线 demo 通过、准备接入账号时，按下面两种情况选择一种登录方式。
 
 ```powershell
 git clone https://github.com/beralee/ptcg-strategy-forge.git
 cd ptcg-strategy-forge
 .\setup.ps1
 .\forge.ps1 doctor
+```
 
+**刚注册、没有 API Key：** 完成邮箱验证后，在自己的可交互终端运行；用户名账号把 `--email YOUR_EMAIL` 替换为 `--username YOUR_USERNAME`，在隐藏提示中输入账号密码，无需先去网页寻找 API Key。
+
+```powershell
+.\forge.ps1 account login --origin https://api.ptcg.skillserver.cn --email YOUR_EMAIL
+```
+
+**已有 API Key：** 保留原流程，在隐藏提示中输入 API Key。
+
+```powershell
 .\forge.ps1 account login --origin https://api.ptcg.skillserver.cn
-# 在隐藏输入提示中输入 API Key，不把密钥写进命令。
+```
+
+登录由开发者在本机按助手权限要求确认后执行。密码登录会创建 CLI API Key；两种登录方式均将 API Key 保存到 Windows 当前用户凭据管理器。密码、API Key 和签名私钥不得发送到聊天或写进命令参数。助手无法提供可交互的隐藏输入时，由开发者在自己的终端完成这一步，详见 [Agent 账号接入](docs/31-AGENT-START.md#3-准备提交时接入账号由工具读取完整身份)。
+
+登录成功后继续：
+
+```powershell
+.\forge.ps1 account whoami
 .\forge.ps1 workspace create work\my-strategy `
   --account `
   --package-id dev.myname.my-strategy `
@@ -140,7 +158,7 @@ cd ptcg-strategy-forge
 
 `inspect` 把一次原始选择翻译成可读的公开事实和语义选项。`check` 会执行两次精确构建、比较字节与哈希、严格走 Host 路径并运行完整场景；全部通过后，`build` 才会写出 `.ptcgai` 和验收报告。
 
-完整无网页流程、远端版本管理和 CI 用法见 [CLI 完整性审查与工作流](docs/26-CLI-ONLY-DEVELOPMENT.md)。API Key 用于账号认证，Ed25519 私钥用于本机签名，两者不能替代。首次注册与账号恢复不属于“已有 API Key”的前提。
+完整无网页流程、远端版本管理和 CI 用法见 [CLI 完整性审查与工作流](docs/26-CLI-ONLY-DEVELOPMENT.md)。API Key 用于账号认证，Ed25519 私钥用于本机签名，两者不能替代。上传前先登记公钥，再由 `workspace release submit` 本机签名上传；已接收 release、运行资格 `passed` 和已有计分对局分别验证。
 
 ## 选择你的开发方式
 

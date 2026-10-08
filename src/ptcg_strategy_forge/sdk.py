@@ -668,7 +668,8 @@ class WorkspaceModel:
         context = candidate if candidate.is_absolute() else self.workspace.root / candidate
         try:
             resolved = context.resolve(strict=True)
-            resolved.relative_to(self.workspace.root)
+            # Compare canonical paths on both sides (including Windows 8.3 aliases).
+            resolved.relative_to(self.workspace.root.resolve(strict=True))
         except (OSError, ValueError):
             _raise("workspace_scenario_invalid")
         target = (

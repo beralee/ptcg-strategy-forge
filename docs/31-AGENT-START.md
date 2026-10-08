@@ -22,7 +22,7 @@
 
 ## 1. 检查电脑，准备工具
 
-先识别操作系统、当前目录、Git、Python 版本、已有 Forge 和已登录账号。以下命令以 **Windows 的已验证路径** 为例。Forge 要求 Python 3.13；现有 Windows PowerShell 可以运行启动脚本，不需要用户先手工安装 PowerShell 7。缺失依赖时由你完成普通用户范围的安装或提供唯一必要的安装操作，不让用户理解环境配置细节。遵守本机权限要求，不静默提升权限，不永久放宽系统执行策略。
+先识别操作系统、当前目录、Git、Python 版本、已有 Forge 和已登录账号。以下命令以 **Windows 的已验证路径** 为例。Forge 要求 Python 3.13；先使用系统自带 Windows PowerShell 5.1 或已有 PowerShell 7；`setup.ps1` / `forge.ps1` 未依赖 PowerShell 7 专用语法，遇到具体 Shell 兼容错误时再处理或升级，不必预先安装 PowerShell 7。缺失依赖时由你完成普通用户范围的安装或提供唯一必要的安装操作，不让用户理解环境配置细节。遵守本机权限要求，不静默提升权限，不永久放宽系统执行策略。
 
 在用户选择的空目录中克隆；已有仓库先看 `git status`，保留改动，不执行破坏性的 reset/clean。Git 不可用时可以使用该官方仓库提供的源码 ZIP，再进入解压目录。
 
@@ -46,7 +46,17 @@ py -3.13 -m venv .venv
 
 macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预览版也不等于完整开发工具验收。先检查本机工具支持情况；未通过环境检查时说明具体缺口，不声称所有操作系统都已验证，也不让用户盲目执行 Windows 命令。
 
-## 2. 完成账号接入，由工具读取完整身份
+## 2. 先离线验证 Marnie RED→GREEN demo
+
+首次使用先运行自带示例，无需注册、API Key 或游戏仓库；已有成功回执时可从当前进度继续。首次下载工具和安装依赖需要网络，安装后的 demo 在本地运行。
+
+```powershell
+.\forge.ps1 demo --output work\first-marnie-demo
+```
+
+输出目录必须不存在，不覆盖旧证据。读取 `work/first-marnie-demo/demo-report.json`，核对 `status=passed`、`optimization.baseline_red=true`、10/10 场景通过和 `build.deterministic=true`。向用户说明基线为何 RED，以及最终 adapter 如何使正例、重排和安全负例 GREEN，参见[调试与优化](04-DEBUGGING-AND-OPTIMIZATION.md#redgreen-demo)。失败时先定位工具或场景错误，不把注册作为修复步骤；成功只证明本地公开窗口与包验收。
+
+## 3. 准备提交时接入账号，由工具读取完整身份
 
 已有账号跳过注册。没有账号时打开开发者中心，让用户完成邮箱注册和验证码；密码至少 12 位，验证码有效期 10 分钟。不要索取验证码、密码或 API Key 到聊天记录，不读取浏览器 Cookie，也不替用户猜测凭据。
 
@@ -62,7 +72,7 @@ macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预�
 
 非 Windows 或 CI 如使用临时认证，按 `docs/26-CLI-ONLY-DEVELOPMENT.md` 的 `--api-key-stdin` / `--api-key-env` 读取用户在本机配置的秘密；不能通过聊天或明文文件传递。不能通过公共网页给别人代建 API Key。
 
-## 3. 做出最小可用策略
+## 4. 做出最小可用策略
 
 先用规则模式走完整流程，之后再提高强度。选择一个简短、稳定的包身份，例如 `dev.myname.first-strategy`；每个策略独立，不使用超长开发者 ID 作为包名。
 
@@ -82,7 +92,7 @@ macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预�
 
 策略只使用公开观察，选择当前选项窗口的索引；每次行动后重新观察。包是数据，不是任意 Python/GDScript 程序。未知能力、卡牌或规则要明确说明，并保持已有合法性和兜底机制。没有真实证据时不能宣称“完整卡效正确”“官方比赛一致”或“强于其他策略”。
 
-## 4. 验证并构建，由你修复错误
+## 5. 验证并构建，由你修复错误
 
 ```powershell
 .\forge.ps1 workspace test work\first-strategy --changed
@@ -94,7 +104,7 @@ macOS/Linux 的临时 API Key 模式与 Windows 持久登录不同，游戏预�
 
 环境/安装失败不等于策略失败。首次提交不需要训练进程池或大规模 benchmark。需要额外真实对战评估时另行检查资源和工具支持，并如实区分本地检查与真实对战证据。
 
-## 5. 自动处理签名和公钥登记
+## 6. 自动处理签名和公钥登记
 
 先查已有公钥和本机密钥。已有可用匹配密钥时复用；不要覆盖或撤销旧密钥。如果私钥丢失，生成新文件并登记新公钥，不把撤销旧公钥作为默认清理动作——旧策略执行可能依赖它。
 
@@ -111,7 +121,7 @@ New-Item -ItemType Directory -Force -Path $keyDir | Out-Null
 
 密钥必须保存在仓库和工作区之外。私钥只供本机签名程序读取，绝不输出、截图、提交 Git 或发送到网页/聊天。网页只登记公钥。核对当前账号、包作者和有效公钥三者一致；Agent 应通过工具完成核对，不让用户手工复制编码字符串。
 
-## 6. 提交，保存回执，等到明确的资格结果
+## 7. 提交，保存回执，等到明确的资格结果
 
 ```powershell
 .\forge.ps1 workspace release submit work\first-strategy --private-key "$keyDir\main.ed25519"
@@ -129,7 +139,7 @@ New-Item -ItemType Directory -Force -Path $keyDir | Out-Null
 
 不要反复创建新版本或重复 POST。仅在服务支持精确归档对账、明确未接收且用户任务仍授权提交时，才按工具帮助使用 `--retry-unaccepted` 重试相同归档。
 
-## 7. 按错误继续推进
+## 8. 按错误继续推进
 
 | 当前问题 | Agent 的下一步 |
 |---|---|

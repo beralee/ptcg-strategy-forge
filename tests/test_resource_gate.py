@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 import sys
 import unittest
 import os
@@ -12,20 +13,57 @@ class ResourceGateTests(unittest.TestCase):
     @unittest.skipUnless(os.name == "nt", "Windows kernel mutex")
     def test_kernel_mutex_blocks_second_process_without_launching_a_pool(self):
         from ptcg_strategy_forge.resources_gate import heavy_job
-        code = "from ptcg_strategy_forge.resources_gate import heavy_job\ntry:\n with heavy_job(): print('unexpected')\nexcept ValueError as error: print(str(error))"
+        code = """
+import json
+import os
+from unittest.mock import patch
+from ptcg_strategy_forge.resources_gate import heavy_job
+
+with (
+    patch('ptcg_strategy_forge.resources_gate.windows_snapshot') as memory,
+    patch('ptcg_strategy_forge.run_safety.storage_targets') as targets,
+    patch('ptcg_strategy_forge.run_safety.storage_snapshot') as disks,
+    patch('multiprocessing.pool.Pool', side_effect=AssertionError('pool launched')) as pool,
+    patch('concurrent.futures.ProcessPoolExecutor', side_effect=AssertionError('pool launched')) as executor,
+):
+    try:
+        with heavy_job():
+            raise AssertionError('second process was admitted')
+    except ValueError as error:
+        result = {'pid': os.getpid(), 'error': str(error)}
+    memory.assert_not_called()
+    targets.assert_not_called()
+    disks.assert_not_called()
+    pool.assert_not_called()
+    executor.assert_not_called()
+print(json.dumps(result))
+"""
         # This exercises the real cross-process mutex without launching work.
-        # Mock disk pressure as well as RAM so host free space cannot prevent
-        # reaching the mutex assertion; storage thresholds have separate tests.
-        disks = [{"volume": "test-volume", "roles": ["output"], "free_gib": 32.0}]
+        # Isolate volume discovery (including CIM pagefile lookup), disk pressure
+        # and RAM; resource-pressure thresholds have separate tests.
+        targets = [{"volume": "test-volume", "roles": ["output"]}]
+        disks = [{**targets[0], "free_gib": 32.0}]
         with (
-            patch("ptcg_strategy_forge.resources_gate.windows_snapshot", return_value=self.healthy()),
-            patch("ptcg_strategy_forge.run_safety.storage_snapshot", return_value=disks),
-            heavy_job(),
+            patch("ptcg_strategy_forge.resources_gate.windows_snapshot", return_value=self.healthy()) as memory,
+            patch("ptcg_strategy_forge.run_safety.storage_targets", return_value=targets) as target_probe,
+            patch("ptcg_strategy_forge.run_safety.storage_snapshot", return_value=disks) as disk_probe,
+            patch("multiprocessing.pool.Pool", side_effect=AssertionError("pool launched")) as pool,
+            patch("concurrent.futures.ProcessPoolExecutor", side_effect=AssertionError("pool launched")) as executor,
+            heavy_job() as admitted,
         ):
+            self.assertEqual(targets, admitted["storage_targets"])
+            self.assertEqual(disks, admitted["disks"])
             child = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, timeout=20,
                                    env={**os.environ, "PYTHONPATH": str(Path(__file__).resolve().parents[1] / "src")})
+        memory.assert_called_once_with()
+        target_probe.assert_called_once_with(None)
+        disk_probe.assert_called_once_with(targets)
+        pool.assert_not_called()
+        executor.assert_not_called()
         self.assertEqual(0, child.returncode, child.stderr)
-        self.assertEqual("resource_heavy_job_active", child.stdout.strip())
+        result = json.loads(child.stdout)
+        self.assertNotEqual(os.getpid(), result["pid"])
+        self.assertEqual("resource_heavy_job_active", result["error"])
 
     def healthy(self):
         return {"available_gib": 32.0, "commit_percent": 40.0, "other_heavy_pids": []}

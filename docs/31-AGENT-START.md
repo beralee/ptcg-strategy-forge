@@ -147,6 +147,17 @@ New-Item -ItemType Directory -Force -Path $keyDir | Out-Null
 
 不要反复创建新版本或重复 POST。仅在服务支持精确归档对账、明确未接收且用户任务仍授权提交时，才按工具帮助使用 `--retry-unaccepted` 重试相同归档。
 
+### 首次提交的产物与排错证据
+
+以下路径均相对于当前工作区；以命令实际输出为准，不靠文件名猜测提交状态：
+
+- **本地开发包**：默认 `build/<package_id>-<package_version>.ptcgai`，验收报告为 `build/workspace-check.json`。这是开发签名包，不能直接作为账号签名包上传。
+- **本机签名后的上传包**：`submit` 返回的 `archive_path` 指向 `releases/archives/<上传包SHA-256>.ptcgai`。用于服务端对账的是 `scope.archive_sha256`；`source_archive_sha256` 是重签前开发包的哈希，两者不要混用。
+- **可恢复的提交记录**：`releases/submissions/<submission_id>.json` 保存 `scope.archive_sha256`、`release_id`、`receipt_state` 和 `qualification_state`。通过上面的 `workspace release status ... --refresh` 读取并对账，不手改回执文件。仅有上传包文件，甚至已有 submission 记录，都不证明服务端已接收；记录会在发送前先以 `receipt_state=unknown` 落盘。
+- **资格字段来源**：本地提交/对账回执用 `qualification_state`；`releases show` 用 `qualification_status`；`releases wait` 的结果用顶层 `status` 和嵌套的 `release.qualification_status`。只核对对应命令的实际字段，不把字段缺失当作失败，也不把 `submit` 的 `status=completed` 当作资格通过。
+
+需要协助排错时，只摘录命令阶段、时间、退出码/错误码、包 ID 与版本、上述两个哈希、submission/release ID 和实际状态。没有生成的字段写“尚未生成”；隐藏本机用户名路径，不发送私钥、API Key、密码、完整工作区或未检查的原始日志。
+
 ## 8. 按错误继续推进
 
 | 当前问题 | Agent 的下一步 |
